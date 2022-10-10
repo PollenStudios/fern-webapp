@@ -20,18 +20,12 @@ module.exports = {
     },
     extend: {
       colors: {
-        blue: {
-          10: '#0013FF',
-        },
-        black: {
-          10: '#00010E',
-        },
-        green: {
-          10: '#0F9D58',
-        },
+        primary: '#00010E',
+        secondary: '#0F9D58',
+        tertiary: '#0013FF',
       },
       lineHeight: {
-        'extra-loose': '1.3',
+        extraLoose: '1.3',
       },
       letterSpacing: {
         extraTight: '0.0625em',
