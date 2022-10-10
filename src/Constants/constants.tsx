@@ -1,7 +1,7 @@
-import Twitter from '../assets/icons/twitter.svg';
-import Facebook from '../assets/icons/facebook.svg';
-import Instagram from '../assets/icons/instagram.svg';
-import Google from '../assets/icons/google.svg';
+import Twitter from '../Assets/Icons/twitter.svg';
+import Facebook from '../Assets/Icons/facebook.svg';
+import Instagram from '../Assets/Icons/instagram.svg';
+import Google from '../Assets/Icons/google.svg';
 
 export const socialMedia = [
   {
