@@ -21,8 +21,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "deploy-prod": "export AWS_PROFILE=pollinate-webapp && npm run build && aws s3 cp build/ s3://cmx-webapp --recursive",
-    "deploy-dev": "export AWS_PROFILE=pollinate-webapp && npm run build && aws s3 cp build/ s3://cmx-webapp --recursive",
+    "deploy-prod": "export AWS_PROFILE=pollinate-webapp && npm run build && aws s3 cp build/ s3://pollen-web3-webapp --recursive",
+    "deploy-dev": "export AWS_PROFILE=pollinate-webapp && npm run build && aws s3 cp build/ s3://pollen-web3-dev --recursive",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
