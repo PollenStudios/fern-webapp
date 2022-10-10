@@ -38,16 +38,12 @@ export default function Navbar(): any {
       >
         {({ open }) => (
           <>
-            <div className="main-container">
+            <div className="main-container font-inter">
               <div className="relative flex justify-between lg:gap-8 xl:grid xl:grid-cols-12">
                 <div className="flex md:absolute md:inset-y-0 md:left-0 lg:static xl:col-span-2">
                   <div className="flex flex-shrink-0 items-center">
-                    <a href="/">
-                      <img
-                        className="block h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                        alt="Your Company"
-                      />
+                    <a href="#">
+                      <h2 className="heading-3">Pollen</h2>
                     </a>
                   </div>
                 </div>
@@ -64,7 +60,7 @@ export default function Navbar(): any {
                         <input
                           id="search"
                           name="search"
-                          className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 text-xs placeholder-gray-500 focus:border-indigo-500 focus:text-gray-900 focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-xs"
+                          className="block w-full rounded-full border border-gray-300 bg-white py-2 pl-10 pr-3 text-xs placeholder-gray-500 focus:border-indigo-500 focus:text-gray-900 focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-xs"
                           placeholder="Search"
                           type="search"
                         />
@@ -83,54 +79,13 @@ export default function Navbar(): any {
                     )}
                   </Popover.Button>
                 </div>
-                <div className="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
-                  <a
-                    href="#"
-                    className="ml-5 flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  >
-                    <span className="sr-only font-inter">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
+                <div className="hidden lg:flex lg:items-center space-x-10  font-medium lg:justify-end xl:col-span-4">
+                  <a className="text-gray-700 text-lg font-medium" href="">
+                    Discover
                   </a>
 
-                  {/* Profile dropdown */}
-                  <Menu as="div" className="relative ml-5 flex-shrink-0">
-                    <div>
-                      <Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        <span className="sr-only font-inter">Open user menu</span>
-                        <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
-                      </Menu.Button>
-                    </div>
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
-                    >
-                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        {userNavigation.map((item) => (
-                          <Menu.Item key={item.name}>
-                            {({ active }) => (
-                              <a
-                                href={item.href}
-                                className={classNames(active ? "bg-gray-100" : "", "block py-2 px-4 text-xs text-gray-700")}
-                              >
-                                {item.name}
-                              </a>
-                            )}
-                          </Menu.Item>
-                        ))}
-                      </Menu.Items>
-                    </Transition>
-                  </Menu>
-
-                  <a
-                    href={PageRoutes.DISCOVERY}
-                    className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  >
-                    New Project
+                  <a href="#" className="ml-6 inline-flex items-center rounded-full px-6 py-2  bg-primary  text-white ">
+                    Connect Wallet
                   </a>
                 </div>
               </div>
