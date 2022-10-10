@@ -25,7 +25,7 @@ export function isEmpty(value: string | null) {
 //           />
 //         </div>
 //         <div className="ml-3">
-//           <p className="text-sm text-yellow-700">{text}</p>
+//           <p className="text-xs text-yellow-700">{text}</p>
 //         </div>
 //       </div>
 //     </div>

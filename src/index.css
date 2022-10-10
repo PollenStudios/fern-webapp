@@ -1,3 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .main-container {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  .heading-1 {
+    @apply font-inter font-semibold text-6xl leading-snug -tracking-extraTight;
+  }
+  .heading-2 {
+    @apply font-inter font-semibold text-5xl leading-snug -tracking-extraTight;
+  }
+  .heading-3 {
+    @apply font-inter font-semibold text-4xl leading-snug -tracking-extraTight;
+  }
+  .heading-4 {
+    @apply font-inter font-semibold text-3xl leading-snug -tracking-extraTight;
+  }
+  .heading-5 {
+    @apply font-inter font-semibold text-2xl leading-snug -tracking-extraTight;
+  }
+  .heading-6 {
+    @apply font-inter font-semibold text-xl leading-snug -tracking-extraTight;
+  }
+  .paragraph-1 {
+    @apply font-inter font-normal text-md leading-snug -tracking-tightest;
+  }
+  .paragraph-2 {
+    @apply font-inter font-normal text-base leading-snug -tracking-tightest;
+  }
+  .paragraph-3 {
+    @apply font-inter font-normal text-xs leading-snug -tracking-tightest;
+  }
+}

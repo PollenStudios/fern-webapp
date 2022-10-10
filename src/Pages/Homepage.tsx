@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
 const Homepage = () => {
-  return <div>Homepage</div>;
+  return <div className="main-container heading-2">Hoasdfasdfsdasdfdsfmepage</div>;
 };
 
 export default Homepage;
