@@ -1,2 +1,9 @@
-export const test = 124
-console.log('first', test)
+import CardImg from './assets/images/cardImg.png';
+
+export const card = [
+  {
+    img: CardImg,
+    name: 'Archaeology',
+    artist: '@Juliette Hayt Greenberg',
+  },
+];
