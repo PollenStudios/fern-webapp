@@ -48,7 +48,7 @@ export default function Navbar(): any {
                         <input
                           id="search"
                           name="search"
-                          className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 text-xs placeholder-gray-500 focus:border-indigo-500 focus:text-gray-900 focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-xs"
+                          className="block w-full rounded-full border border-gray-300 bg-white py-2 pl-10 pr-3 text-xs placeholder-gray-500 focus:border-indigo-500 focus:text-gray-900 focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-xs"
                           placeholder="Search"
                           type="search"
                         />
@@ -67,13 +67,9 @@ export default function Navbar(): any {
                     )}
                   </Popover.Button>
                 </div>
-                <div className="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
-                  <a
-                    href="#"
-                    className="ml-5 flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  >
-                    <span className="sr-only font-inter">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
+                <div className="hidden lg:flex lg:items-center space-x-10  font-medium lg:justify-end xl:col-span-4">
+                  <a className="text-gray-700 text-lg font-medium" href="">
+                    Discover
                   </a>
 
                   <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
