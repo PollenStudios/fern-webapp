@@ -69,7 +69,7 @@ export default function Navbar() {
                         <input
                           id="search"
                           name="search"
-                          className="font-inter block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:border-indigo-500 focus:text-gray-900 focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+                          className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 text-xs placeholder-gray-500 focus:border-indigo-500 focus:text-gray-900 focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-xs"
                           placeholder="Search"
                           type="search"
                         />
@@ -126,7 +126,7 @@ export default function Navbar() {
                                 href={item.href}
                                 className={classNames(
                                   active ? 'bg-gray-100' : '',
-                                  'block py-2 px-4 text-sm text-gray-700 font-inter',
+                                  'block py-2 px-4 text-xs text-gray-700',
                                 )}
                               >
                                 {item.name}
@@ -140,7 +140,7 @@ export default function Navbar() {
 
                   <a
                     href="#"
-                    className="font-inter ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >
                     New Project
                   </a>
@@ -159,7 +159,7 @@ export default function Navbar() {
                       item.current
                         ? 'bg-gray-100 text-gray-900'
                         : 'hover:bg-gray-50',
-                      'block rounded-md py-2 px-3 text-base font-medium font-inter',
+                      'block rounded-md py-2 px-3 text-base font-medium',
                     )}
                   >
                     {item.name}
@@ -176,10 +176,10 @@ export default function Navbar() {
                     />
                   </div>
                   <div className="ml-3">
-                    <div className="text-base font-medium text-gray-800 font-inter">
+                    <div className="text-base font-medium text-gray-800">
                       {user.name}
                     </div>
-                    <div className="text-sm font-medium text-gray-500 font-inter">
+                    <div className="text-xs font-medium text-gray-500">
                       {user.email}
                     </div>
                   </div>
@@ -196,7 +196,7 @@ export default function Navbar() {
                     <a
                       key={item.name}
                       href={item.href}
-                      className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 font-inter"
+                      className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                     >
                       {item.name}
                     </a>

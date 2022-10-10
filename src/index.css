@@ -6,6 +6,33 @@
 
 @layer utilities {
   .main-container {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-xl;
+  }
+  .heading-1 {
+    @apply font-inter font-semibold text-6xl;
+  }
+  .heading-2 {
+    @apply font-inter font-semibold text-5xl;
+  }
+  .heading-3 {
+    @apply font-inter font-semibold text-4xl;
+  }
+  .heading-4 {
+    @apply font-inter font-semibold text-3xl;
+  }
+  .heading-5 {
+    @apply font-inter font-semibold text-2xl;
+  }
+  .heading-6 {
+    @apply font-inter font-semibold text-xl;
+  }
+  .paragraph-1 {
+    @apply font-inter font-semibold text-md;
+  }
+  .paragraph-2 {
+    @apply font-inter font-semibold text-base;
+  }
+  .paragraph-3 {
+    @apply font-inter font-semibold text-xs;
   }
 }
