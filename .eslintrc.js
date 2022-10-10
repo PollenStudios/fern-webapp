@@ -8,11 +8,11 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
+    project: ['tsconfig.json'],
   },
   plugins: ['react'],
   rules: {
     'comma-dangle': 0,
-    semi: ['error', 'always'],
     quotes: 1,
   },
-};
+}
