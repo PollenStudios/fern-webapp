@@ -1,5 +1,5 @@
 import React from "react";
-import { socialMedia } from "../Constants/constants";
+import { socialMedia } from "../Constants/Constants";
 
 const Footer = () => {
   return (
