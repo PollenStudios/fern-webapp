@@ -1,7 +1,6 @@
 import { card } from '../Constant';
-import heart from '../assets/images/heart.svg';
-import arrow from '../assets/images/arrow.svg';
-import { ListIcon } from './Icons';
+
+import { ListIcon, ArrowLeftRight, HeartIcon } from './Icons';
 
 const ArtCard = () => {
   return (
@@ -15,14 +14,16 @@ const ArtCard = () => {
           <div className="p-4 ">
             <div className=" flex justify-between">
               <h6 className="heading-6 text-white">{name}</h6>
-              <div className="flex space-x-5 text-white">
+              <div className="flex space-x-5 text-gray-300">
                 <div className="flex space-x-1.5">
                   <p className="font-light text-xs">124</p>
-                  <img className="w-4 h-4" src={heart} alt="heart" />
+                  {/* <img className="w-4 h-4 mt-0.5" src={heart} alt="heart" /> */}
+                  <HeartIcon />
                 </div>
                 <div className="flex space-x-1.5">
                   <p className="font-light text-xs">33</p>
-                  <img className="w-4 h-4" src={arrow} alt="arrows" />
+                  {/* <img className="w-4 h-4 mt-0.5" src={arrow} alt="arrows" /> */}
+                  <ArrowLeftRight />
                 </div>
               </div>
             </div>
