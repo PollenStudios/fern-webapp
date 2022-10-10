@@ -23,6 +23,10 @@ module.exports = {
         primary: '#00010E',
         secondary: '#0F9D58',
         tertiary: '#0013FF',
+        gray: {
+          10: '#E2E2E2',
+          20: '#D9D9D9',
+        },
       },
       letterSpacing: {
         extraTight: '0.0625em',
