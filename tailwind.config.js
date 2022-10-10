@@ -24,9 +24,6 @@ module.exports = {
         secondary: '#0F9D58',
         tertiary: '#0013FF',
       },
-      lineHeight: {
-        extraLoose: '1.3',
-      },
       letterSpacing: {
         extraTight: '0.0625em',
         tightest: '0.03125em',

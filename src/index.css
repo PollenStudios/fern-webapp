@@ -9,30 +9,30 @@
     @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
   }
   .heading-1 {
-    @apply font-inter font-semibold text-6xl leading-extraLoose -tracking-extraTight;
+    @apply font-inter font-semibold text-6xl leading-snug -tracking-extraTight;
   }
   .heading-2 {
-    @apply font-inter font-semibold text-5xl leading-extraLoose -tracking-extraTight;
+    @apply font-inter font-semibold text-5xl leading-snug -tracking-extraTight;
   }
   .heading-3 {
-    @apply font-inter font-semibold text-4xl leading-extraLoose -tracking-extraTight;
+    @apply font-inter font-semibold text-4xl leading-snug -tracking-extraTight;
   }
   .heading-4 {
-    @apply font-inter font-semibold text-3xl leading-extraLoose -tracking-extraTight;
+    @apply font-inter font-semibold text-3xl leading-snug -tracking-extraTight;
   }
   .heading-5 {
-    @apply font-inter font-semibold text-2xl leading-extraLoose -tracking-extraTight;
+    @apply font-inter font-semibold text-2xl leading-snug -tracking-extraTight;
   }
   .heading-6 {
-    @apply font-inter font-semibold text-xl leading-extraLoose -tracking-extraTight;
+    @apply font-inter font-semibold text-xl leading-snug -tracking-extraTight;
   }
   .paragraph-1 {
-    @apply font-inter font-normal text-md leading-extraLoose -tracking-tightest;
+    @apply font-inter font-normal text-md leading-snug -tracking-tightest;
   }
   .paragraph-2 {
-    @apply font-inter font-normal text-base leading-extraLoose -tracking-tightest;
+    @apply font-inter font-normal text-base leading-snug -tracking-tightest;
   }
   .paragraph-3 {
-    @apply font-inter font-normal text-xs leading-extraLoose -tracking-tightest;
+    @apply font-inter font-normal text-xs leading-snug -tracking-tightest;
   }
 }
