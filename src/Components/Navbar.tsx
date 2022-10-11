@@ -55,29 +55,25 @@ export default function Navbar(): any {
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="flex items-center md:absolute md:inset-y-0 md:right-0 lg:hidden">
-                  {/* Mobile menu button */}
-                  <Popover.Button className="-mx-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                    <span className="sr-only font-inter">Open menu</span>
-                    {open ? (
-                      <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                    ) : (
-                      <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                    )}
-                  </Popover.Button>
-                </div>
-                <div className="hidden lg:flex lg:items-center space-x-10  font-medium lg:justify-end xl:col-span-4">
-                  <a className="text-gray-700 text-lg font-medium" href="">
-                    Discover
-                  </a>
-
-                  <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
+                  <input
+                    id="search"
+                    name="search"
+                    className="block w-full rounded-full border border-gray-300 bg-white py-1 md:py-2 pl-10 pr-3 text-xs focus:outline-none focus:border-none placeholder-gray-500  focus:text-gray-900 focus:placeholder-gray-400 sm:text-xs"
+                    placeholder="Explore"
+                    type="search"
+                  />
                 </div>
               </div>
+              <div className=" md:flex  items-center gap-4 pr-2  hidden md:ml-6 md:pr-0">
+                <a className="text-gray-700 text-lg font-medium" href="/">
+                  Discover
+                </a>
 
-              <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
+                <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
+              </div>
             </div>
+
+            <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
           </div>
         </>
       )}
