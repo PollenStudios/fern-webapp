@@ -1,8 +1,9 @@
 import { Fragment } from "react";
-import { Menu, Popover, Transition } from "@headlessui/react";
+import { Disclosure, Menu, Popover, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { PageRoutes } from "../Constants/PageRoutes";
+import { Link } from "react-router-dom";
 
 const user = {
   name: "Chelsea Hagon",
@@ -28,27 +29,29 @@ function classNames(...classes: string[]): any {
 
 export default function Navbar(): any {
   return (
-    <>
-      {/* When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars */}
-      <Popover
-        as="header"
-        className={({ open }) =>
-          classNames(open ? "fixed inset-0 z-40 overflow-y-auto" : "", "bg-white shadow-sm lg:static lg:overflow-y-visible")
-        }
-      >
-        {({ open }) => (
-          <>
-            <div className="main-container">
-              <div className="relative flex justify-between lg:gap-8 xl:grid xl:grid-cols-12">
-                <div className="flex md:absolute md:inset-y-0 md:left-0 lg:static xl:col-span-2">
-                  <div className="flex flex-shrink-0 items-center">
-                    <a href="/">
-                      <img
-                        className="block h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                        alt="Your Company"
-                      />
-                    </a>
+    <Disclosure as="nav" className="bg-white drop-shadow-3xl w-full fixed top-0 z-40">
+      {({ open }) => (
+        <>
+          <div className="mx-auto max-w-7xl px-2 md:px-6 lg:px-8">
+            <div className="relative flex h-16 items-center justify-between">
+              <div className="absolute inset-y-0 right-0 flex items-center md:hidden">
+                {/* Mobile menu button*/}
+                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:bg-gray-700 hover:text-white ">
+                  <span className="sr-only">Open main menu</span>
+                  {open ? (
+                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                  ) : (
+                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                  )}
+                </Disclosure.Button>
+              </div>
+              <div className="flex flex-1 gap-8 lg:gap-12 items-center justify-center sm:justify-start">
+                <Link to={PageRoutes.HOMEPAGE}>
+                  <h4 className="heading-4 md:heading-2">Pollen</h4>
+                </Link>
+                <div className="relative">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                   </div>
                 </div>
                 <div className="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">
@@ -182,9 +185,9 @@ export default function Navbar(): any {
                 </div>
               </div>
             </Popover.Panel>
-          </>
-        )}
-      </Popover>
-    </>
+          </div>
+        </>
+      )}
+    </Disclosure>
   );
 }
