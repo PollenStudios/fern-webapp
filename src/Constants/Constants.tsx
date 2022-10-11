@@ -46,7 +46,7 @@ export const artworkPlaceHolderData = [
   },
 ];
 
-export const addBgClass = (variant: string) => {
+export const addBgColor = (variant: string) => {
   switch (variant) {
     case "primary":
       return "bg-primary";
