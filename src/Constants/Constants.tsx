@@ -3,7 +3,9 @@ import Facebook from "../Assets/Icons/facebook.svg";
 import Instagram from "../Assets/Icons/instagram.svg";
 import Google from "../Assets/Icons/google.svg";
 
-export const socialMedia = [
+import CardImg from "../Assets/Images/cardImg.png";
+
+export const socialMediaLinks = [
   {
     title: Facebook,
     name: "Facebook",
@@ -23,6 +25,24 @@ export const socialMedia = [
     title: Google,
     name: "Google",
     href: "#",
+  },
+];
+
+export const artworkPlaceHolderData = [
+  {
+    img: CardImg,
+    name: "Archaeology",
+    artist: "@Juliette Hayt Greenberg",
+  },
+  {
+    img: CardImg,
+    name: "Archaeology",
+    artist: "@Juliette Hayt Greenberg",
+  },
+  {
+    img: CardImg,
+    name: "Archaeology",
+    artist: "@Juliette Hayt Greenberg",
   },
 ];
 
