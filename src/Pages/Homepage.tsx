@@ -1,11 +1,16 @@
 import { useForm } from "react-hook-form";
-import { Input, Select, TextArea } from "../Components/Atoms/FormElements";
+import { Button } from "../Components/Atoms/Buttons";
+import { Input, TextArea } from "../Components/Atoms/FormElements";
 
 const Homepage = () => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data: object) => {
     console.log(JSON.stringify(data));
+  };
+
+  const tailwindCssClassForComponents = {
+    inputClass: "p-2 md:w-72 bg-gray-30 paragraph-1 rounded-sm border-primary  border focus:outline-none",
   };
 
   return (
@@ -17,8 +22,7 @@ const Homepage = () => {
           placeholder="Enter your name"
           register={register}
           required
-          pattern=""
-          className="p-2 w-72 bg-gray-30 paragraph-1 rounded-sm border-primary  border focus:outline-none"
+          className={tailwindCssClassForComponents.inputClass}
         />
         <Input
           type="email"
@@ -26,8 +30,7 @@ const Homepage = () => {
           placeholder="Enter your email "
           register={register}
           required
-          pattern=""
-          className="p-2 w-72 bg-gray-30 paragraph-1   rounded-sm border-primary  border focus:outline-none"
+          className={tailwindCssClassForComponents.inputClass}
         />
         <TextArea
           type="text"
@@ -35,15 +38,9 @@ const Homepage = () => {
           placeholder="Explain about yourself"
           register={register}
           required
-          pattern={""}
           className="p-2 bg-gray-30 paragraph-1 rounded-sm border-primary  border focus:outline-none"
         />
-        {/* <Select
-          label="select"
-          className="p-2 bg-gray-30 paragraph-1 rounded-sm border-primary  border focus:outline-none"
-          register={register}
-          required
-        /> */}
+        <Button variant="primary" name="Submit" type="submit" />
       </form>
     </div>
   );

@@ -26,7 +26,7 @@ export const Button = ({ variant, name, type }: ButtonProps) => {
   return (
     <button
       type={type}
-      className={`heading-6 inline-flex items-center px-6 py-3 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none 
+      className={`heading-6 sm:w-36 px-6 py-3 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none 
       ${checkVariant(variant)} }`}
     >
       {name}
@@ -38,7 +38,7 @@ export const ButtonWithIcon = ({ variant, name, type, icon }: ButtonProps) => {
   return (
     <button
       type={type}
-      className={`inline-flex items-center gap-x-4 pl-3 pr-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white focus:outline-none
+      className={`flex justify-center items-center sm:w-36 gap-x-4 pl-3 pr-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white focus:outline-none
       ${checkVariant(variant)}  `}
     >
       <img className="w-6 h-6 rounded-full" src={icon} alt={name} />

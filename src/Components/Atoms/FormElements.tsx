@@ -5,7 +5,7 @@ type InputProps = {
   className: string;
   register: any;
   required: boolean;
-  pattern: string;
+  pattern?: string | undefined;
 };
 
 export const Input = ({ label, type, placeholder, className, register, required, pattern }: InputProps) => {
@@ -28,19 +28,6 @@ export const TextArea = ({ label, type, placeholder, className, register, requir
         className={className}
         rows="3"
       />
-    </div>
-  );
-};
-
-export const Select = (label: any, className: string, register: any, required: boolean) => {
-  return (
-    <div className="flex flex-col gap-2">
-      <label>{label}</label>
-      <select {...register(label, { required })} className={className}>
-        <option value="">Select...</option>
-        <option value="A">Category A</option>
-        <option value="B">Category B</option>
-      </select>
     </div>
   );
 };
