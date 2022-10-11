@@ -27,7 +27,7 @@ export const ArrowLeftRight = () => {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="w-4 h-4 mt-0.5"
+      className="w-4 h-4 "
     >
       <path
         strokeLinecap="round"
@@ -46,7 +46,7 @@ export const HeartIcon = () => {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="w-4 h-4 mt-0.5"
+      className="w-4 h-4"
     >
       <path
         strokeLinecap="round"

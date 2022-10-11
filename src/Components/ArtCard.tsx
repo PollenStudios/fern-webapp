@@ -1,37 +1,47 @@
-import { card } from '../Constant';
+import { ListIcon, ArrowLeftRight, HeartIcon } from "./Icons";
+import { checkEmpty } from "../Util/Utility";
+// import { HeartIcon } from "@heroicons/react/outline";
 
-import { ListIcon, ArrowLeftRight, HeartIcon } from './Icons';
+type cardProps = {
+  name: string;
+  artist: string;
+  img: any;
+};
 
-const ArtCard = () => {
+const ArtCard = ({ img, name, artist }: cardProps) => {
   return (
-    <div className="main-container mt-4">
-      {card.map(({ img, name, artist }) => (
-        <div className="max-w-fit mx-auto bg-black rounded-3xl relative">
-          <div className="absolute right-3 top-3 bg-white w-7 h-7 flex justify-center items-center rounded-full">
+    <div className="w-fit mx-auto">
+      <div className="bg-black rounded-3xl relative">
+        <div className="absolute right-3 top-3 bg-white w-7 h-7 flex justify-center items-center rounded-full">
+          <a className="cursor-pointer" onClick={() => checkEmpty("Empty function")} href="/">
             <ListIcon />
-          </div>
-          <img src={img} alt={name} />
-          <div className="p-4 ">
-            <div className=" flex justify-between">
-              <h6 className="heading-6 text-white">{name}</h6>
-              <div className="flex space-x-5 text-gray-300">
-                <div className="flex space-x-1.5">
-                  <p className="font-light text-xs">124</p>
-                  {/* <img className="w-4 h-4 mt-0.5" src={heart} alt="heart" /> */}
+          </a>
+        </div>
+        <img className="cursor-pointer" onClick={() => checkEmpty("Empty function")} src={img} alt={name} />
+        <div className="p-4 ">
+          <div className=" flex justify-between">
+            <h5 className="heading-6 text-white">{name}</h5>
+            <div className="flex space-x-5 text-gray-300">
+              <div className="flex space-x-1.5">
+                <p className="font-light text-xs">124</p>
+                <a href="/" onClick={() => checkEmpty("Empty function")}>
                   <HeartIcon />
-                </div>
-                <div className="flex space-x-1.5">
-                  <p className="font-light text-xs">33</p>
-                  {/* <img className="w-4 h-4 mt-0.5" src={arrow} alt="arrows" /> */}
+                </a>
+              </div>
+              <div className="flex space-x-1.5">
+                <h6 className="font-light text-xs">33</h6>
+                <a href="/" onClick={() => checkEmpty("Empty function")}>
                   <ArrowLeftRight />
-                </div>
+                </a>
               </div>
             </div>
-
-            <p className="paragraph-3 text-gray-300 pt-1.5">{artist}</p>
           </div>
+
+          <p onClick={() => checkEmpty("Empty function")} className="paragraph-3 text-gray-300 cursor-pointer pt-1.5">
+            {artist}
+          </p>
         </div>
-      ))}
+      </div>
     </div>
   );
 };
