@@ -1,5 +1,5 @@
 type socialMediaFooterProps = {
-  icon: string;
+  icon: any;
   name: string;
   href: string;
 };

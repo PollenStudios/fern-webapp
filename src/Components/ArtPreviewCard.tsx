@@ -1,4 +1,6 @@
 import { checkEmpty } from "../Util/Utility";
+import ArtCardDropdown from "./ArtCardDrpdown";
+
 import { HeartIcon, ArrowsRightLeftIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 
 type artPreviewCardPropsTypes = {
@@ -29,11 +31,11 @@ const ArtPreviewCard = ({ img, name, artist }: artPreviewCardPropsTypes) => {
                 <ArrowsRightLeftIcon className="w-4 text-white" onClick={() => checkEmpty("Empty function")} />
               </div>
             </div>
-          </div>
 
-          <p onClick={() => checkEmpty("Empty function")} className="paragraph-3 text-gray-300 cursor-pointer pt-1.5">
-            {artist}
-          </p>
+            <p onClick={() => checkEmpty("Empty function")} className="paragraph-3 text-gray-300 cursor-pointer pt-1.5">
+              {artist}
+            </p>
+          </div>
         </div>
       </div>
     </div>

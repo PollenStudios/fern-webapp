@@ -5,9 +5,10 @@ export default function Footer() {
     <footer className="bg-white">
       <div className="mx-auto max-w-7xl py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
         <div className="flex justify-center space-x-6 md:order-2">
-          {socialMediaLinks.map((item: socialMediaFooterProps) => (
-            <a key={item.name} href={item.href} className=" rounded-full">
-              <img src={item.icon} alt={item.name} className="h-6 w-6 " />
+          {socialMediaLinks.map((link) => (
+            <a key={link.name} target="_blank" rel="noreferrer" href={link.href} className="text-gray-400 hover:text-gray-500">
+              <span className="sr-only">{link.name}</span>
+              <img src={link.socialIcon} className="h-6 w-6" aria-hidden="true" />
             </a>
           ))}
         </div>

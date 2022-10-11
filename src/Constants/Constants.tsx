@@ -5,24 +5,24 @@ import Google from "../Assets/Icons/google.svg";
 
 import CardImg from "../Assets/Images/cardImg.png";
 
-export const socialMediaLinks: socialMediaFooterProps[] = [
+export const socialMediaLinks = [
   {
-    icon: Facebook,
+    socialIcon: Facebook,
     name: "Facebook",
     href: "#",
   },
   {
-    icon: Instagram,
+    socialIcon: Instagram,
     name: "Instagram",
     href: "#",
   },
   {
-    icon: Twitter,
+    socialIcon: Twitter,
     name: "Twitter",
     href: "https://twitter.com/PollenStudios",
   },
   {
-    icon: Google,
+    socialIcon: Google,
     name: "Google",
     href: "#",
   },
