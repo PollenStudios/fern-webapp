@@ -1,9 +1,23 @@
-import React from "react";
-import Facebook from "../Assets/Icons/facebook.svg";
-import { ButtonWithIcon } from "../Components/Atoms/Buttons";
+import { useForm } from "react-hook-form";
+import Input from "../Components/Atoms/InputField";
 
 const Homepage = () => {
-  return <div className="main-container heading-2">Heading</div>;
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = (data: object) => {
+    console.log(JSON.stringify(data));
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-60">
+      <Input
+        label="First Name"
+        register={register}
+        required
+        className="w-48 p-2 paragraph-1  border-primary focus: outline-none  border "
+      />
+    </form>
+  );
 };
 
 export default Homepage;
