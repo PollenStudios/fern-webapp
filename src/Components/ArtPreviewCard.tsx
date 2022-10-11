@@ -8,7 +8,7 @@ type cardProps = {
   img: any;
 };
 
-const ArtCard = ({ img, name, artist }: cardProps) => {
+const ArtPreviewCard = ({ img, name, artist }: cardProps) => {
   return (
     <div className="w-fit mx-auto">
       <div className="bg-black rounded-3xl relative">
@@ -46,4 +46,4 @@ const ArtCard = ({ img, name, artist }: cardProps) => {
   );
 };
 
-export default ArtCard;
+export default ArtPreviewCard;

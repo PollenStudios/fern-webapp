@@ -1,9 +1,7 @@
-
 const Homepage = () => {
   return (
     <>
       <div className="main-container heading-2">Homepage</div>
-     
     </>
   );
 };
