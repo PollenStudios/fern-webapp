@@ -1,19 +1,19 @@
 import React from "react";
-import { socialMedia } from "../Constants/Constants";
+import { socialMediaLinks } from "../Constants/Constants";
 
 const Footer = () => {
   return (
     <footer className="bg-gray-10">
       <div className="main-container py-5 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
         <div className="flex justify-center space-x-6 md:order-2">
-          {socialMedia.map((item) => (
+          {socialMediaLinks.map((socialLinks) => (
             <a
-              key={item.name}
-              href={item.href}
+              key={socialLinks.name}
+              href={socialLinks.href}
               className="bg-gray-20 flex justify-center items-center rounded-full h-10 w-10 md:h-12 md:w-12"
             >
-              <span className="sr-only">{item.name}</span>
-              <img className="h-6 w-6" src={item.title} aria-hidden="true" />
+              <span className="sr-only">{socialLinks.name}</span>
+              <img className="h-6 w-6" src={socialLinks.title} aria-hidden="true" />
             </a>
           ))}
         </div>

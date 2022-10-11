@@ -1,14 +1,20 @@
 import React from "react";
 
-import { card } from "../Constant";
+import { artworkPlaceHolderData } from "../Constants/Constants";
 
 import ArtCard from "../Components/ArtCard";
 
-const Discoverypage = () => {
+type artworkCardPropsTypes = {
+  img: string;
+  name: string;
+  artist: string;
+};
+
+const DiscoveryPage = () => {
   return (
     <div className="main-container mt-28">
       <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6">
-        {card.map(({ img, name, artist }) => (
+        {artworkPlaceHolderData.map(({ img, name, artist }: artworkCardPropsTypes) => (
           <div className="col-span-4">
             {" "}
             <ArtCard key={name} img={img} name={name} artist={artist} />
@@ -19,4 +25,4 @@ const Discoverypage = () => {
   );
 };
 
-export default Discoverypage;
+export default DiscoveryPage;

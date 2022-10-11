@@ -1,6 +1,6 @@
 import { ListIcon, ArrowLeftRight, HeartIcon } from "./Icons";
 import { checkEmpty } from "../Util/Utility";
-// import { HeartIcon } from "@heroicons/react/outline";
+import { ShareIcon } from "@heroicons/react/24/outline";
 
 type cardProps = {
   name: string;
@@ -25,7 +25,7 @@ const ArtCard = ({ img, name, artist }: cardProps) => {
               <div className="flex space-x-1.5">
                 <p className="font-light text-xs">124</p>
                 <a href="/" onClick={() => checkEmpty("Empty function")}>
-                  <HeartIcon />
+                  <ShareIcon />
                 </a>
               </div>
               <div className="flex space-x-1.5">
