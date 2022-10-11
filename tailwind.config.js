@@ -32,6 +32,10 @@ module.exports = {
         extraTight: '0.0625em',
         tightest: '0.03125em',
       },
+
+      dropShadow: {
+        "3xl": "0 2px 4px rgba(0, 0, 0, 0.25)",
+      },
     },
   },
   plugins: [require('@tailwindcss/forms')],

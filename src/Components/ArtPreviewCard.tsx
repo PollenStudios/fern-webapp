@@ -1,38 +1,32 @@
-import { ListIcon } from "./Icons";
 import { checkEmpty } from "../Util/Utility";
-import { ShareIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { HeartIcon, ArrowsRightLeftIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 
-type cardProps = {
+type artPreviewCardPropsTypes = {
   name: string;
   artist: string;
   img: any;
 };
 
-const ArtPreviewCard = ({ img, name, artist }: cardProps) => {
+const ArtPreviewCard = ({ img, name, artist }: artPreviewCardPropsTypes) => {
   return (
     <div className="w-fit mx-auto">
       <div className="bg-black rounded-3xl relative">
         <div className="absolute right-3 top-3 bg-white w-7 h-7 flex justify-center items-center rounded-full">
-          <a className="cursor-pointer" onClick={() => checkEmpty("Empty function")} href="/">
-            <ListIcon />
-          </a>
+          <EllipsisVerticalIcon className="w-6 text-black" onClick={() => checkEmpty("Empty function")} />
         </div>
         <img className="cursor-pointer" onClick={() => checkEmpty("Empty function")} src={img} alt={name} />
         <div className="p-4 ">
           <div className=" flex justify-between">
             <h5 className="heading-6 text-white">{name}</h5>
             <div className="flex space-x-5 text-gray-300">
-              <div className="flex space-x-1.5">
+              <div className="flex  items-center space-x-1.5">
                 <p className="font-light text-xs">124</p>
-                <a href="/" onClick={() => checkEmpty("Empty function")}>
-                  <ShareIcon />
-                </a>
+                <HeartIcon onClick={() => checkEmpty("Empty function")} className="w-4 text-white" />
               </div>
-              <div className="flex space-x-1.5">
+              <div className="flex  items-center space-x-1.5">
                 <h6 className="font-light text-xs">33</h6>
-                <a href="/" onClick={() => checkEmpty("Empty function")}>
-                  <ArrowLeftIcon />
-                </a>
+
+                <ArrowsRightLeftIcon className="w-4 text-white" onClick={() => checkEmpty("Empty function")} />
               </div>
             </div>
           </div>
