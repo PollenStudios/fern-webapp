@@ -6,4 +6,14 @@ export const card = [
     name: 'Archaeology',
     artist: '@Juliette Hayt Greenberg',
   },
+  {
+    img: CardImg,
+    name: 'Archaeology',
+    artist: '@Juliette Hayt Greenberg',
+  },
+  {
+    img: CardImg,
+    name: 'Archaeology',
+    artist: '@Juliette Hayt Greenberg',
+  },
 ];
