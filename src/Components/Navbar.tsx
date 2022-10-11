@@ -1,12 +1,12 @@
-import { Fragment } from "react";
-import { Disclosure, Menu, Popover, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+
+import { Disclosure } from "@headlessui/react";
+
 import { Link } from "react-router-dom";
 
-import { Button, ButtonWithLeadingIcon } from "./Atoms/Buttons";
+import { Button } from "./Atoms/Buttons";
 import { PageRoutes } from "../Constants/PageRoutes";
-import { workInProgressAlert } from "../Util/Utility";
 
 export default function Navbar(): any {
   return (
@@ -27,9 +27,7 @@ export default function Navbar(): any {
                 </Disclosure.Button>
               </div>
               <div className="flex flex-1 gap-8 lg:gap-12 items-center justify-center sm:justify-start">
-                <Link to={PageRoutes.HOMEPAGE}>
-                  <h4 className=" heading-4">Pollen</h4>
-                </Link>
+                <h4 className="heading-4 md:heading-2">Pollen</h4>
                 <div className="relative">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                     <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -64,17 +62,27 @@ export default function Navbar(): any {
                   />
                 </div>
               </div>
-              <div className=" md:flex  items-center gap-4 pr-2  hidden md:ml-6 md:pr-0">
-                <a className="text-gray-700 text-lg font-medium" href="/">
+              <div className=" md:flex  items-center gap-8 lg:gap-10 pr-2  hidden md:ml-6 md:pr-0">
+                <Link to={PageRoutes.DISCOVERY} className="text-gray-700 text-lg font-medium">
                   Discover
-                </a>
+                </Link>
 
-                <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
+                <div className="">
+                  <Button type="button" variant="primary" name="Connect Wallet" />
+                </div>
               </div>
             </div>
-
-            <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
           </div>
+
+          <Disclosure.Panel className="md:hidden flex flex-col p-5 space-y-6 ">
+            <Link to={PageRoutes.DISCOVERY} className="text-gray-700 text-lg font-medium">
+              Discover
+            </Link>
+
+            <div>
+              <Button type="button" variant="primary" name="Connect Wallet" />
+            </div>
+          </Disclosure.Panel>
         </>
       )}
     </Disclosure>

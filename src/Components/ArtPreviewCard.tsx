@@ -1,8 +1,13 @@
 import { checkEmpty } from "../Util/Utility";
+<<<<<<< HEAD
 import ArtCardDropdown from "./ArtCardDrpdown";
 
 import { HeartIcon, ArrowsRightLeftIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 
+=======
+import { HeartIcon, ArrowsRightLeftIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+
+>>>>>>> 2d5a3f1 (feat: footer compopnent | fix: carIcon fixes)
 type artPreviewCardPropsTypes = {
   name: string;
   artist: string;
@@ -27,8 +32,14 @@ const ArtPreviewCard = ({ img, name, artist }: artPreviewCardPropsTypes) => {
               </div>
               <div className="flex  items-center space-x-1.5">
                 <h6 className="font-light text-xs">33</h6>
+<<<<<<< HEAD
 
                 <ArrowsRightLeftIcon className="w-4 text-white" onClick={() => checkEmpty("Empty function")} />
+=======
+              
+                <ArrowsRightLeftIcon className="w-4 text-white" onClick={() => checkEmpty("Empty function")} />
+                
+>>>>>>> 2d5a3f1 (feat: footer compopnent | fix: carIcon fixes)
               </div>
             </div>
 
