@@ -45,3 +45,18 @@ export const artworkPlaceHolderData = [
     artist: "@Juliette Hayt Greenberg",
   },
 ];
+
+export const addBgClass = (variant: string) => {
+  switch (variant) {
+    case "primary":
+      return "bg-primary";
+    case "danger":
+      return "bg-red-800";
+    case "success":
+      return "bg-secondary";
+    case "warning":
+      return "bg-yellow-500";
+    default:
+      console.log(`Variant name is incorrect ${variant}.`);
+  }
+};
