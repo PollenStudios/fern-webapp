@@ -38,7 +38,8 @@ export default function Navbar(): any {
       >
         {({ open }) => (
           <>
-            <div className="main-container font-inter">
+          
+            <div className="main-container font-inter ">
               <div className="relative flex justify-between lg:gap-8 xl:grid xl:grid-cols-11">
                 <div className="flex md:absolute md:inset-y-0 md:left-0 lg:static xl:col-span-1">
                   <div className="flex flex-shrink-0 items-center">
