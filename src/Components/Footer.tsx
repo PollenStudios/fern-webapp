@@ -9,10 +9,14 @@ export default function Footer() {
             <a key={link.name} target="_blank" rel="noreferrer" href={link.href} className="text-gray-400 hover:text-gray-500">
               <span className="sr-only">{link.name}</span>
 <<<<<<< HEAD
+<<<<<<< HEAD
               <img src={link.socialIcon} className="h-6 w-6" aria-hidden="true" />
 =======
               <img src={link.icon} className="h-6 w-6" aria-hidden="true" />
 >>>>>>> 2d5a3f1 (feat: footer compopnent | fix: carIcon fixes)
+=======
+              <img src={link.socialIcon} className="h-6 w-6" aria-hidden="true" />
+>>>>>>> ab754aa (fix variable name | add cursor pointer class  and dropdown into card)
             </a>
           ))}
         </div>

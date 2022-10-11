@@ -68,7 +68,7 @@ export default function Navbar(): any {
                 </Link>
 
                 <div className="">
-                  <Button type="button" variant="primary" name="Connect Wallet" />
+                  <Button type="button" variant="primary" name="Connect Wallet" onClick={alert("123")} />
                 </div>
               </div>
             </div>
@@ -80,7 +80,7 @@ export default function Navbar(): any {
             </Link>
 
             <div>
-              <Button type="button" variant="primary" name="Connect Wallet" />
+              <Button type="button" variant="primary" name="Connect Wallet" onClick={alert("123")} />
             </div>
           </Disclosure.Panel>
         </>
