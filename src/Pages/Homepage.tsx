@@ -10,7 +10,7 @@ const Homepage = () => {
   };
 
   const tailwindCssClassForComponents = {
-    inputClass: "p-2 md:w-72 bg-gray-30 paragraph-1 rounded-sm border-primary  border focus:outline-none",
+    inputClass: "p-2 md:w-72 bg-gray-30 paragraph-3 rounded-sm border-gray-20  border focus:outline-none",
   };
 
   return (
@@ -38,7 +38,7 @@ const Homepage = () => {
           placeholder="Explain about yourself"
           register={register}
           required
-          className="p-2 bg-gray-30 paragraph-1 rounded-sm border-primary  border focus:outline-none"
+          className="p-2 bg-gray-30 paragraph-3  rounded-sm border-gray-20  border focus:outline-none"
         />
         <Button variant="primary" name="Submit" type="submit" />
       </form>
