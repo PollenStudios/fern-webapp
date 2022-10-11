@@ -5,6 +5,7 @@ import WalletProvider from "./Context/WalletContextProvider";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import Homepage from "./Pages/Homepage";
+import Discoverypage from "./Pages/Discoverypage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Homepage />} />
+            <Route path="/discovery" element={<Discoverypage />} />
           </Routes>
           <Footer />
         </BrowserRouter>

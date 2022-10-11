@@ -11,6 +11,13 @@ export function isEmpty(value: string | null) {
   return true;
 }
 
+export function checkEmpty(value: string) {
+  console.log(value)
+}
+
+
+
+
 // export function WarningAlert({ text }) {
 //   if (!text) {
 //     return null;
