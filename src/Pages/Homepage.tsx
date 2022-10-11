@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Input, Select, TextArea } from "../Components/Atoms/InputField";
+import { Input, Select, TextArea } from "../Components/Atoms/FormElements";
 
 const Homepage = () => {
   const { register, handleSubmit } = useForm();
