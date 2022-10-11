@@ -11,6 +11,7 @@ const Homepage = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-60">
       <Input
+        type="text"
         label="First Name"
         register={register}
         required

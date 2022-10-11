@@ -1,15 +1,16 @@
 type InputProps = {
   label: string;
+  type: string;
+  className: string;
   register: any;
   required: boolean;
-  className: string;
 };
 
-const Input = ({ label, register, required, className }: InputProps) => {
+const Input = ({ label, type, className, register, required }: InputProps) => {
   return (
     <div className="flex flex-col gap-2">
       <label>{label}</label>
-      <input {...register(label, { required })} className={className} />
+      <input {...register(label, { required })} type={type} className={className} />
     </div>
   );
 };
