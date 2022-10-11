@@ -1,6 +1,6 @@
-import { ListIcon, ArrowLeftRight, HeartIcon } from "./Icons";
+import { ListIcon, ArrowLeftRight, HeartIcon  } from "./Icons";
 import { checkEmpty } from "../Util/Utility";
-// import { HeartIcon } from "@heroicons/react/outline";
+//  import { HeartIcon } from "@heroicons/react/outline";
 
 type cardProps = {
   name: string;
