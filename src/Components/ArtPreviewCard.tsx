@@ -5,6 +5,7 @@ import ArtCardDropdown from "./ArtCardDrpdown";
 
 import { HeartIcon, ArrowsRightLeftIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 
+<<<<<<< HEAD
 =======
 =======
 import ArtCardDropdown from "./ArtCardDrpdown";
@@ -18,8 +19,12 @@ type artPreviewCardPropsTypes = {
   artist: string;
   img: any;
 };
+=======
+>>>>>>> 681a6df (variable name fixes)
 
-const ArtPreviewCard = ({ img, name, artist }: artPreviewCardPropsTypes) => {
+
+
+const ArtPreviewCard = ({ img, artName, artistName }: artworkCardPropsTypes) => {
   return (
 <<<<<<< HEAD
     <div className="w-fit mx-auto">
@@ -53,10 +58,10 @@ const ArtPreviewCard = ({ img, name, artist }: artPreviewCardPropsTypes) => {
           <div className="absolute right-3 top-3 bg-white w-7 h-7 flex justify-center items-center rounded-full">
             <ArtCardDropdown />
           </div>
-          <img className="cursor-pointer" onClick={() => checkEmpty("Empty function")} src={img} alt={name} />
+          <img className="cursor-pointer" onClick={() => checkEmpty("Empty function")} src={img} alt={artName} />
           <div className="p-4 ">
             <div className=" flex justify-between">
-              <h5 className="heading-6 text-white">{name}</h5>
+              <h5 className="heading-6 text-white">{artName}</h5>
               <div className="flex space-x-5 text-gray-300">
                 <div className="flex  items-center space-x-1.5">
                   <p className="font-light text-xs">124</p>
@@ -71,9 +76,9 @@ const ArtPreviewCard = ({ img, name, artist }: artPreviewCardPropsTypes) => {
               </div>
             </div>
 
-            <p onClick={() => checkEmpty("Empty function")} className="paragraph-3 text-gray-300 cursor-pointer pt-1.5">
-              {artist}
-            </p>
+            <h6 onClick={() => checkEmpty("Empty function")} className="paragraph-3 text-gray-300 cursor-pointer pt-1.5">
+              {artistName }
+            </h6>
           </div>
         </div>
       </div>

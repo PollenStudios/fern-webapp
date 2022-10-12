@@ -8,40 +8,40 @@ import CardImg from "../Assets/Images/cardImg.png";
 export const socialMediaLinks = [
   {
     socialIcon: Facebook,
-    name: "Facebook",
+    socialIconName: "Facebook",
     href: "#",
   },
   {
     socialIcon: Instagram,
-    name: "Instagram",
+    socialIconName: "Instagram",
     href: "#",
   },
   {
     socialIcon: Twitter,
-    name: "Twitter",
+    socialIconName: "Twitter",
     href: "https://twitter.com/PollenStudios",
   },
   {
     socialIcon: Google,
-    name: "Google",
+    socialIconName: "Google",
     href: "#",
   },
 ];
 
-export const artworkPlaceHolderData = [
+export const artworkPlaceHolderData: artworkCardPropsTypes[] = [
   {
     img: CardImg,
-    name: "Archaeology",
-    artist: "@Juliette Hayt Greenberg",
+    artName: "Archaeology",
+    artistName: "@Juliette Hayt Greenberg",
   },
   {
     img: CardImg,
-    name: "Archaeology",
-    artist: "@Juliette Hayt Greenberg",
+    artName: "Archaeology",
+    artistName: "@Juliette Hayt Greenberg",
   },
   {
     img: CardImg,
-    name: "Archaeology",
-    artist: "@Juliette Hayt Greenberg",
+    artName: "Archaeology",
+    artistName: "@Juliette Hayt Greenberg",
   },
 ];
