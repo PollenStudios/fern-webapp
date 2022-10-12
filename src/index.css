@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800");
 
 @tailwind base;
 @tailwind components;
@@ -24,7 +24,7 @@
     @apply font-inter font-semibold text-2xl leading-snug -tracking-extraTight;
   }
   .heading-6 {
-    @apply font-inter font-semibold text-xl leading-snug -tracking-extraTight;
+    @apply font-inter font-medium text-base leading-snug -tracking-wide;
   }
   .paragraph-1 {
     @apply font-inter font-normal text-md leading-snug -tracking-tightest;

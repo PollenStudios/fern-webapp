@@ -1,8 +1,11 @@
+import { XMarkIcon } from "@heroicons/react/24/outline";
 type ButtonProps = {
-  variant: string;
+  variant: "primary" | "outline" | "danger" | "success" | "warning";
   name: string;
+  disabled?: boolean;
   type: "button" | "submit" | "reset" | undefined;
   icon?: string;
+  onClick: any;
 };
 
 const checkVariant = (variant: string) => {
@@ -22,11 +25,13 @@ const checkVariant = (variant: string) => {
   }
 };
 
-export const Button = ({ variant, name, type }: ButtonProps) => {
+export const Button = ({ variant, name, disabled, type, onClick }: ButtonProps) => {
   return (
     <button
+      onClick={onClick}
       type={type}
-      className={`heading-6 inline-flex items-center px-6 py-3 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none 
+      disabled={disabled}
+      className={`inline-flex items-center rounded-full  px-6 py-3 text-xs heading-6 text-white shadow-sm focus:outline-none scale-100 hover:scale-95 active:scale-90 ease-in-out duration-100
       ${checkVariant(variant)} }`}
     >
       {name}
@@ -34,15 +39,38 @@ export const Button = ({ variant, name, type }: ButtonProps) => {
   );
 };
 
-export const ButtonWithIcon = ({ variant, name, type, icon }: ButtonProps) => {
+export const ButtonWithLeadingIcon = ({ variant, name, disabled, type, icon, onClick }: ButtonProps) => {
   return (
     <button
       type={type}
+      onClick={onClick}
+      disabled={disabled}
       className={`inline-flex items-center gap-x-4 pl-3 pr-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white focus:outline-none
       ${checkVariant(variant)}  `}
     >
-      <img className="w-6 h-6 rounded-full" src={icon} alt={name} />
+      {icon && <div className="-mt-0.5 ml-2">{icon}</div>}
       <div className="heading-6">{name}</div>
     </button>
   );
+};
+
+export const ButtonWithTrailingIcon = ({ variant, name, disabled, type, icon, onClick }: ButtonProps) => {
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className={`inline-flex items-center gap-x-4 pl-3 pr-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white focus:outline-none
+      ${checkVariant(variant)}  `}
+    >
+      <div className="heading-6">{name}</div>
+      {icon && <div className="-mt-0.5 ml-2">{icon}</div>}
+    </button>
+  );
+};
+
+Button.defaultProps = {
+  disabled: false,
+  additionalClasses: "",
+  variant: "primarySolid",
 };
