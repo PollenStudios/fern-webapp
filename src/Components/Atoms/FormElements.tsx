@@ -1,31 +1,40 @@
 type InputProps = {
   label: string;
   type: string;
+  name: string;
   placeholder: string;
-  className: string;
-  register: any;
+  register: any; //register is a useForm hook function of react-hook-form
   required: boolean;
-  pattern?: string | undefined;
+  pattern?: string;
 };
 
-export const Input = ({ label, type, placeholder, className, register, required, pattern }: InputProps) => {
+export const Input = ({ label, type, name, placeholder, register, required, pattern }: InputProps) => {
   return (
     <div className="flex flex-col gap-2">
-      <label>{label}</label>
-      <input {...register(label, { required, pattern: { pattern } })} type={type} placeholder={placeholder} className={className} />
+      <label htmlFor={name}>{label}</label>
+      <input
+        {...register(label, { required, pattern: { pattern } })}
+        type={type}
+        id={name}
+        name={name}
+        placeholder={placeholder}
+        className="md:w-72 p-2 bg-gray-30 paragraph-3 rounded-sm border-gray-20  border focus:outline-none"
+      />
     </div>
   );
 };
 
-export const TextArea = ({ label, type, placeholder, className, register, required, pattern }: InputProps) => {
+export const TextArea = ({ label, type, name, placeholder, register, required, pattern }: InputProps) => {
   return (
     <div className="flex flex-col gap-2">
-      <label>{label}</label>
+      <label htmlFor={name}>{label}</label>
       <textarea
         {...register(label, { required, pattern: { pattern } })}
         type={type}
+        id={name}
+        name={name}
         placeholder={placeholder}
-        className={className}
+        className="p-2 bg-gray-30 paragraph-3  rounded-sm border-gray-20  border focus:outline-none"
         rows="3"
       />
     </div>
