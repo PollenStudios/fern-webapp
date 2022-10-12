@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { PageRoutes } from "../Constants/PageRoutes";
 
 const user = {
   name: "Chelsea Hagon",
@@ -41,7 +42,7 @@ export default function Navbar(): any {
               <div className="relative flex justify-between lg:gap-8 xl:grid xl:grid-cols-12">
                 <div className="flex md:absolute md:inset-y-0 md:left-0 lg:static xl:col-span-2">
                   <div className="flex flex-shrink-0 items-center">
-                    <a href="#">
+                    <a href="/">
                       <img
                         className="block h-8 w-auto"
                         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
@@ -126,7 +127,7 @@ export default function Navbar(): any {
                   </Menu>
 
                   <a
-                    href="#"
+                    href={PageRoutes.DISCOVERY}
                     className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >
                     New Project
