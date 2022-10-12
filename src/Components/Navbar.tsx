@@ -5,8 +5,9 @@ import { Disclosure } from "@headlessui/react";
 
 import { Link } from "react-router-dom";
 
-import { Button } from "./Atoms/Buttons";
+import { Button, ButtonWithLeadingIcon } from "./Atoms/Buttons";
 import { PageRoutes } from "../Constants/PageRoutes";
+import { workInProgressAlert } from "../Util/Utility";
 
 export default function Navbar(): any {
   return (
@@ -28,7 +29,7 @@ export default function Navbar(): any {
               </div>
               <div className="flex flex-1 gap-8 lg:gap-12 items-center justify-center sm:justify-start">
                 <Link to={PageRoutes.HOMEPAGE}>
-                  <h4 className="heading-4 md:heading-2">Pollen</h4>
+                  <h4 className=" heading-4">Pollen</h4>
                 </Link>
                 <div className="relative">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -69,9 +70,7 @@ export default function Navbar(): any {
                   Discover
                 </Link>
 
-                <div className="">
-                  <Button type="button" variant="primary" name="Connect Wallet" onClick={alert("123")} />
-                </div>
+                <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
               </div>
             </div>
           </div>
@@ -81,9 +80,7 @@ export default function Navbar(): any {
               Discover
             </Link>
 
-            <div>
-              <Button type="button" variant="primary" name="Connect Wallet" onClick={alert("123")} />
-            </div>
+            <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
           </Disclosure.Panel>
         </>
       )}
