@@ -3,8 +3,9 @@ import { checkEmpty } from "../Util/Utility";
 <<<<<<< HEAD
 import ArtCardDropdown from "./ArtCardDrpdown";
 
-import { HeartIcon, ArrowsRightLeftIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import { HeartIcon, ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -25,6 +26,9 @@ type artPreviewCardPropsTypes = {
 
 
 const ArtPreviewCard = ({ img, artName, artistName }: artworkCardPropsTypes) => {
+=======
+const ArtPreviewCard = ({ img, artName, artistName, likes, share }: artworkCardPropsTypes) => {
+>>>>>>> 92ecd29 (modification in card)
   return (
 <<<<<<< HEAD
     <div className="w-fit mx-auto">
@@ -64,11 +68,11 @@ const ArtPreviewCard = ({ img, artName, artistName }: artworkCardPropsTypes) => 
               <h5 className="heading-6 text-white">{artName}</h5>
               <div className="flex space-x-5 text-gray-300">
                 <div className="flex  items-center space-x-1.5">
-                  <p className="font-light text-xs">124</p>
+                  <p className="font-light text-xs">{likes}</p>
                   <HeartIcon onClick={() => checkEmpty("Empty function")} className="w-4 text-white cursor-pointer" />
                 </div>
                 <div className="flex  items-center space-x-1.5">
-                  <h6 className="font-light text-xs">33</h6>
+                  <h6 className="font-light text-xs">{share}</h6>
 
                   <ArrowsRightLeftIcon className="w-4 cursor-pointer text-white" onClick={() => checkEmpty("Empty function")} />
                 </div>
@@ -77,7 +81,7 @@ const ArtPreviewCard = ({ img, artName, artistName }: artworkCardPropsTypes) => 
             </div>
 
             <h6 onClick={() => checkEmpty("Empty function")} className="paragraph-3 text-gray-300 cursor-pointer pt-1.5">
-              {artistName }
+              {artistName}
             </h6>
           </div>
         </div>

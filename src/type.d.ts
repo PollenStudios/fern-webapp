@@ -13,8 +13,10 @@ type socialMediaFooterProps = {
 };
 
 
-type artworkCardPropsTypes = {
+type artworkCardPropsTypes= {
   img: string;
   artName: string;
   artistName: string;
+  likes:string;
+  share:string;
 };

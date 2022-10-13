@@ -33,15 +33,21 @@ export const artworkPlaceHolderData: artworkCardPropsTypes[] = [
     img: CardImg,
     artName: "Archaeology",
     artistName: "@Juliette Hayt Greenberg",
+    likes:"124",
+    share:"33"
   },
   {
     img: CardImg,
     artName: "Archaeology",
     artistName: "@Juliette Hayt Greenberg",
+    likes:"124",
+    share:"33"
   },
   {
     img: CardImg,
     artName: "Archaeology",
     artistName: "@Juliette Hayt Greenberg",
+    likes:"124",
+    share:"33"
   },
 ];
