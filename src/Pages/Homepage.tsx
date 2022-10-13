@@ -6,16 +6,39 @@ const Homepage = () => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data: object) => {
-    console.log(JSON.stringify(data));
+    console.log(data);
   };
 
   return (
     <div className="main-container my-10">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-        <Input type="text" name="fname" label="First Name" placeholder="Enter your name" register={register} required />
-        <Input type="email" name="email" label="Email" placeholder="Enter your email " register={register} required />
+        <p className="heading-6 pb-2 border-b border-primary">Personal details</p>
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input type="text" name="name" label="Name" placeholder="Enter your name" register={register} required />
+          <Input type="text" name="username" label="User name" placeholder="Enter your user name" register={register} required />
+        </div>
+        <div className="grid md:grid-cols-2 gap-2 md:gap-4">
+          <Input type="email" name="email" label="Email" placeholder="Enter your email " register={register} required />
+          <p
+            className="paragraph-2 md:paragraph-1 cursor-pointer w-28 text-tertiary flex items-center md:mt-8"
+            onClick={() => console.log("Verify Email")}
+          >
+            Verify email
+          </p>
+        </div>
         <TextArea type="text" name="explain_about_yourself" label="Bio" placeholder="Explain about yourself" register={register} required />
-        <Button variant="primary" name="Submit" type="submit" />
+        <p className="heading-6 pb-2 border-b border-primary">Social Media</p>
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input type="text" name="facebook" label="Facebook" placeholder="Enter your Facebook id" register={register} required />
+          <Input type="text" name="instagram" label="Instagram" placeholder="Enter your Instagram id" register={register} required />
+        </div>
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input type="text" name="twitter" label="Twitter" placeholder="Enter your Twitter id" register={register} required />
+          <Input type="text" name="other" label="Other" placeholder="Enter your other handle id" register={register} required />
+        </div>
+        <div className="mt-6">
+          <Button variant="primary" name="Submit Profile" type="submit" />
+        </div>
       </form>
     </div>
   );
