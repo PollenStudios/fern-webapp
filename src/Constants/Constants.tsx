@@ -5,7 +5,7 @@ import Google from "../Assets/Icons/google.svg";
 
 import CardImg from "../Assets/Images/cardImg.png";
 
-export const socialMediaLinks = [
+export const socialMediaLinks: socialMediaFooterProps[] = [
   {
     socialIcon: Facebook,
     socialIconName: "Facebook",
@@ -33,21 +33,21 @@ export const artworkPlaceHolderData: artworkCardPropsTypes[] = [
     img: CardImg,
     artName: "Archaeology",
     artistName: "@Juliette Hayt Greenberg",
-    likes:"124",
-    share:"33"
+    likes: "124",
+    share: "33",
   },
   {
     img: CardImg,
     artName: "Archaeology",
     artistName: "@Juliette Hayt Greenberg",
-    likes:"124",
-    share:"33"
+    likes: "124",
+    share: "33",
   },
   {
     img: CardImg,
     artName: "Archaeology",
     artistName: "@Juliette Hayt Greenberg",
-    likes:"124",
-    share:"33"
+    likes: "124",
+    share: "33",
   },
 ];
