@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../Components/Atoms/Buttons";
-import { Input, TextArea } from "../Components/Atoms/FormElements";
+import { Input, MultiSelect, TextArea } from "../Components/Atoms/FormElements";
 import ImageUploader from "../Components/Atoms/UploadFiles";
 
 const Settings = () => {
@@ -72,6 +72,9 @@ const Settings = () => {
             <div className="grid md:grid-cols-2 gap-4">
               <Input type="text" name="twitter" label="Twitter" placeholder="Enter your Twitter id" register={register} required />
               <Input type="text" name="other" label="Other" placeholder="Enter your other handle id" register={register} required />
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <MultiSelect />
             </div>
             <div className="mt-10">
               <Button variant="primary" name="Submit Profile" type="submit" />
