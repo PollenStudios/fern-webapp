@@ -1,22 +1,17 @@
 export function isEmpty(value: string | null) {
-  if (
-    value &&
-    value !== 'undefined' &&
-    value !== 'null' &&
-    value !== '' &&
-    typeof value !== undefined
-  ) {
+  if (value && value !== "undefined" && value !== "null" && value !== "" && typeof value !== undefined) {
     return false;
   }
   return true;
 }
 
 export function checkEmpty(value: string) {
-  console.log(value)
+  console.log(value);
 }
 
-
-
+export const workInProgressAlert = () => {
+  alert("Coming Soon");
+};
 
 // export function WarningAlert({ text }) {
 //   if (!text) {

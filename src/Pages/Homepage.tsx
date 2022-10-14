@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Button } from "../Components/Atoms/Buttons";
 import { Input, TextArea } from "../Components/Atoms/FormElements";
+import { workInProgressAlert } from "../Util/Utility";
 
 const Homepage = () => {
   const { register, handleSubmit } = useForm();
@@ -37,7 +38,7 @@ const Homepage = () => {
           <Input type="text" name="other" label="Other" placeholder="Enter your other handle id" register={register} required />
         </div>
         <div className="mt-6">
-          <Button variant="primary" name="Submit Profile" type="submit" />
+          <Button variant="primary" name="Submit Profile" type="submit" onClick={workInProgressAlert} />
         </div>
       </form>
     </div>

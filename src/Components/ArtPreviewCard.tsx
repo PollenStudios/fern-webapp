@@ -1,48 +1,92 @@
-import { ListIcon, ArrowLeftRight, HeartIcon } from "./Icons";
 import { checkEmpty } from "../Util/Utility";
-import { ShareIcon } from "@heroicons/react/24/outline";
+<<<<<<< HEAD
+<<<<<<< HEAD
+import ArtCardDropdown from "./ArtCardDrpdown";
 
-type cardProps = {
+import { HeartIcon, ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+import ArtCardDropdown from "./ArtCardDrpdown";
+
+>>>>>>> ab754aa (fix variable name | add cursor pointer class  and dropdown into card)
+import { HeartIcon, ArrowsRightLeftIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+
+>>>>>>> 2d5a3f1 (feat: footer compopnent | fix: carIcon fixes)
+type artPreviewCardPropsTypes = {
   name: string;
   artist: string;
   img: any;
 };
+=======
+>>>>>>> 681a6df (variable name fixes)
 
-const ArtPreviewCard = ({ img, name, artist }: cardProps) => {
+
+
+const ArtPreviewCard = ({ img, artName, artistName }: artworkCardPropsTypes) => {
+=======
+const ArtPreviewCard = ({ img, artName, artistName, likes, share }: artworkCardPropsTypes) => {
+>>>>>>> 92ecd29 (modification in card)
   return (
+<<<<<<< HEAD
     <div className="w-fit mx-auto">
       <div className="bg-black rounded-3xl relative">
         <div className="absolute right-3 top-3 bg-white w-7 h-7 flex justify-center items-center rounded-full">
-          <a className="cursor-pointer" onClick={() => checkEmpty("Empty function")} href="/">
-            <ListIcon />
-          </a>
+          <EllipsisVerticalIcon className="w-6 text-black" onClick={() => checkEmpty("Empty function")} />
         </div>
         <img className="cursor-pointer" onClick={() => checkEmpty("Empty function")} src={img} alt={name} />
         <div className="p-4 ">
           <div className=" flex justify-between">
             <h5 className="heading-6 text-white">{name}</h5>
             <div className="flex space-x-5 text-gray-300">
-              <div className="flex space-x-1.5">
+              <div className="flex  items-center space-x-1.5">
                 <p className="font-light text-xs">124</p>
-                <a href="/" onClick={() => checkEmpty("Empty function")}>
-                  <ShareIcon />
-                </a>
+                <HeartIcon onClick={() => checkEmpty("Empty function")} className="w-4 text-white" />
               </div>
-              <div className="flex space-x-1.5">
+              <div className="flex  items-center space-x-1.5">
                 <h6 className="font-light text-xs">33</h6>
-                <a href="/" onClick={() => checkEmpty("Empty function")}>
-                  <ArrowLeftRight />
-                </a>
+<<<<<<< HEAD
+
+                <ArrowsRightLeftIcon className="w-4 text-white" onClick={() => checkEmpty("Empty function")} />
+=======
+              
+                <ArrowsRightLeftIcon className="w-4 text-white" onClick={() => checkEmpty("Empty function")} />
+                
+>>>>>>> 2d5a3f1 (feat: footer compopnent | fix: carIcon fixes)
+=======
+    <>
+      <div className="w-fit mx-auto">
+        <div className="bg-black rounded-3xl relative">
+          <div className="absolute right-3 top-3 bg-white w-7 h-7 flex justify-center items-center rounded-full">
+            <ArtCardDropdown />
+          </div>
+          <img className="cursor-pointer" onClick={() => checkEmpty("Empty function")} src={img} alt={artName} />
+          <div className="p-4 ">
+            <div className=" flex justify-between">
+              <h5 className="heading-6 text-white">{artName}</h5>
+              <div className="flex space-x-5 text-gray-300">
+                <div className="flex  items-center space-x-1.5">
+                  <p className="font-light text-xs">{likes}</p>
+                  <HeartIcon onClick={() => checkEmpty("Empty function")} className="w-4 text-white cursor-pointer" />
+                </div>
+                <div className="flex  items-center space-x-1.5">
+                  <h6 className="font-light text-xs">{share}</h6>
+
+                  <ArrowsRightLeftIcon className="w-4 cursor-pointer text-white" onClick={() => checkEmpty("Empty function")} />
+                </div>
+>>>>>>> ab754aa (fix variable name | add cursor pointer class  and dropdown into card)
               </div>
             </div>
-          </div>
 
-          <p onClick={() => checkEmpty("Empty function")} className="paragraph-3 text-gray-300 cursor-pointer pt-1.5">
-            {artist}
-          </p>
+            <h6 onClick={() => checkEmpty("Empty function")} className="paragraph-3 text-gray-300 cursor-pointer pt-1.5">
+              {artistName}
+            </h6>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -5,43 +5,49 @@ import Google from "../Assets/Icons/google.svg";
 
 import CardImg from "../Assets/Images/cardImg.png";
 
-export const socialMediaLinks: socialMediaFooterProps[] = [
+export const socialMediaLinks = [
   {
-    icon: Facebook,
-    name: "Facebook",
+    socialIcon: Facebook,
+    socialIconName: "Facebook",
     href: "#",
   },
   {
-    icon: Instagram,
-    name: "Instagram",
+    socialIcon: Instagram,
+    socialIconName: "Instagram",
     href: "#",
   },
   {
-    icon: Twitter,
-    name: "Twitter",
+    socialIcon: Twitter,
+    socialIconName: "Twitter",
     href: "https://twitter.com/PollenStudios",
   },
   {
-    icon: Google,
-    name: "Google",
+    socialIcon: Google,
+    socialIconName: "Google",
     href: "#",
   },
 ];
 
-export const artworkPlaceHolderData = [
+export const artworkPlaceHolderData: artworkCardPropsTypes[] = [
   {
     img: CardImg,
-    name: "Archaeology",
-    artist: "@Juliette Hayt Greenberg",
+    artName: "Archaeology",
+    artistName: "@Juliette Hayt Greenberg",
+    likes:"124",
+    share:"33"
   },
   {
     img: CardImg,
-    name: "Archaeology",
-    artist: "@Juliette Hayt Greenberg",
+    artName: "Archaeology",
+    artistName: "@Juliette Hayt Greenberg",
+    likes:"124",
+    share:"33"
   },
   {
     img: CardImg,
-    name: "Archaeology",
-    artist: "@Juliette Hayt Greenberg",
+    artName: "Archaeology",
+    artistName: "@Juliette Hayt Greenberg",
+    likes:"124",
+    share:"33"
   },
 ];
