@@ -1,11 +1,11 @@
-import { XMarkIcon } from "@heroicons/react/24/outline";
 type ButtonProps = {
   variant: "primary" | "outline" | "danger" | "success" | "warning";
   name: string;
   disabled?: boolean;
-  type: "button" | "submit" | "reset" | undefined;
+  type?: "button" | "submit" | "reset" | undefined;
   icon?: string;
   onClick: any;
+  additionalClasses?: string;
 };
 
 const checkVariant = (variant: string) => {
@@ -25,27 +25,28 @@ const checkVariant = (variant: string) => {
   }
 };
 
-export const Button = ({ variant, name, disabled, type, onClick }: ButtonProps) => {
+export const Button = ({ variant, name, disabled, type, onClick, additionalClasses }: ButtonProps) => {
   return (
     <button
       onClick={onClick}
       type={type}
+      disabled={disabled}
       className={`heading-6 w-full sm:w-auto px-6 py-3 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none 
-      ${checkVariant(variant)} }`}
+      ${checkVariant(variant)} ${additionalClasses}`}
     >
       {name}
     </button>
   );
 };
 
-export const ButtonWithLeadingIcon = ({ variant, name, disabled, type, icon, onClick }: ButtonProps) => {
+export const ButtonWithLeadingIcon = ({ variant, name, disabled, type, icon, onClick, additionalClasses }: ButtonProps) => {
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled}
       className={`inline-flex items-center gap-x-4 pl-3 pr-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white focus:outline-none
-      ${checkVariant(variant)}  `}
+      ${checkVariant(variant)} ${additionalClasses}`}
     >
       {icon && <div className="-mt-0.5 ml-2">{icon}</div>}
       <div className="heading-6">{name}</div>
@@ -53,14 +54,14 @@ export const ButtonWithLeadingIcon = ({ variant, name, disabled, type, icon, onC
   );
 };
 
-export const ButtonWithTrailingIcon = ({ variant, name, disabled, type, icon, onClick }: ButtonProps) => {
+export const ButtonWithTrailingIcon = ({ variant, name, disabled, type, icon, onClick, additionalClasses }: ButtonProps) => {
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled}
       className={`inline-flex items-center gap-x-4 pl-3 pr-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white focus:outline-none
-      ${checkVariant(variant)}  `}
+      ${checkVariant(variant)} ${additionalClasses}`}
     >
       <div className="heading-6">{name}</div>
       {icon && <div className="-mt-0.5 ml-2">{icon}</div>}
@@ -72,4 +73,5 @@ Button.defaultProps = {
   disabled: false,
   additionalClasses: "",
   variant: "primarySolid",
+  type: "button",
 };
