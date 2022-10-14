@@ -1,3 +1,7 @@
+import { Fragment, useState } from "react";
+import { Listbox, Transition } from "@headlessui/react";
+import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+
 type InputProps = {
   label: string;
   type: string;
@@ -9,7 +13,7 @@ type InputProps = {
 };
 
 const tailwindCssClass = {
-  inputClass: "p-2 bg-gray-30 paragraph-3 rounded-sm border-gray-20  border focus:outline-none",
+  inputClass: "p-2 bg-gray-30 paragraph-3 rounded-sm border-gray-20  border focus:border-primary focus:ring-primary",
 };
 
 export const Input = ({ label, type, name, placeholder, register, required, pattern }: InputProps) => {

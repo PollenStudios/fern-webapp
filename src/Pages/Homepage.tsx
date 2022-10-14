@@ -1,17 +1,21 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../Components/Atoms/Buttons";
 import { Input, TextArea } from "../Components/Atoms/FormElements";
+import ImageUploader from "../Components/Atoms/UploadFiles";
 import { workInProgressAlert } from "../Util/Utility";
 
-const Homepage = () => {
+const HomePage = () => {
   const { register, handleSubmit } = useForm();
+  const [files, setFiles] = useState<any[]>([]);
 
-  const onSubmit = (data: object) => {
+  const onSubmit = (data: { [x: string]: string }) => {
+    data["image"] = files[0].preview;
     console.log(data);
   };
 
   return (
-    <div className="main-container my-10">
+    <div className="main-container mb-10 mt-24">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <p className="heading-6 pb-2 border-b border-primary">Personal details</p>
         <div className="grid md:grid-cols-2 gap-4">
@@ -45,4 +49,4 @@ const Homepage = () => {
   );
 };
 
-export default Homepage;
+export default HomePage;

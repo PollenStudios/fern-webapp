@@ -31,11 +31,6 @@ export default function Navbar(): any {
                 <Link to={PageRoutes.HOMEPAGE}>
                   <h4 className=" heading-4">Pollen</h4>
                 </Link>
-                <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                  </div>
-                </div>
                 <div className="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">
                   <div className="flex items-center px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
                     <div className="w-full">
@@ -56,13 +51,6 @@ export default function Navbar(): any {
                       </div>
                     </div>
                   </div>
-                  <input
-                    id="search"
-                    name="search"
-                    className="block w-full rounded-full border border-gray-300 bg-white py-1 md:py-2 pl-10 pr-3 text-xs focus:outline-none focus:border-none placeholder-gray-500  focus:text-gray-900 focus:placeholder-gray-400 sm:text-xs"
-                    placeholder="Explore"
-                    type="search"
-                  />
                 </div>
               </div>
               <div className=" md:flex  items-center gap-8 lg:gap-10 pr-2  hidden md:ml-6 md:pr-0">

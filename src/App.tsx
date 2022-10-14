@@ -30,6 +30,8 @@ const progressBar = new ProgressBar({
   // animation starts after calling .start().
   delay: 100,
 });
+import UserProfile from "./Pages/UserProfile";
+import Settings from "./Pages/Settings";
 
 function App() {
   return (
@@ -40,6 +42,8 @@ function App() {
           <PublicRoute>
             <Route path={PageRoutes.HOMEPAGE} element={<Homepage />} />
             <Route path={PageRoutes.DISCOVERY} element={<DiscoveryPage />} />
+            <Route path={PageRoutes.USERPROFILE} element={<UserProfile />} />
+            <Route path={PageRoutes.SETTINGS} element={<Settings />} />
           </PublicRoute>
           <Footer />
         </BrowserRouter>

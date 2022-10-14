@@ -27,6 +27,7 @@ module.exports = {
           10: "#E2E2E2",
           20: "#D9D9D9",
           30: "#F8F6F8",
+          40: "#808080",
         },
       },
       letterSpacing: {

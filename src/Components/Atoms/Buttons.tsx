@@ -13,7 +13,7 @@ const checkVariant = (variant: string) => {
     case "primary":
       return "bg-primary border-none";
     case "outline":
-      return "border-primary text-primary";
+      return "border-gray-40 text-gray-40";
     case "danger":
       return "bg-red-800 border-none";
     case "success":
@@ -30,8 +30,7 @@ export const Button = ({ variant, name, disabled, type, onClick }: ButtonProps) 
     <button
       onClick={onClick}
       type={type}
-      disabled={disabled}
-      className={`inline-flex items-center rounded-full  px-6 py-3 text-xs heading-6 text-white shadow-sm focus:outline-none scale-100 hover:scale-95 active:scale-90 ease-in-out duration-100
+      className={`heading-6 w-full sm:w-auto px-6 py-3 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none 
       ${checkVariant(variant)} }`}
     >
       {name}
