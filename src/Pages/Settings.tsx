@@ -5,14 +5,19 @@ import { Input, MultiSelect, TextArea } from "../Components/Atoms/FormElements";
 import ImageUploader from "../Components/Atoms/UploadFiles";
 
 const Settings = () => {
+  // managing dropdown items (list of dropdown items)
+  const items: Array<string> = ["John", "Milos", "Steph", "Kathreine"];
+
   const { register, handleSubmit } = useForm();
   const [files, setFiles] = useState<any[]>([]);
-  const [selectedItems, setSelected] = useState<any[]>([]);
+  const [selectedItems, setSelected] = useState<string[]>([]);
+  const [error, setError] = useState(false);
 
   const onSubmit = (data: { [x: string]: any[] }) => {
+    selectedItems.length === 0 && setError(true);
     data["image"] = files[0]?.preview;
     data["selected_options"] = selectedItems;
-    console.log(data);
+    selectedItems.length > 0 && console.log(data);
   };
 
   return (
@@ -79,11 +84,12 @@ const Settings = () => {
               <MultiSelect
                 selectedItems={selectedItems}
                 setSelected={setSelected}
-                label={""}
-                type={""}
-                name={""}
-                placeholder={""}
-                register={undefined}
+                placeholder={"Select..."}
+                name={"options"}
+                label={"Options"}
+                options={items}
+                error={error}
+                setError={setError}
               />
             </div>
             <div className="mt-10">

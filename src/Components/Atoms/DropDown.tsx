@@ -25,7 +25,7 @@ const DropDown = ({ list, addItem }: any) => {
               >
                 <div className="flex w-full items-center p-1 pl-2 border-transparent  relative">
                   <div className="w-full items-center flex">
-                    <div className="mx-2 leading-6  paragraph-2">{item}</div>
+                    <div className="mx-2  paragraph-2">{item}</div>
                   </div>
                 </div>
               </div>
