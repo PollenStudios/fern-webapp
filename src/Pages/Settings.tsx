@@ -6,10 +6,12 @@ import ImageUploader from "../Components/Atoms/UploadFiles";
 
 const Settings = () => {
   const { register, handleSubmit } = useForm();
-  const [image, setImage] = useState<any[]>([]);
+  const [files, setFiles] = useState<any[]>([]);
+  const [selectedItems, setSelected] = useState<any[]>([]);
 
-  const onSubmit = (data: { [dataFiles: string]: string }) => {
-    data["image"] = image[0]?.preview;
+  const onSubmit = (data: { [x: string]: any[] }) => {
+    data["image"] = files[0]?.preview;
+    data["selected_options"] = selectedItems;
     console.log(data);
   };
 
@@ -74,7 +76,15 @@ const Settings = () => {
               <Input type="text" name="other" label="Other" placeholder="Enter your other handle id" register={register} required />
             </div>
             <div className="grid md:grid-cols-2 gap-4">
-              <MultiSelect />
+              <MultiSelect
+                selectedItems={selectedItems}
+                setSelected={setSelected}
+                label={""}
+                type={""}
+                name={""}
+                placeholder={""}
+                register={undefined}
+              />
             </div>
             <div className="mt-10">
               <Button variant="primary" name="Submit Profile" type="submit" />

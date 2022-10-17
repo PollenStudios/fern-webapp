@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal, useEffect, useState } from "react";
 import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import DropDown from "./DropDown";
 
@@ -10,6 +10,8 @@ type InputProps = {
   register: any; //register is a useForm hook function of react-hook-form
   required?: boolean;
   pattern?: string;
+  selectedItems?: any; //selectedItems is the array
+  setSelected?: any; //setSelected is a function to set selected options in array
 };
 
 const tailwindCssClass = {
@@ -53,30 +55,25 @@ export const TextArea = ({ label, type, name, placeholder, register, required, p
   );
 };
 
-export const MultiSelect = () => {
+export const MultiSelect = ({ selectedItems, setSelected }: InputProps) => {
   // state showing if dropdown is open or closed
   const [dropdown, setDropdown] = useState(false);
   // managing dropdown items (list of dropdown items)
   const items = ["john", "milos", "steph", "kathreine"];
   // contains selected items
-  const [selectedItems, setSelected] = useState([]);
 
   const toogleDropdown = () => {
     setDropdown(!dropdown);
   };
 
-  useEffect(() => {
-    console.log("selectedItems", selectedItems);
-  }, [selectedItems]);
-
   // adds new item to multiselect
-  const addTag = (item) => {
+  const addTag = (item: any) => {
     setSelected(selectedItems.concat(item));
     setDropdown(false);
   };
   // removes item from multiselect
-  const removeTag = (item) => {
-    const filtered = selectedItems.filter((e) => e !== item);
+  const removeTag = (item: any) => {
+    const filtered = selectedItems.filter((e: any) => e !== item);
     setSelected(filtered);
   };
 
@@ -88,21 +85,34 @@ export const MultiSelect = () => {
             <div className={`flex justify-between items-center ${tailwindCssClass.inputClass}`}>
               {selectedItems.length > 0 ? (
                 <div className="flex flex-auto flex-wrap ">
-                  {selectedItems.map((tag, index) => {
-                    return (
-                      <div
-                        key={index}
-                        className="flex justify-center items-center mr-1 font-medium px-2 py-1 bg-white rounded-full text-primary  border border-gray-20 "
-                      >
-                        <div className="paragraph-3 leading-none max-w-full flex-initial">{tag}</div>
-                        <div className="flex flex-auto flex-row-reverse">
-                          <div onClick={() => removeTag(tag)}>
-                            <XMarkIcon className="feather feather-x cursor-pointer hover:text-primary rounded-full w-4 h-4 ml-2" />
+                  {selectedItems.map(
+                    (
+                      tag:
+                        | string
+                        | number
+                        | boolean
+                        | ReactElement<any, string | JSXElementConstructor<any>>
+                        | ReactFragment
+                        | ReactPortal
+                        | null
+                        | undefined,
+                      index: Key | null | undefined,
+                    ) => {
+                      return (
+                        <div
+                          key={index}
+                          className="flex justify-center items-center mr-1 font-medium px-2 py-1 bg-white rounded-full text-primary  border border-gray-20 "
+                        >
+                          <div className="paragraph-3 leading-none max-w-full flex-initial">{tag}</div>
+                          <div className="flex flex-auto flex-row-reverse">
+                            <div onClick={() => removeTag(tag)}>
+                              <XMarkIcon className="feather feather-x cursor-pointer hover:text-primary rounded-full w-4 h-4 ml-2" />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    },
+                  )}
                 </div>
               ) : (
                 <div className="paragraph-3 text-gray-500">Select...</div>
