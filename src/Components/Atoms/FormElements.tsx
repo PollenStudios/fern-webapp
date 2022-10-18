@@ -7,7 +7,7 @@ type InputProps = {
   type?: string;
   name?: string;
   placeholder: string;
-  register?: any; //register is a useForm hook function of react-hook-form
+  register?: any; //register is a useForm hook function of react-hook-form use to set value in input
   required?: boolean;
   pattern?: string;
   selectedItems?: string[] | undefined; //selectedItems is the array
