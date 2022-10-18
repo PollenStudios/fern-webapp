@@ -10,14 +10,12 @@ const Settings = () => {
 
   const { register, handleSubmit } = useForm();
   const [files, setFiles] = useState<any[]>([]);
-  const [selectedItems, setSelected] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [error, setError] = useState(false);
 
-  const onSubmit = (data: { [x: string]: any[] }) => {
+  const onSubmit = (data: { [dataItems: string]: string[] }) => {
     selectedItems.length === 0 && setError(true);
-    data["image"] = files[0]?.preview;
-    data["selected_options"] = selectedItems;
-    selectedItems.length > 0 && console.log(data);
+    !error && (data["image"] = files[0]?.preview) && (data["selected_options"] = selectedItems) && console.log(data);
   };
 
   return (
@@ -70,6 +68,7 @@ const Settings = () => {
               placeholder="Explain about yourself"
               register={register}
               required
+              rows={4}
             />
             <p className="heading-5 pb-2 pt-8 border-b border-primary">Social Media</p>
             <div className="grid md:grid-cols-2 gap-4">
@@ -83,7 +82,7 @@ const Settings = () => {
             <div className="grid md:grid-cols-2 gap-4">
               <MultiSelect
                 selectedItems={selectedItems}
-                setSelected={setSelected}
+                setSelectedItems={setSelectedItems}
                 placeholder={"Select..."}
                 name={"options"}
                 label={"Options"}
