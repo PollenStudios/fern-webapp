@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import { Button, ButtonWithLeadingIcon } from "./Atoms/Buttons";
 import { PageRoutes } from "../Constants/PageRoutes";
 import { workInProgressAlert } from "../Util/Utility";
+import { Input } from "./Atoms/FormElements";
+import { useEffect } from "react";
 
 export default function Navbar(): any {
   return (
@@ -44,9 +46,10 @@ export default function Navbar(): any {
                         <input
                           id="search"
                           name="search"
-                          className="block w-full rounded-full border border-gray-300 bg-white py-2 pl-10 pr-3 text-xs placeholder-gray-500 focus:border-indigo-500 focus:text-gray-900 focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-xs"
+                          className="block w-3/4 md:w-1/2 paragraph-3 rounded-full border border-gray-300 bg-white py-2 pl-10 pr-3 text-xs placeholder-gray-500 focus:border-primary focus:text-primary focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary sm:text-xs "
                           placeholder="Explore"
                           type="search"
+                          onChange={(e) => console.log(e.target.value)}
                         />
                       </div>
                     </div>
