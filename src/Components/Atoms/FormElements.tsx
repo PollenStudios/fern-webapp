@@ -1,4 +1,4 @@
-import { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal, useEffect, useState } from "react";
+import { Key, useState } from "react";
 import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import DropDown from "./DropDown";
 
@@ -87,34 +87,21 @@ export const MultiSelect = ({ selectedItems, setSelected, placeholder, name, lab
         <div className={`flex justify-between items-center py-1 px-2 ${tailwindCssClass.inputClass}`}>
           {selectedItems && selectedItems.length > 0 ? (
             <div className="flex flex-auto flex-wrap ">
-              {selectedItems?.map(
-                (
-                  tag:
-                    | string
-                    | number
-                    | boolean
-                    | ReactElement<any, string | JSXElementConstructor<any>>
-                    | ReactFragment
-                    | ReactPortal
-                    | null
-                    | undefined,
-                  index: Key | null | undefined,
-                ) => {
-                  return (
-                    <div
-                      key={index}
-                      className="flex justify-center items-center mr-1 font-medium px-2 py-1 bg-white rounded-full text-primary  border border-gray-20 "
-                    >
-                      <div className="paragraph-3 leading-none max-w-full flex-initial">{tag}</div>
-                      <div className="flex flex-auto flex-row-reverse">
-                        <div onClick={() => removeTag(tag)}>
-                          <XMarkIcon className="cursor-pointer hover:text-primary rounded-full w-4 h-4 ml-2" />
-                        </div>
+              {selectedItems?.map((tag: string, index: Key) => {
+                return (
+                  <div
+                    key={index}
+                    className="flex justify-center items-center mr-1 font-medium px-2 py-1 bg-white rounded-full text-primary  border border-gray-20 "
+                  >
+                    <div className="paragraph-3 leading-none max-w-full flex-initial">{tag}</div>
+                    <div className="flex flex-auto flex-row-reverse">
+                      <div onClick={() => removeTag(tag)}>
+                        <XMarkIcon className="cursor-pointer hover:text-primary rounded-full w-4 h-4 ml-2" />
                       </div>
                     </div>
-                  );
-                },
-              )}
+                  </div>
+                );
+              })}
             </div>
           ) : (
             <div className="paragraph-3 text-gray-500">{placeholder}</div>
@@ -127,7 +114,7 @@ export const MultiSelect = ({ selectedItems, setSelected, placeholder, name, lab
           </div>
         </div>
       </div>
-      {dropdown ? <DropDown list={options} addItem={addTag}></DropDown> : null}
+      {dropdown ? <DropDown list={options} addItem={addTag} selectedItems={selectedItems}></DropDown> : null}
       {error && <p className="paragraph-3 text-red-600 pt-2">Please select any option</p>}
     </div>
   );
