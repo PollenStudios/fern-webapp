@@ -6,10 +6,10 @@ import ImageUploader from "../Components/Atoms/UploadFiles";
 
 const Settings = () => {
   const { register, handleSubmit } = useForm();
-  const [files, setFiles] = useState<any[]>([]);
+  const [image, setImage] = useState<any[]>([]);
 
-  const onSubmit = (data: { [x: string]: string }) => {
-    data["image"] = files[0].preview;
+  const onSubmit = (data: { [dataFiles: string]: string }) => {
+    data["image"] = image[0]?.preview;
     console.log(data);
   };
 
@@ -19,24 +19,24 @@ const Settings = () => {
       <div className="flex justify-between">
         <p className="heading-6 border-b-4 pb-2 border-primary flex items-end">Edit Profile</p>
         <div className="mb-4  hidden md:block">
-          <Button variant="outline" name="Sign up for Artist" type={undefined} onClick={undefined} />
+          <Button variant="outline" name="Sign up for Artist" type={"button"} />
         </div>
       </div>
       <div className="flex flex-col md:grid md:grid-cols-6 pt-10 border-t border-primary">
         <div className="col-span-2">
           <div className="flex justify-center md:block">
             <ImageUploader
-              className="rounded-full w-60 h-60"
-              additionalClasses="rounded-full object-cover"
+              parentDivClassName="rounded-full w-60 h-60"
+              imageClassName="rounded-full object-cover"
               maximumFiles={1}
-              files={files}
-              setFiles={setFiles}
+              images={image}
+              setImages={setImage}
             />
           </div>
           <div className="flex justify-center flex-col md:w-60">
             <p className="heading-5 text-center py-5">0x6fDFab3...8Fa7</p>
             <div className="mx-auto md:text-center">
-              <Button variant="outline" name="Edit Profile" type={undefined} onClick={undefined} />
+              <Button variant="outline" name="Edit Profile" type={"button"} />
             </div>
           </div>
         </div>
@@ -74,7 +74,7 @@ const Settings = () => {
               <Input type="text" name="other" label="Other" placeholder="Enter your other handle id" register={register} required />
             </div>
             <div className="mt-10">
-              <Button variant="primary" name="Submit Profile" type="submit" onClick={undefined} />
+              <Button variant="primary" name="Submit Profile" type="submit" />
             </div>
           </form>
         </div>

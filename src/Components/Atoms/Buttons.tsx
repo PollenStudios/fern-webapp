@@ -4,7 +4,7 @@ type ButtonProps = {
   disabled?: boolean;
   type?: "button" | "submit" | "reset" | undefined;
   icon?: string;
-  onClick: any;
+  onClick?: any;
   additionalClasses?: string;
 };
 

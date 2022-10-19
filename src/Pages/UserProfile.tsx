@@ -7,10 +7,11 @@ import TabsView from "../Components/TabsView";
 import { makeAxiosRequest } from "../API/HandleApiCall";
 import { selectedTabsFn } from "../Util/Utility";
 import { tabsData } from "../Constants/Constants";
+import NoArtBoards from "../Assets/Images/noArtBoards.png";
 
 function UserProfile() {
-  const [bgImage, setBgImage] = useState([]);
-  const [profileImage, setProfileImage] = useState([]);
+  const [bgImage, setBgImage] = useState<string[]>([]);
+  const [profileImage, setProfileImage] = useState<string[]>([]);
 
   const [selectedTabName, setSelectedTabName] = useState("Artworks");
   const [data, setData] = useState([]);
@@ -35,20 +36,20 @@ function UserProfile() {
 
   return (
     <div className="mb-10 mt-16">
-      <ImageUploader className="w-full h-72 sm:h-96 hover:bg-gray-400" maximumFiles={3} files={bgImage} setFiles={setBgImage} />
+      <ImageUploader parentDivClassName="w-full h-72 sm:h-96 hover:bg-gray-400" maximumFiles={3} images={bgImage} setImages={setBgImage} />
       <div className=" main-container flex flex-col md:grid grid-cols-5">
         <div className="col-span-1 relative text-center">
           <ImageUploader
-            className="rounded-full w-48 h-48 absolute -top-24 border-4 border-white md:left-6 hover:bg-gray-400"
-            additionalClasses="object-cover"
+            parentDivClassName="rounded-full w-48 h-48 absolute -top-24 border-4 border-white md:left-6 hover:bg-gray-400"
+            imageClassName="rounded-full object-cover"
             maximumFiles={1}
-            files={profileImage}
-            setFiles={setProfileImage}
+            images={profileImage}
+            setImages={setProfileImage}
           />
           <div className="flex justify-center flex-col w-40 md:w-60 pl-8 sm:pl-0">
             <p className=" heading-6 sm:heading-5 text-center pt-28 pb-5">0x6fDFab3...8Fa7</p>
             <div className="sm:ml-6 md:ml-0">
-              <Button variant="outline" name="Edit Profile" type={undefined} onClick={undefined} />
+              <Button variant="outline" name="Edit Profile" type={"button"} />
             </div>
           </div>
         </div>
