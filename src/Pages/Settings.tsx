@@ -8,14 +8,25 @@ const Settings = () => {
   // managing dropdown items (list of dropdown items)
   const items: Array<string> = ["John", "Milos", "Steph", "Kathreine"];
 
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
   const [files, setFiles] = useState<any[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [error, setError] = useState(false);
+  const [multiSelectError, setMultiSelectError] = useState(false);
+  const [isImageError, setIsImageError] = useState(false);
 
   const onSubmit = (data: { [dataItems: string]: string[] }) => {
-    selectedItems.length === 0 && setError(true);
-    !error && (data["image"] = files[0]?.preview) && (data["selected_options"] = selectedItems) && console.log(data);
+    selectedItems.length === 0 && setMultiSelectError(true);
+    files.length === 0 && setIsImageError(true);
+    !multiSelectError &&
+      !isImageError &&
+      (data["image"] = files[0]?.preview) &&
+      (data["selected_options"] = selectedItems) &&
+      console.log(data);
   };
 
   return (
@@ -36,6 +47,8 @@ const Settings = () => {
               maximumFiles={1}
               images={image}
               setImages={setImage}
+              setIsImageError={setIsImageError}
+              isImageError={isImageError}
             />
           </div>
           <div className="flex justify-center flex-col md:w-60">
@@ -49,13 +62,48 @@ const Settings = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <p className="heading-5 pb-2 border-b border-primary">Personal details</p>
             <div className="grid md:grid-cols-2 gap-4">
-              <Input type="text" name="name" label="Name" placeholder="Enter your name" register={register} required />
-              <Input type="text" name="username" label="User name" placeholder="Enter your user name" register={register} required />
+              <div>
+                <Input
+                  type="text"
+                  name="name"
+                  label="Name"
+                  placeholder="Enter your name"
+                  register={register}
+                  required
+                  pattern={/^[a-zA-Z ]*$/}
+                />
+                {errors.name && errors.name.type === "pattern" && <p className="paragraph-3 text-red-600">Enter your name</p>}
+              </div>
+              <div>
+                <Input
+                  type="text"
+                  name="username"
+                  label="User name"
+                  placeholder="Enter your user name"
+                  register={register}
+                  required
+                  pattern={/^[a-zA-Z ]*$/}
+                />
+                {errors.username && errors.username.type === "pattern" && <p className="paragraph-3 text-red-600">Enter your user name</p>}
+              </div>
             </div>
             <div className="grid md:grid-cols-2 gap-2 md:gap-4">
-              <Input type="email" name="email" label="Email" placeholder="Enter your email " register={register} required />
+              <div>
+                <Input
+                  type="email"
+                  name="email"
+                  label="Email"
+                  placeholder="Enter your email "
+                  register={register}
+                  required
+                  pattern={
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                  }
+                />
+                {errors.email && errors.email.type === "pattern" && <p className="paragraph-3 text-red-600">Enter your correct email</p>}
+              </div>
               <p
-                className="paragraph-2 md:paragraph-1 cursor-pointer w-28 text-tertiary flex items-center md:mt-8"
+                className="paragraph-2 md:paragraph-1 cursor-pointer w-28 text-tertiary flex items-center md:mt-6"
                 onClick={() => console.log("Verify Email")}
               >
                 Verify email
@@ -72,12 +120,12 @@ const Settings = () => {
             />
             <p className="heading-5 pb-2 pt-8 border-b border-primary">Social Media</p>
             <div className="grid md:grid-cols-2 gap-4">
-              <Input type="text" name="facebook" label="Facebook" placeholder="Enter your Facebook id" register={register} required />
-              <Input type="text" name="instagram" label="Instagram" placeholder="Enter your Instagram id" register={register} required />
+              <Input type="url" name="facebook" label="Facebook" placeholder="Enter your Facebook id" register={register} required />
+              <Input type="url" name="instagram" label="Instagram" placeholder="Enter your Instagram id" register={register} required />
             </div>
             <div className="grid md:grid-cols-2 gap-4">
-              <Input type="text" name="twitter" label="Twitter" placeholder="Enter your Twitter id" register={register} required />
-              <Input type="text" name="other" label="Other" placeholder="Enter your other handle id" register={register} required />
+              <Input type="url" name="twitter" label="Twitter" placeholder="Enter your Twitter id" register={register} required />
+              <Input type="url" name="other" label="Other" placeholder="Enter your other handle id" register={register} required />
             </div>
             <div className="grid md:grid-cols-2 gap-4">
               <MultiSelect
@@ -87,8 +135,8 @@ const Settings = () => {
                 name={"options"}
                 label={"Options"}
                 options={items}
-                error={error}
-                setError={setError}
+                multiSelectError={multiSelectError}
+                setMultiSelectError={setMultiSelectError}
               />
             </div>
             <div className="mt-10">

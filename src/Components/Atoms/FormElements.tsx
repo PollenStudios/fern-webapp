@@ -9,7 +9,7 @@ type InputProps = {
   placeholder: string;
   register?: any; //register is a useForm hook function of react-hook-form use to set value in input
   required?: boolean;
-  pattern?: string;
+  pattern?: any;
   rows?: number;
 };
 
@@ -20,12 +20,12 @@ type SearchProps = {
   selectedItems?: string[];
   setSelectedItems?: any; //setSelectedItems is a function to set selected options in array
   options?: Array<string>;
-  error?: boolean;
-  setError?: any;
+  multiSelectError?: boolean;
+  setMultiSelectError?: any;
 };
 
 const tailwindCssClass = {
-  inputClass: "bg-gray-30 paragraph-3 rounded-sm border-gray-20  border focus:border-gray-700 focus:ring-gray-700",
+  inputClass: "bg-gray-30 paragraph-3 rounded-sm border-gray-20  border focus:border-gray-500 focus:ring-gray-100",
 };
 
 export const Input = ({ label, type, name, placeholder, register, required, pattern }: InputProps) => {
@@ -35,7 +35,7 @@ export const Input = ({ label, type, name, placeholder, register, required, patt
         {label}
       </label>
       <input
-        {...register(name, { required, pattern: { pattern } })}
+        {...register(name, { required, pattern: { value: pattern } })}
         type={type}
         id={name}
         name={name}
@@ -53,7 +53,7 @@ export const TextArea = ({ label, type, name, placeholder, register, required, p
         {label}
       </label>
       <textarea
-        {...register(name, { required, pattern: { pattern } })}
+        {...register(name, { required, pattern: { value: pattern } })}
         type={type}
         id={name}
         name={name}
@@ -65,7 +65,16 @@ export const TextArea = ({ label, type, name, placeholder, register, required, p
   );
 };
 
-export const MultiSelect = ({ name, label, placeholder, selectedItems, setSelectedItems, options, error, setError }: SearchProps) => {
+export const MultiSelect = ({
+  name,
+  label,
+  placeholder,
+  selectedItems,
+  setSelectedItems,
+  options,
+  multiSelectError,
+  setMultiSelectError,
+}: SearchProps) => {
   // state showing if isDropdownOpen is open or closed
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -77,7 +86,7 @@ export const MultiSelect = ({ name, label, placeholder, selectedItems, setSelect
   const addItemToMultiSelect = (item: string) => {
     setSelectedItems(selectedItems?.concat(item));
     setIsDropdownOpen(false);
-    setError(false);
+    setMultiSelectError(false);
   };
   // removes item from multiselect
   const removeItemFromMultiSelect = (item: string) => {
@@ -133,7 +142,7 @@ export const MultiSelect = ({ name, label, placeholder, selectedItems, setSelect
         </div>
       </div>
       {isDropdownOpen ? <DropDown list={options} addItem={addItemToMultiSelect} selectedItems={selectedItems}></DropDown> : null}
-      {error && <p className="paragraph-3 text-red-600 pt-2">Please select any option</p>}
+      {multiSelectError && <p className="paragraph-3 text-red-600 pt-2">Please select any option</p>}
     </div>
   );
 };
