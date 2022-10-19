@@ -1,6 +1,7 @@
 import { Key } from "react";
 
 //Dropdown shown with list item
+// ( list: any, addItem: (item: string) => void, selectedItems: string[] )
 const DropDown = ({ list, addItem, selectedItems }: any) => {
   const handleSelectedItem = (item: string) => {
     if (selectedItems.includes(item)) {

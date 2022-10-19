@@ -17,7 +17,7 @@ type SearchProps = {
   label: string;
   name: string;
   placeholder: string;
-  selectedItems?: string[] | undefined; //selectedItems is the array
+  selectedItems?: string[];
   setSelectedItems?: any; //setSelectedItems is a function to set selected options in array
   options?: Array<string>;
   error?: boolean;
@@ -25,13 +25,13 @@ type SearchProps = {
 };
 
 const tailwindCssClass = {
-  inputClass: "bg-gray-30 paragraph-3 rounded-sm border-gray-20  border focus:border-primary focus:ring-primary",
+  inputClass: "bg-gray-30 paragraph-3 rounded-sm border-gray-20  border focus:border-gray-700 focus:ring-gray-700",
 };
 
 export const Input = ({ label, type, name, placeholder, register, required, pattern }: InputProps) => {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={name} className="paragraph-2">
+      <label htmlFor={name} className="paragraph-2 ">
         {label}
       </label>
       <input
@@ -40,7 +40,7 @@ export const Input = ({ label, type, name, placeholder, register, required, patt
         id={name}
         name={name}
         placeholder={placeholder}
-        className={`${tailwindCssClass.inputClass} p-2 `}
+        className={`${tailwindCssClass.inputClass} px-2 py-3`}
       />
     </div>
   );
@@ -87,16 +87,27 @@ export const MultiSelect = ({ name, label, placeholder, selectedItems, setSelect
 
   return (
     <div className="relative">
+      {/* {isDropdownOpen && (
+        <div
+          className="hidden md:block absolute -top-[900px] -left-96 w-[2000px] h-[1500px] z-10"
+          onClick={() => {
+            setIsDropdownOpen(false);
+          }}
+        ></div>
+      )} */}
       <div className="flex flex-col gap-2">
         <label htmlFor={name} className="paragraph-2">
           {label}
         </label>
+        {/* ${
+            selectedItems && selectedItems.length > 0 ? "py-1" : "py-2"
+          } */}
         <div
-          className={`flex justify-between items-center py-1 px-2 cursor-pointer ${tailwindCssClass.inputClass}`}
+          className={`flex justify-between items-center py-2 px-2 cursor-pointer ${tailwindCssClass.inputClass}`}
           onClick={toggleDropdown}
         >
           {selectedItems && selectedItems.length > 0 ? (
-            <div className="flex flex-auto flex-wrap ">
+            <div className="flex flex-auto flex-wrap">
               {selectedItems?.map((item: string, index: Key) => {
                 return (
                   <div
