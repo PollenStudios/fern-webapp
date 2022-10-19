@@ -61,9 +61,10 @@ const ImageUploader = ({
         ) : (
           <div className={`${parentDivClassName} bg-gray-20 cursor-pointer flex items-center justify-center`} {...getRootProps()}>
             <input {...getInputProps()} />
-            <p className="text-center paragraph-3">
-              {isDragReject ? "Only jpeg, jpg and png files are supported" : "Please Upload .png, .jpg or .jpeg files only"}
-            </p>
+            <div className="flex flex-col justify-center items-center">
+              <img src={UploadImage} alt="upload-image" />
+              <p className="text-center paragraph-2">{isDragReject ? "Not supported" : "Upload Image"}</p>
+            </div>
           </div>
         )}
       </div>

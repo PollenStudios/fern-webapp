@@ -42,7 +42,7 @@ const Settings = () => {
         <div className="col-span-2">
           <div className="flex justify-center md:block">
             <ImageUploader
-              parentDivClassName="rounded-full w-60 h-60"
+              parentDivClassName="rounded-full w-60 h-60 hover:bg-gray-400"
               imageClassName="rounded-full object-cover"
               maximumFiles={1}
               images={image}
