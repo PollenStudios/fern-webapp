@@ -8,16 +8,14 @@ const UploadArt = () => {
   const { register } = useForm();
   const [profileImage, setProfileImage] = useState([]);
 
-
   return (
     <div>
       <div className="main-container my-24">
         <div className="grid grid-cols-6 gap-6">
           <div className="col-span-6 md:col-span-3 ">
+            <ImageUploader className="w-full h-[250px] sm:h-[500px]" maximumFiles={3} files={profileImage} setFiles={setProfileImage} />
 
-          <ImageUploader className="w-full h-[250px] sm:h-[500px]" maximumFiles={3} files={profileImage} setFiles={setProfileImage} />
-
-            {/* <img className=" object-cover w-full  h-[500px]" src={artPreview} alt="Artwork by Nnaemeka Ekwelum" /> */}
+            {/* <img className=" object-cover w-full  h-[500px]" src={ART_PREVIEW} alt="Artwork by Nnaemeka Ekwelum" /> */}
           </div>
           <div className="col-span-6 md:col-span-3 mt-2 space-y-5">
             <Input type="text" name="username" label="Name" placeholder="Juliette Hayt" register={register} required />

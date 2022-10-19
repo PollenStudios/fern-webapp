@@ -3,7 +3,7 @@ import Facebook from "../Assets/Icons/facebook.svg";
 import Instagram from "../Assets/Icons/instagram.svg";
 import Google from "../Assets/Icons/google.svg";
 
-import cardImg from "../Assets/Images/cardImg.png";
+import cardImg from "../Assets/Images/artPreview.png";
 
 export const socialMediaLinks: socialMediaFooterProps[] = [
   {

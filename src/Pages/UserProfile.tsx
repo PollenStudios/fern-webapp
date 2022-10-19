@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 
 import { Button } from "../Components/Atoms/Buttons";
 import ImageUploader from "../Components/Atoms/UploadFiles";
-import  TabsView  from "../Components/TabsView";
+import TabsView from "../Components/TabsView";
 
-import { makeAxiosRequest } from "../Api/HandleApiCall";
+import { makeAxiosRequest } from "../API/HandleApiCall";
 import { selectedTabsFn } from "../Util/Utility";
 import { tabsData } from "../Constants/Constants";
 
@@ -14,7 +14,6 @@ function UserProfile() {
 
   const [selectedTabName, setSelectedTabName] = useState("Artworks");
   const [data, setData] = useState([]);
-
 
   async function getDataFromApi() {
     const body = {

@@ -13,6 +13,9 @@ import DiscoveryPage from "./Pages/Discovery";
 import ArtPreviewScreen from "./Pages/ArtPreviewScreen";
 import UploadArt from "./Pages/UploadArt";
 
+import UserProfile from "./Pages/UserProfile";
+import Settings from "./Pages/Settings";
+
 import { PageRoutes } from "./Constants/PageRoutes";
 import FullPageLoader from "./Util/FullPageLoader";
 
@@ -33,8 +36,6 @@ const progressBar = new ProgressBar({
   // animation starts after calling .start().
   delay: 100,
 });
-import UserProfile from "./Pages/UserProfile";
-import Settings from "./Pages/Settings";
 
 function App() {
   return (
@@ -45,10 +46,10 @@ function App() {
           <PublicRoute>
             <Route path={PageRoutes.HOMEPAGE} element={<Homepage />} />
             <Route path={PageRoutes.DISCOVERY} element={<DiscoveryPage />} />
-            <Route path={PageRoutes.USERPROFILE} element={<UserProfile />} />
+            <Route path={PageRoutes.USER_PROFILE} element={<UserProfile />} />
             <Route path={PageRoutes.SETTINGS} element={<Settings />} />
-            <Route path={PageRoutes.ARTPREVIEW} element={<ArtPreviewScreen />} />
-            <Route path={PageRoutes.UPLOADART} element={<UploadArt />} />
+            <Route path={PageRoutes.ART_PREVIEW} element={<ArtPreviewScreen />} />
+            <Route path={PageRoutes.UPLOAD_ART} element={<UploadArt />} />
           </PublicRoute>
           <Footer />
         </BrowserRouter>

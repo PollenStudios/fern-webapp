@@ -1,8 +1,8 @@
 export const PageRoutes = {
   HOMEPAGE: "/",
   DISCOVERY: "/discover-art",
-  USERPROFILE: "/user-profile",
+  USER_PROFILE: "/user-profile",
   SETTINGS: "/settings",
-  ARTPREVIEW: "/art-preview",
-  UPLOADART: "/upload-art"
+  ART_PREVIEW: "/art-preview",
+  UPLOAD_ART: "/upload-art",
 };

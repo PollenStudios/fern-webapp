@@ -1,12 +1,12 @@
-import artPreview from "../Assets/Images/artPreview.png";
+import ART_PREVIEW from "../Assets/Images/artPreview.png";
 
- const ArtPreviewScreen = () => {
+const ArtPreviewScreen = () => {
   return (
     <div>
       <div className="main-container my-24">
         <div className="grid grid-cols-6 gap-6">
           <div className="col-span-6 md:col-span-3 ">
-            <img className=" object-cover w-full  h-[500px]" src={artPreview} alt="Artwork by Nnaemeka Ekwelum" />
+            <img className=" object-cover w-full  h-[500px]" src={ART_PREVIEW} alt="Artwork by Nnaemeka Ekwelum" />
           </div>
           <div className="col-span-6 md:col-span-3 mt-5 md:my-10 ">
             <h1 className="heading-3">Archaeology</h1>
