@@ -14,10 +14,10 @@ type UploadImagesProps = {
 
 const ImageUploader = ({
   maximumFiles,
-  className,
-  additionalClasses,
-  files,
-  setFiles,
+  parentDivClassName,
+  imageClassName,
+  images,
+  setImages,
   isImageError,
   setIsImageError,
 }: UploadImagesProps) => {
@@ -38,8 +38,8 @@ const ImageUploader = ({
   }, []);
 
   useEffect(() => {
-    files.length > 0 && setIsImageError(false);
-  }, [files]);
+    images.length > 0 && setIsImageError(false);
+  }, [images]);
 
   const { getRootProps, getInputProps, isDragReject } = useDropzone({
     accept: { "image/png": [".png"], "image/jpeg": [".jpeg", ".jpg"] },
@@ -50,16 +50,16 @@ const ImageUploader = ({
   return (
     <div>
       <div>
-        {files.length > 0 ? (
+        {images.length > 0 ? (
           <div className="flex flex-col md:flex-row gap-2">
-            {files.map((file: { [x: string]: string | undefined }) => (
-              <div key={file["name"]} className={className}>
-                <img src={file["preview"]} className={`bg-gray-20 w-full h-full ${additionalClasses}`} />
+            {images.map((image: any) => (
+              <div key={image["name"]} className={parentDivClassName}>
+                <img src={image["preview"]} className={`bg-gray-20 w-full h-full ${imageClassName}`} />
               </div>
             ))}
           </div>
         ) : (
-          <div className={`${className} bg-gray-20 cursor-pointer flex items-center justify-center`} {...getRootProps()}>
+          <div className={`${parentDivClassName} bg-gray-20 cursor-pointer flex items-center justify-center`} {...getRootProps()}>
             <input {...getInputProps()} />
             <p className="text-center paragraph-3">
               {isDragReject ? "Only jpeg, jpg and png files are supported" : "Please Upload .png, .jpg or .jpeg files only"}

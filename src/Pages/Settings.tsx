@@ -14,17 +14,17 @@ const Settings = () => {
     formState: { errors },
   } = useForm();
 
-  const [files, setFiles] = useState<any[]>([]);
+  const [image, setImage] = useState<any[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [multiSelectError, setMultiSelectError] = useState(false);
   const [isImageError, setIsImageError] = useState(false);
 
   const onSubmit = (data: { [dataItems: string]: string[] }) => {
     selectedItems.length === 0 && setMultiSelectError(true);
-    files.length === 0 && setIsImageError(true);
+    image.length === 0 && setIsImageError(true);
     !multiSelectError &&
       !isImageError &&
-      (data["image"] = files[0]?.preview) &&
+      (data["image"] = image[0]?.preview) &&
       (data["selected_options"] = selectedItems) &&
       console.log(data);
   };
