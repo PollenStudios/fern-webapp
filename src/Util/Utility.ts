@@ -5,13 +5,23 @@ export function isEmpty(value: string | null) {
   return true;
 }
 
-export function checkEmpty(value: string) {
-  console.log(value);
-}
-
 export const workInProgressAlert = () => {
   alert("Coming Soon");
 };
+
+// function to show active class
+export const selectedTabsFn = (condition: boolean) => {
+  return condition ? "border-b-4" : "";
+};
+
+// function onUploadProgress(progressEvent: any) {
+//     const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+//     console.log(percentCompleted, "uplOADING TIME")
+//   }
+
+// useEffect(() => {
+//     onUploadProgress()
+// })
 
 // export function WarningAlert({ text }) {
 //   if (!text) {

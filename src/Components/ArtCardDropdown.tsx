@@ -10,7 +10,7 @@ export default function ArtCardDropdown() {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="flex items-center rounded-full bg-gray-100 text-gray-400 hover:text-gray-600">
+        <Menu.Button className="flex items-center rounded-full text-gray-400 hover:text-gray-600">
           <span className="sr-only">Open options</span>
           <EllipsisVerticalIcon className="h-5 w-5 text-gray-700" aria-hidden="true" />
         </Menu.Button>

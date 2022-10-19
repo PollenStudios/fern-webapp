@@ -20,12 +20,12 @@ export default function Navbar(): any {
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 right-0 flex items-center md:hidden">
                 {/* Mobile menu button*/}
-                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:bg-gray-700 hover:text-white ">
+                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-600 focus:bg-gray-200 focus:text-white ">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
-                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                    <XMarkIcon className="block h-6 w-6 text-black" aria-hidden="true" />
                   ) : (
-                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                    <Bars3Icon className="block h-6 w-6  text-black" aria-hidden="true" />
                   )}
                 </Disclosure.Button>
               </div>
@@ -46,7 +46,7 @@ export default function Navbar(): any {
                         <input
                           id="search"
                           name="search"
-                          className="block w-3/4 md:w-1/2 paragraph-3 rounded-full border border-gray-300 bg-white py-2 pl-10 pr-3 text-xs placeholder-gray-500 focus:border-primary focus:text-primary focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary sm:text-xs "
+                          className="block w-3/4 lg:w-1/2 paragraph-3 rounded-full border border-gray-300 bg-white py-2 pl-10 pr-3 text-xs placeholder-gray-500 focus:border-primary focus:text-primary focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary sm:text-xs "
                           placeholder="Explore"
                           type="search"
                           onChange={(e) => console.log(e.target.value)}
@@ -61,7 +61,7 @@ export default function Navbar(): any {
                   Discover
                 </Link>
 
-                <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
+                <Button type="button" variant="primary" name="Connect Wallet" additionalClasses="" onClick={workInProgressAlert} />
               </div>
             </div>
           </div>
@@ -71,7 +71,9 @@ export default function Navbar(): any {
               Discover
             </Link>
 
-            <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
+            <div className="w-48">
+              <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
+            </div>
           </Disclosure.Panel>
         </>
       )}

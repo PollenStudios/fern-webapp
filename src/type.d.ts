@@ -11,3 +11,8 @@ type artworkCardPropsTypes = {
   likes: string;
   share: string;
 };
+
+type tabsDataPropTypes = {
+  id: number;
+  tabName: string;
+};

@@ -10,6 +10,9 @@ import Footer from "./Components/Footer";
 
 import Homepage from "./Pages/Homepage";
 import DiscoveryPage from "./Pages/Discovery";
+import ArtPreviewScreen from "./Pages/ArtPreviewScreen";
+import UploadArt from "./Pages/UploadArt";
+
 import { PageRoutes } from "./Constants/PageRoutes";
 import FullPageLoader from "./Util/FullPageLoader";
 
@@ -44,6 +47,8 @@ function App() {
             <Route path={PageRoutes.DISCOVERY} element={<DiscoveryPage />} />
             <Route path={PageRoutes.USERPROFILE} element={<UserProfile />} />
             <Route path={PageRoutes.SETTINGS} element={<Settings />} />
+            <Route path={PageRoutes.ARTPREVIEW} element={<ArtPreviewScreen />} />
+            <Route path={PageRoutes.UPLOADART} element={<UploadArt />} />
           </PublicRoute>
           <Footer />
         </BrowserRouter>

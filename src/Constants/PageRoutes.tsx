@@ -3,4 +3,6 @@ export const PageRoutes = {
   DISCOVERY: "/discover-art",
   USERPROFILE: "/user-profile",
   SETTINGS: "/settings",
+  ARTPREVIEW: "/art-preview",
+  UPLOADART: "/upload-art"
 };
