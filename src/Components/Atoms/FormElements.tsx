@@ -96,6 +96,7 @@ export const MultiSelect = ({
 
   return (
     <div className="relative">
+      {/* TODO: facing a bug id dropdown is open and click anywhere on screen, curosr scrolls to top */}
       {/* {isDropdownOpen && (
         <div
           className="hidden md:block absolute -top-[900px] -left-96 w-[2000px] h-[1500px] z-10"
@@ -108,9 +109,6 @@ export const MultiSelect = ({
         <label htmlFor={name} className="paragraph-2">
           {label}
         </label>
-        {/* ${
-            selectedItems && selectedItems.length > 0 ? "py-1" : "py-2"
-          } */}
         <div
           className={`flex justify-between items-center py-2 px-2 cursor-pointer ${tailwindCssClass.inputClass}`}
           onClick={toggleDropdown}

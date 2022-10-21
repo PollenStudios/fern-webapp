@@ -37,7 +37,7 @@ const Settings = () => {
       <div className="flex justify-between">
         <p className="heading-5 border-b-4 pb-2 border-primary flex items-end">Edit Profile</p>
         <div className="mb-2 sm:mb-4 flex justify-end items-end">
-          <Button variant="outline" name="Sign up for Artist" type={"button"} additionalClasses="px-3 md:px-6 py-2 md:py-3" />
+          <Button variant="outline" name="Sign up for Artist" type={"button"} />
         </div>
       </div>
       <div className="flex flex-col md:grid md:grid-cols-6 pt-10 border-t border-primary">
