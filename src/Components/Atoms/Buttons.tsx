@@ -31,8 +31,8 @@ export const Button = ({ variant, name, disabled, type, onClick, additionalClass
       onClick={onClick}
       type={type}
       disabled={disabled}
-      className={`heading-6 w-full sm:w-auto py-1.5 sm:px-6 sm:py-3 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none 
-      ${checkVariant(variant)} ${additionalClasses}`}
+      className={`heading-6 w-full sm:w-auto border text-base font-medium rounded-full shadow-sm text-white focus:outline-none 
+      ${checkVariant(variant)} ${additionalClasses || "px-6 py-3"}`}
     >
       {name}
     </button>

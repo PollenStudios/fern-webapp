@@ -22,20 +22,22 @@ const Settings = () => {
   const onSubmit = (data: { [dataItems: string]: string[] }) => {
     selectedItems.length === 0 && setMultiSelectError(true);
     image.length === 0 && setIsImageError(true);
-    !multiSelectError &&
-      !isImageError &&
+    selectedItems.length > 0 &&
+      image.length > 0 &&
       (data["image"] = image[0]?.preview) &&
       (data["selected_options"] = selectedItems) &&
       console.log(data);
   };
 
+  const errorMessageClassName = "paragraph-3 mt-1 text-red-600";
+
   return (
     <div className="main-container mb-10 mt-24">
       <p className="heading-4 mb-6 md:mb-2">Settings</p>
       <div className="flex justify-between">
-        <p className="heading-6 border-b-4 pb-2 border-primary flex items-end">Edit Profile</p>
-        <div className="mb-4  hidden md:block">
-          <Button variant="outline" name="Sign up for Artist" type={"button"} />
+        <p className="heading-5 border-b-4 pb-2 border-primary flex items-end">Edit Profile</p>
+        <div className="mb-2 sm:mb-4 flex justify-end items-end">
+          <Button variant="outline" name="Sign up for Artist" type={"button"} additionalClasses="px-3 md:px-6 py-2 md:py-3" />
         </div>
       </div>
       <div className="flex flex-col md:grid md:grid-cols-6 pt-10 border-t border-primary">
@@ -65,14 +67,14 @@ const Settings = () => {
               <div>
                 <Input
                   type="text"
-                  name="name"
+                  name="firstname"
                   label="Name"
                   placeholder="Enter your name"
                   register={register}
                   required
                   pattern={/^[a-zA-Z ]*$/}
                 />
-                {errors.name && errors.name.type === "pattern" && <p className="paragraph-3 text-red-600">Enter your name</p>}
+                {errors.firstname && errors.firstname.type === "pattern" && <p className={errorMessageClassName}>Enter your name</p>}
               </div>
               <div>
                 <Input
@@ -82,9 +84,9 @@ const Settings = () => {
                   placeholder="Enter your user name"
                   register={register}
                   required
-                  pattern={/^[a-zA-Z ]*$/}
+                  pattern={/^(?=[a-zA-Z0-9._]{4,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/}
                 />
-                {errors.username && errors.username.type === "pattern" && <p className="paragraph-3 text-red-600">Enter your user name</p>}
+                {errors.username && errors.username.type === "pattern" && <p className={errorMessageClassName}>Enter your user name</p>}
               </div>
             </div>
             <div className="grid md:grid-cols-2 gap-2 md:gap-4">
@@ -100,7 +102,7 @@ const Settings = () => {
                     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                   }
                 />
-                {errors.email && errors.email.type === "pattern" && <p className="paragraph-3 text-red-600">Enter your correct email</p>}
+                {errors.email && errors.email.type === "pattern" && <p className={errorMessageClassName}>Enter your correct email id</p>}
               </div>
               <p
                 className="paragraph-2 md:paragraph-1 cursor-pointer w-28 text-tertiary flex items-center md:mt-6"
@@ -131,9 +133,9 @@ const Settings = () => {
               <MultiSelect
                 selectedItems={selectedItems}
                 setSelectedItems={setSelectedItems}
-                placeholder={"Select..."}
-                name={"options"}
-                label={"Options"}
+                placeholder="Select..."
+                name="options"
+                label="Options"
                 options={items}
                 multiSelectError={multiSelectError}
                 setMultiSelectError={setMultiSelectError}

@@ -31,7 +31,6 @@ function UserProfile() {
 
   useEffect(() => {
     getDataFromApi();
-    console.log("get data");
   }, []);
 
   return (
@@ -55,10 +54,9 @@ function UserProfile() {
         </div>
         <div className="col-span-4 pt-10 md:pt-auto md:pl-36">
           <ul className="flex space-x-8 border-b border-black">
-            {tabsData.map(({ tabName }) => (
-              <TabsView selectedTabName={selectedTabName}>
+            {tabsData.map(({ tabName, id }) => (
+              <TabsView selectedTabName={selectedTabName} key={id}>
                 <li
-                  key={tabName}
                   onClick={() => setSelectedTabName(tabName)}
                   className={`cursor-pointer heading-5 sm:heading-4 border-primary ${selectedTabsFn(selectedTabName === tabName)}`}
                 >
