@@ -38,7 +38,7 @@ const ImageUploader = ({
   }, []);
 
   useEffect(() => {
-    images.length > 0 && setIsImageError(false);
+    images.length > 0 && setIsImageError && setIsImageError(false);
   }, [images]);
 
   const { getRootProps, getInputProps, isDragReject } = useDropzone({
