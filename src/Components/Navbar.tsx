@@ -61,7 +61,7 @@ export default function Navbar(): any {
                   Discover
                 </Link>
 
-                <Button type="button" variant="primary" name="Connect Wallet" additionalClasses="" onClick={workInProgressAlert} />
+                <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
               </div>
             </div>
           </div>
