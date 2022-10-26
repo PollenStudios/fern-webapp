@@ -5,4 +5,5 @@ export const PageRoutes = {
   SETTINGS: "/settings",
   ART_PREVIEW: "/art-preview",
   UPLOAD_ART: "/upload-art",
+  SIGN_UP: "/sign-up",
 };

@@ -6,6 +6,7 @@ import ProgressBar from "@badrap/bar-of-progress";
 import WalletProvider from "./Context/WalletContextProvider";
 
 import Navbar from "./Components/Navbar";
+import SignUp from "./Components/SignUp";
 import Footer from "./Components/Footer";
 
 import Homepage from "./Pages/Homepage";
@@ -50,6 +51,7 @@ function App() {
             <Route path={PageRoutes.SETTINGS} element={<Settings />} />
             <Route path={PageRoutes.ART_PREVIEW} element={<ArtPreviewScreen />} />
             <Route path={PageRoutes.UPLOAD_ART} element={<UploadArt />} />
+            <Route path={PageRoutes.SIGN_UP} element={<SignUp />} />
           </PublicRoute>
           <Footer />
         </BrowserRouter>
