@@ -14,7 +14,7 @@ const UploadArt = () => {
         <div className="grid grid-cols-6 gap-6">
           <div className="col-span-6 md:col-span-3 ">
             <ImageUploader
-              parentDivClassName="w-full h-[250px] sm:h-[500px]"
+              parentDivClassName="w-full h-[250px] sm:h-[500px] hover:bg-gray-400"
               maximumFiles={3}
               images={profileImage}
               setImages={setProfileImage}

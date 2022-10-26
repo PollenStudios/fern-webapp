@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../Components/Atoms/Buttons";
 import { Input, MultiSelect, TextArea } from "../Components/Atoms/FormElements";
 import ImageUploader from "../Components/Atoms/UploadFiles";
+import { workInProgressAlert } from "../Util/Utility";
 
 const Settings = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   // managing dropdown items (list of dropdown items)
   const items: Array<string> = ["John", "Milos", "Steph", "Kathreine"];
 
@@ -37,7 +42,7 @@ const Settings = () => {
       <div className="flex justify-between">
         <p className="heading-5 border-b-4 pb-2 border-primary flex items-end">Edit Profile</p>
         <div className="mb-2 sm:mb-4 flex justify-end items-end">
-          <Button variant="outline" name="Sign up for Artist" type={"button"} />
+          <Button onClick={() => workInProgressAlert()} variant="outline" name="Sign up for Artist" type={"button"} />
         </div>
       </div>
       <div className="flex flex-col md:grid md:grid-cols-6 pt-10 border-t border-primary">
@@ -55,9 +60,7 @@ const Settings = () => {
           </div>
           <div className="flex justify-center flex-col md:w-60">
             <p className="heading-5 text-center py-5">0x6fDFab3...8Fa7</p>
-            <div className="mx-auto md:text-center">
-              <Button variant="outline" name="Edit Profile" type={"button"} />
-            </div>
+           
           </div>
         </div>
         <div className="col-span-4 pt-10 md:pt-0">

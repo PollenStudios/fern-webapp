@@ -16,3 +16,7 @@ type tabsDataPropTypes = {
   id: number;
   tabName: string;
 };
+
+interface Window {
+  ethereum: any;
+}

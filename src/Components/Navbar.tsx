@@ -9,9 +9,16 @@ import { Button, ButtonWithLeadingIcon } from "./Atoms/Buttons";
 import { PageRoutes } from "../Constants/PageRoutes";
 import { workInProgressAlert } from "../Util/Utility";
 import { Input } from "./Atoms/FormElements";
-import { useEffect } from "react";
+import { useContext, useState } from "react";
+import { WalletContext } from "../Context/WalletContextProvider";
+import ProfileDropdown from "./ProfileDropdown";
+import profileImg from "../Assets/Images/profileImg.jpg";
 
 export default function Navbar(): any {
+  const [profileDropDown, setProfileDropDown] = useState(false);
+
+
+  const {connectToMetamask, account}: any = useContext(WalletContext);
   return (
     <Disclosure as="nav" className="bg-white drop-shadow-3xl w-full fixed top-0 z-40">
       {({ open }) => (
@@ -31,7 +38,7 @@ export default function Navbar(): any {
               </div>
               <div className="flex flex-1 gap-8 lg:gap-12 items-center justify-center sm:justify-start">
                 <Link to={PageRoutes.HOMEPAGE}>
-                  <h4 className=" heading-4">Pollen</h4>
+                  <h4 className="heading-4">Pollen</h4>
                 </Link>
                 <div className="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">
                   <div className="flex items-center px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
@@ -46,7 +53,7 @@ export default function Navbar(): any {
                         <input
                           id="search"
                           name="search"
-                          className="block w-3/4 lg:w-1/2 paragraph-3 rounded-full border border-gray-300 bg-white py-2 pl-10 pr-3 text-xs placeholder-gray-500 focus:border-primary focus:text-primary focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary sm:text-xs "
+                          className="block w-3/4 lg:w-1/2 paragraph-3 rounded-full border border-gray-300 bg-white py-2 pl-10 pr-3 text-xs placeholder-gray-500 focus:border-gray-500 focus:text-primary  focus:outline-none focus:ring-1 focus:ring-gray-100 sm:text-xs "
                           placeholder="Explore"
                           type="search"
                           onChange={(e) => console.log(e.target.value)}
@@ -61,7 +68,18 @@ export default function Navbar(): any {
                   Discover
                 </Link>
 
-                <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
+                {account ? (
+                  <>
+                    <div className="flex bg-primary items-center rounded-full cursor-pointer">
+                      <Button type="button" additionalClasses="relative" name="Profile" onClick={() => setProfileDropDown(!profileDropDown)} />
+
+                      <img className="w-10 h-10 rounded-full mr-2" src={profileImg} alt="profile-img" />
+                    </div>
+                    {!profileDropDown ? "" : <ProfileDropdown />}
+                  </>
+                ) : (
+                  <Button type="button" variant="primary" name="Connect Wallet" onClick={() => connectToMetamask()} />
+                )}
               </div>
             </div>
           </div>
@@ -72,6 +90,11 @@ export default function Navbar(): any {
             </Link>
 
             <div className="w-48">
+              {account ? (
+                <Button type="button" variant="primary" name="Profile" onClick={workInProgressAlert} />
+              ) : (
+                <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
+              )}
               <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
             </div>
           </Disclosure.Panel>

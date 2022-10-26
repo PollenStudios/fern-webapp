@@ -37,10 +37,11 @@ const ArtPreviewCard = ({ img, artName, artistName, likes, share }: artworkCardP
               </div>
             </div>
           </div>
-
-          <h6 onClick={() => workInProgressAlert()} className="paragraph-2 w-fit text-gray-300 cursor-pointer pt-1.5">
-            {artistName}
-          </h6>
+          <Link to={PageRoutes.USER_PROFILE}>
+            <h6  className="paragraph-2 w-fit text-gray-300 cursor-pointer pt-1.5">
+              {artistName}
+            </h6>
+          </Link>
         </div>
       </div>
     </>
