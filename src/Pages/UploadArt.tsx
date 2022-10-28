@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import ImageUploader from "../Components/Atoms/UploadFiles";
 
+
 const UploadArt = () => {
   const { register } = useForm();
   const [profileImage, setProfileImage] = useState<any[]>([]);
@@ -20,7 +21,6 @@ const UploadArt = () => {
               setImages={setProfileImage}
             />
 
-            {/* <img className=" object-cover w-full  h-[500px]" src={ART_PREVIEW} alt="Artwork by Nnaemeka Ekwelum" /> */}
           </div>
           <div className="col-span-6 md:col-span-3 mt-2 space-y-5">
             <Input type="text" name="username" label="Name" placeholder="Juliette Hayt" register={register} required />
@@ -29,6 +29,10 @@ const UploadArt = () => {
             <Input type="email" name="username" label="Year" placeholder="juliettehayt@gmail.com  " register={register} required />
 
             <Input type="text" name="username" label="Medium" placeholder="Oil Painting" register={register} required />
+
+          
+
+
           </div>
         </div>
       </div>

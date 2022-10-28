@@ -3,6 +3,9 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import ProgressBar from "@badrap/bar-of-progress";
 
+import { ApolloProvider } from "@apollo/client";
+import Client from "./apollo-client";
+
 import WalletProvider from "./Context/WalletContextProvider";
 
 import Navbar from "./Components/Navbar";
@@ -41,22 +44,24 @@ const progressBar = new ProgressBar({
 function App() {
   return (
     <Suspense fallback={<FullPageLoader />}>
-      <WalletProvider>
-        <BrowserRouter>
-          <Navbar />
-          <PublicRoute>
-            <Route path={PageRoutes.HOMEPAGE} element={<Homepage />} />
-            <Route path={PageRoutes.DISCOVERY} element={<DiscoveryPage />} />
-            <Route path={PageRoutes.USER_PROFILE} element={<UserProfile />} />
-            <Route path={PageRoutes.SETTINGS} element={<Settings />} />
-            <Route path={PageRoutes.ART_PREVIEW} element={<ArtPreviewScreen />} />
-            <Route path={PageRoutes.UPLOAD_ART} element={<UploadArt />} />
-            <Route path={PageRoutes.SIGN_UP} element={<SignUp />} />
-          </PublicRoute>
-          <Footer />
-        </BrowserRouter>
-        <Toaster position="top-right" />
-      </WalletProvider>
+      <ApolloProvider client={Client}>
+        <WalletProvider>
+          <BrowserRouter>
+            <Navbar />
+            <PublicRoute>
+              <Route path={PageRoutes.HOMEPAGE} element={<Homepage />} />
+              <Route path={PageRoutes.DISCOVERY} element={<DiscoveryPage />} />
+              <Route path={PageRoutes.USER_PROFILE} element={<UserProfile />} />
+              <Route path={PageRoutes.SETTINGS} element={<Settings />} />
+              <Route path={PageRoutes.ART_PREVIEW} element={<ArtPreviewScreen />} />
+              <Route path={PageRoutes.UPLOAD_ART} element={<UploadArt />} />
+              <Route path={PageRoutes.SIGN_UP} element={<SignUp />} />
+            </PublicRoute>
+            <Footer />
+          </BrowserRouter>
+          <Toaster position="top-right" />
+        </WalletProvider>
+      </ApolloProvider>
     </Suspense>
   );
 }

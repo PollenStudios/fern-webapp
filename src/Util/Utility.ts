@@ -14,14 +14,6 @@ export const selectedTabsFn = (condition: boolean) => {
   return condition ? "border-b-4" : "";
 };
 
-// function onUploadProgress(progressEvent: any) {
-//     const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-//     console.log(percentCompleted, "uplOADING TIME")
-//   }
-
-// useEffect(() => {
-//     onUploadProgress()
-// })
 
 // export function WarningAlert({ text }) {
 //   if (!text) {

@@ -5,20 +5,18 @@ import { Disclosure } from "@headlessui/react";
 
 import { Link } from "react-router-dom";
 
-import { Button, ButtonWithLeadingIcon } from "./Atoms/Buttons";
+import { Button } from "./Atoms/Buttons";
 import { PageRoutes } from "../Constants/PageRoutes";
-import { workInProgressAlert } from "../Util/Utility";
-import { Input } from "./Atoms/FormElements";
 import { useContext, useState } from "react";
 import { WalletContext } from "../Context/WalletContextProvider";
 import ProfileDropdown from "./ProfileDropdown";
-import profileImg from "../Assets/Images/profileImg.jpg";
+import profileImg from "../Assets/Images/profileImg.png";
 
 export default function Navbar(): any {
   const [profileDropDown, setProfileDropDown] = useState(false);
+  const accessToken = localStorage.getItem("accessToken");
 
-
-  const {connectToMetamask, account}: any = useContext(WalletContext);
+  const { connectToBrowserWallets, isLogedin }: any = useContext(WalletContext);
   return (
     <Disclosure as="nav" className="bg-white drop-shadow-3xl w-full fixed top-0 z-40">
       {({ open }) => (
@@ -68,17 +66,22 @@ export default function Navbar(): any {
                   Discover
                 </Link>
 
-                {account ? (
+                {accessToken && isLogedin ? (
                   <>
                     <div className="flex bg-primary items-center rounded-full cursor-pointer">
-                      <Button type="button" additionalClasses="relative" name="Profile" onClick={() => setProfileDropDown(!profileDropDown)} />
+                      <Button
+                        type="button"
+                        additionalClasses="relative"
+                        name="Profile"
+                        onClick={() => setProfileDropDown(!profileDropDown)}
+                      />
 
                       <img className="w-10 h-10 rounded-full mr-2" src={profileImg} alt="profile-img" />
                     </div>
                     {!profileDropDown ? "" : <ProfileDropdown />}
                   </>
                 ) : (
-                  <Button type="button" variant="primary" name="Connect Wallet" onClick={() => connectToMetamask()} />
+                  <Button type="button" variant="primary" name="Connect Wallet" onClick={() => connectToBrowserWallets()} />
                 )}
               </div>
             </div>
@@ -90,12 +93,21 @@ export default function Navbar(): any {
             </Link>
 
             <div className="w-48">
-              {account ? (
-                <Button type="button" variant="primary" name="Profile" onClick={workInProgressAlert} />
+              {accessToken && isLogedin ? (
+                <>
+                  <div
+                    onClick={() => setProfileDropDown(!profileDropDown)}
+                    className="flex bg-primary items-center rounded-full cursor-pointer w-28 md:w-36"
+                  >
+                    <Button type="button" additionalClasses="relative" name="Profile" />
+
+                    <img className="w-10 h-10 rounded-full p-1 md:p-auto" src={profileImg} alt="profile-img" />
+                  </div>
+                  {!profileDropDown ? "" : <ProfileDropdown />}
+                </>
               ) : (
-                <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
+                <Button type="button" variant="primary" name="Connect Wallet" onClick={() => connectToBrowserWallets()} />
               )}
-              <Button type="button" variant="primary" name="Connect Wallet" onClick={workInProgressAlert} />
             </div>
           </Disclosure.Panel>
         </>

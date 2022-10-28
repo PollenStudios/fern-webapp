@@ -1,15 +1,27 @@
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { createContext, useState, useEffect } from "react";
+import { AuthenticateDocument, ChallengeDocument, RecommendedProfilesDocument } from "../Generated/types";
+import { ethers } from "ethers";
 
 export const WalletContext = createContext({});
 
 const WalletProvider = ({ children }: any) => {
+  const [loadChallenge, { error: errorChallenge, loading: challengeLoading }] = useLazyQuery(ChallengeDocument, {
+    fetchPolicy: "no-cache",
+  });
+  const [authenticate, { error: errorAuthenticate, loading: authLoading }] = useMutation(AuthenticateDocument);
+  const [recommendedProfiles, { error: errorProfiles, loading: profilesLoading }] = useLazyQuery(RecommendedProfilesDocument);
+
   const [isLoading, setIsLoading] = useState(false);
+  const [walletBalance, setWalletBalance] = useState("");
 
-  const [account, setAccount] = useState("");
+  const [account, setAccount] = useState<any>("");
+  const [isLogedin, setIsLogedin] = useState(false);
+  const [recommendedProfilesData, setRecommendedProfilesData] = useState<Object[]>();
 
-  // connect to metamask
+  // connect to Wallet
 
-  const connectToMetamask = async () => {
+  const connectToBrowserWallets = async () => {
     setIsLoading(true);
     if (window.ethereum === "undefined") {
       console.log("Please Install Metamask");
@@ -23,7 +35,12 @@ const WalletProvider = ({ children }: any) => {
         if (accounts.length !== 0) {
           setAccount(accounts[0]);
         }
-        console.log("account", account);
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+        const balance = await provider.getBalance(accounts[0]);
+        const balanceInEth = ethers.utils.formatEther(balance);
+        setWalletBalance(balanceInEth);
+        handleSign(accounts[0]);
         setIsLoading(false);
       } catch (error: any) {
         console.log("error ==>", error, error.message);
@@ -32,6 +49,8 @@ const WalletProvider = ({ children }: any) => {
       }
     }
   };
+
+  // Is wallet is connected
 
   const handleAutoConnectWallet = () => {
     if (window.ethereum) {
@@ -58,6 +77,58 @@ const WalletProvider = ({ children }: any) => {
     }
   }
 
+  //signMessage
+
+  const signMessage = async (message: string) => {
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const signature = await signer.signMessage(message);
+      return signature;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleSign = async (address: string) => {
+    try {
+      // Get challenge
+      const challenge = await loadChallenge({
+        variables: { request: { address } },
+      });
+
+      //if challenge message is not available
+      if (!challenge?.data?.challenge?.text) {
+        return console.log("Signature message is not valid");
+      }
+
+      // Get signature
+      const signature = await signMessage(challenge?.data?.challenge?.text);
+
+      // Auth user and set cookies
+      const auth = await authenticate({
+        variables: { request: { address, signature } },
+      });
+      localStorage.setItem("accessToken", auth.data?.authenticate.accessToken);
+      localStorage.setItem("refreshToken", auth.data?.authenticate.refreshToken);
+
+      const { data } = await recommendedProfiles();
+      setRecommendedProfilesData(data?.recommendedProfiles);
+      // TODO: Below code is for get default profiles query
+      // Get authed profiles
+      // const { data: profilesData } = await getProfiles({
+      //   variables: { ownedBy: address },
+      // });
+      // const profilesData = await Client.query(DefaultProfile, {
+      //   variables: {
+      //     address:'',
+      //   },
+      // });
+
+      setIsLogedin(true);
+    } catch {}
+  };
+
   useEffect(() => {
     handleAutoConnectWallet();
   }, []);
@@ -70,7 +141,12 @@ const WalletProvider = ({ children }: any) => {
 
           // Local Storage Variable
           account,
-          connectToMetamask,
+          setAccount,
+          connectToBrowserWallets,
+          walletBalance,
+          isLogedin,
+          setIsLogedin,
+          recommendedProfilesData,
         }}
       >
         {children}

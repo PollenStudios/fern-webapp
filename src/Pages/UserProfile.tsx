@@ -72,24 +72,22 @@ function UserProfile() {
             ))}
           </ul>
 
-
-      <div className="mt-14">
-        {selectedTabData.length > 0 ? (
-          "Show selected tab data"
-        ) : (
-          <div className="flex flex-col items-center">
-            <div className="h-44 w-44 rounded-full bg-gray-200 mb-4"></div>
-            <h2 className="heading-4">You don’t have any Art Boards yet</h2>
-            <h6 className="paragraph-3">Get started by browsing art to curate your board.</h6>
-            <Link to={PageRoutes.DISCOVERY} className="mt-5">
-              <Button type="button" variant="primary" name="Discover Art" />
-            </Link>
+          <div className="mt-14">
+            {selectedTabData.length > 0 ? (
+              "Show selected tab data"
+            ) : (
+              <div className="flex flex-col items-center">
+                <div className="h-44 w-44 rounded-full bg-gray-200 mb-4"></div>
+                <h2 className="heading-4">You don’t have any Art Boards yet</h2>
+                <h6 className="paragraph-3">Get started by browsing art to curate your board.</h6>
+                <Link to={PageRoutes.DISCOVERY} className="mt-5">
+                  <Button type="button" variant="primary" name="Discover Art" />
+                </Link>
+              </div>
+            )}
           </div>
-        )}
-      </div>
         </div>
       </div>
-
     </div>
   );
 }
