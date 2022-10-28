@@ -89,3 +89,5 @@ export const profileCardOptions = [
     option: "Disconnect",
   },
 ];
+
+export const IPFS_GATEWAY = "https://lens.infura-ipfs.io/ipfs/";
