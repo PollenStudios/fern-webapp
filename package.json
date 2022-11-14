@@ -2,6 +2,22 @@
   "name": "pollen-web3",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "16.17.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "deploy-prod": "export AWS_PROFILE=pollinate-webapp && npm run build && aws s3 cp build/ s3://pollen-web3-webapp --recursive",
+    "deploy-dev": "export AWS_PROFILE=pollinate-webapp && npm run build && aws s3 cp build/ s3://pollen-web3-dev --recursive",
+    "eject": "react-scripts eject",
+    "prettify": "prettier --write ./src",
+    "checkTs": "tsc --noEmit",
+    "eslint": "eslint --ext js,ts,tsx",
+    "lint": "yarn run eslint src",
+    "lint:fix": "yarn run eslint --fix src"
+  },
   "dependencies": {
     "@apollo/client": "^3.7.1",
     "@badrap/bar-of-progress": "^0.2.1",
@@ -10,11 +26,15 @@
     "@heroicons/react": "^2.0.12",
     "@tailwindcss/forms": "^0.5.3",
     "@types/node": "^16.7.13",
+    "@types/node-forge": "^1.3.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "axios": "^1.1.3",
+    "buffer": "^6.0.3",
+    "eslint-config-react-app": "^7.0.1",
     "ethers": "^5.7.2",
     "graphql": "^16.6.0",
+    "node-forge": "^1.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.2",
@@ -23,21 +43,24 @@
     "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
     "typescript": "*",
-    "web-vitals": "^2.1.0"
+    "wagmi": "^0.7.14",
+    "web-vitals": "^2.1.0",
+    "web3.storage": "^4.4.0"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "deploy-prod": "export AWS_PROFILE=pollinate-webapp && npm run build && aws s3 cp build/ s3://pollen-web3-webapp --recursive",
-    "deploy-dev": "export AWS_PROFILE=pollinate-webapp && npm run build && aws s3 cp build/ s3://pollen-web3-dev --recursive",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "devDependencies": {
+    "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.36.1",
+    "@wagmi/core": "^0.6.12",
+    "autoprefixer": "^10.4.12",
+    "eslint": "^8.27.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "postcss": "^8.4.17",
+    "prettier": "^2.7.1",
+    "tailwindcss": "^3.1.8",
+    "uuid": "^9.0.0"
   },
   "browserslist": {
     "production": [
@@ -50,19 +73,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.0.0",
-    "@typescript-eslint/parser": "^5.36.1",
-    "autoprefixer": "^10.4.12",
-    "eslint": "^8.0.1",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-react": "^7.28.0",
-    "eslint-plugin-react-hooks": "^4.3.0",
-    "postcss": "^8.4.17",
-    "tailwindcss": "^3.1.8"
   }
 }
