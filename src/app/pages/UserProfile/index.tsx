@@ -97,17 +97,17 @@ function UserProfile() {
               </div>
             )}
 
-            <div>
-              <p className="heading-5 text-left  pt-5">About me</p>
-              <p className="paragraph-1 sm:paragraph-2  text-left  pt-2 pb-5 break-words">
-                {userProfile?.bio ? userProfile.bio : 'no data found'}
-              </p>
-            </div>
+            {userProfile?.bio && (
+              <div>
+                <p className="heading-5 text-left  pt-5">About me</p>
+                <p className="paragraph-1 sm:paragraph-2  text-left  pt-2 pb-5 break-words">{userProfile.bio}</p>
+              </div>
+            )}
 
-            <div>
-              <p className="heading-5 text-left  pt-2">Contact Info</p>
-              {userProfile?.attributes &&
-                userProfile?.attributes.filter((attribute: any) => attribute.key === 'email').length > 0 && (
+            {userProfile?.attributes &&
+              userProfile?.attributes.filter((attribute: any) => attribute.key === 'email').length > 0 && (
+                <div>
+                  <p className="heading-5 text-left  pt-2">Contact Info</p>
                   <a
                     className="paragraph-1 sm:paragraph-2 text-left  pt-2 pb-5 text-black underline block"
                     href={`mailto:${
@@ -116,14 +116,15 @@ function UserProfile() {
                   >
                     {userProfile?.attributes.filter((attribute: any) => attribute.key === 'email')[0]?.value}
                   </a>
-                )}
-            </div>
+                </div>
+              )}
+
             <div>
               <p className="heading-6 sm:heading-5 text-left pt-2">Follow me</p>
               <div className="flex space-x-6 pt-2">
                 <a
                   href={userProfile?.attributes.filter((attribute: any) => attribute.key === 'twitter')[0]?.value}
-                  className="text-gray-400 hover:text-gray-500"
+                  className="text-gray-400 hover:text-gray-500 cursor-pointer"
                   target="blank"
                 >
                   <span className="sr-only">Twitter</span>
@@ -131,7 +132,7 @@ function UserProfile() {
                 </a>
                 <a
                   href={userProfile?.attributes.filter((attribute: any) => attribute.key === 'instagram')[0]?.value}
-                  className="text-gray-400 hover:text-gray-500"
+                  className="text-gray-400 hover:text-gray-500 cursor-pointer"
                   target="blank"
                 >
                   <span className="sr-only">Instagram</span>

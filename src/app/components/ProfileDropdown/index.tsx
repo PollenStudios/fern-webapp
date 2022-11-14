@@ -76,9 +76,9 @@ const ProfileDropdown = () => {
             <Popover.Panel className="absolute z-10 -ml-4 mt-3 w-screen max-w-md transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2">
               <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                 <div className="w-full h-screen md:h-auto md:w-[350px] bg-white absolute rounded-md  right-0 sm:right-80 md:right-70 lg:right-40">
-                  <a
+                  <Link
                     className="flex  justify-between px-4 py-6 cursor-pointer"
-                    href={PageRoutes.USER_PROFILE.split(':')[0] + currentProfile?.id}
+                    to={PageRoutes.USER_PROFILE.split(':')[0] + currentProfile?.id}
                   >
                     <div className="flex items-center">
                       <div>
@@ -98,7 +98,7 @@ const ProfileDropdown = () => {
                     </div>
 
                     <ChevronRightIcon className="w-6 text-gray-600" />
-                  </a>
+                  </Link>
                   <div className="border rounded-lg mx-3 cursor-pointer">
                     <div className="hover:rounded-t-md">
                       <div className="flex justify-between px-2 py-3  ">
