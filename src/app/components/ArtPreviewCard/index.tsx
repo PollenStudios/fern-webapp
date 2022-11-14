@@ -13,7 +13,7 @@ const ArtPreviewCard = ({ art }: any) => {
         <img
           src={art.metadata.image !== null ? getIPFSLink(art.metadata.image) : cardImg}
           alt={art.id}
-          className="cursor-pointer bg-white p-4 object-contain rounded-t-xl w-full h-96 text-white"
+          className="cursor-pointer bg-white p-4 object-contain rounded-t-xl w-full h-96 text-white scale-100 duration-100 hover:scale-105 transform ease-out"
         />
       </Link>
       <div className="p-6 pt-4 bg-black">

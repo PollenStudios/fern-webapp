@@ -132,10 +132,10 @@ function ProfileImage() {
   return (
     <div className="col-span-2 ">
       {loading && <OverlayLoader />}
-      <div className="rounded-full flex justify-center">
+      <div className="rounded-full border flex justify-center">
         <img
           className="rounded-full object-cover  w-48 h-48"
-          src={avatar ? URL.createObjectURL(avatar) : currentProfile?.picture?.original?.url}
+          src={avatar ? URL.createObjectURL(avatar) : currentProfile?.picture?.original?.url ?? ProfileLogo}
           alt={currentProfile?.name}
         />
       </div>

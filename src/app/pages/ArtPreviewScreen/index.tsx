@@ -42,7 +42,7 @@ const ArtPreviewScreen = () => {
       {loading ? (
         <ArtPreviewSkelton />
       ) : (
-        <div className="main-container md:h-[82.5vh] mt-24 mb-24 md:mb-auto md:mt-24">
+        <div className="main-container md:min-h-[82.5vh] mt-24 mb-24 md:mb-auto md:mt-24">
           <div className="pt-2 pb-6  flex items-center gap-x-2 cursor-pointer" onClick={() => navigate(-1)}>
             <ArrowLeftIcon className="h-6 w-6" />
             <p className="heading-5">back</p>

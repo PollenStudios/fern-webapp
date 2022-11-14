@@ -23,6 +23,7 @@ function UserProfile() {
   const {
     // userProfileState: { userProfile },
     isLoggedInState: { isLoggedIn },
+    currentProfileState: { currentProfile },
   }: any = useContext(WalletContext);
 
   // Variables
@@ -58,7 +59,7 @@ function UserProfile() {
   useEffect(() => {
     getPosts({ variables: { request, reactionRequest, profileId } });
     getProfile({ variables: { request: reactionRequest } });
-  }, [data, userProfileResult]);
+  }, [data, userProfileResult, id]);
 
   return (
     <div className="mb-10 mt-16">
@@ -88,7 +89,7 @@ function UserProfile() {
             <p className="w-40 md:w-60 heading-6 sm:heading-5 text-gray-40 text-center pt-2 pb-5">
               {userProfile?.ownedBy ? userProfile?.ownedBy?.slice(0, 9) + '...' + userProfile?.ownedBy?.slice(-4) : ''}
             </p>
-            {isLoggedIn && (
+            {isLoggedIn && id === currentProfile?.id && (
               <div className="w-40 md:w-60 sm:ml-6 md:ml-0">
                 <Link to={PageRoutes.SETTINGS}>
                   <Button variant="outline" name="Edit Profile" type="button" />
