@@ -68,19 +68,19 @@ const WalletProvider = ({ children }: any) => {
           dispatchAccount({ type: 'success', payload: accounts[0] });
           account = accounts[0];
           fetchWalletBalance(accounts[0]);
-          // if ((provider?._network?.chainId) === config.CHAIN_ID) {
-          //   if (switchNetwork) {
-          //     switchNetwork(config.CHAIN_ID);
-          handleSign(accounts[0]);
-          //   } else {
-          //     toast.error('Please change your network wallet!');
-          //   }
-          // } else handleSign(accounts[0]);
+
+          if (parseInt(window.ethereum.networkVersion) === config.CHAIN_ID) {
+            handleSign(accounts[0]);
+          } else {
+            if (switchNetwork) {
+              switchNetwork(config.CHAIN_ID);
+              toast.error('Please change your network wallet!');
+            }
+          }
         } else toast.error('No account!!!');
         setIsLoading(false);
       } catch (error: any) {
-        console.log('error ==>', error, error.message);
-        console.log(error.message);
+        console.log('error', error, error.message);
 
         dispatchAccount({ type: 'error', payload: error });
         setIsLoading(false);
@@ -222,16 +222,13 @@ const WalletProvider = ({ children }: any) => {
   useEffect(() => {
     // handleAutoConnectWallet();
   }, []);
-  // useEffect(() => {
-  //   console.log('first', switchNetwork);
-  //   if (switchNetwork) {
-  //     console.log('second');
-  //     switchNetwork(config.CHAIN_ID);
-  //     dispatchIsLoggedIn({ type: 'success', payload: false });
-  //     clearStorage();
-  //     navigate('/');
-  //   }
-  // }, [chain]);
+  useEffect(() => {
+    if (parseInt(window.ethereum.networkVersion) !== config.CHAIN_ID) {
+      dispatchIsLoggedIn({ type: 'success', payload: false });
+      clearStorage();
+      navigate('/');
+    }
+  }, [window.ethereum.networkVersion]);
   return (
     <>
       <WalletContext.Provider

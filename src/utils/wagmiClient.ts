@@ -5,6 +5,7 @@ import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import config from './config';
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 
 const { chains, provider } = configureChains(
   [config.isMainNet ? chain.polygon : chain.polygonMumbai],
@@ -20,6 +21,9 @@ const connectors = () => {
     new WalletConnectConnector({
       chains,
       options: { rpc: { [config.isMainNet ? chain.polygon.id : chain.polygonMumbai.id]: config.alchemyMainRpc } },
+    }),
+    new MetaMaskConnector({
+      chains,
     }),
   ];
 };
