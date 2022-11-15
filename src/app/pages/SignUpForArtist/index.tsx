@@ -61,7 +61,8 @@ function SignUpForArtist() {
       setIsLoading(true);
       const formBodyData = new FormData();
       formBodyData.append('email', formData.email);
-      formBodyData.append('is_artist', 'true');
+      // formBodyData.append('is_artist', 'true');
+      formBodyData.append('artist_approval_status', 'pending');
       formBodyData.append('first_name', formData.name.split(' ')[0]);
       formBodyData.append('last_name', formData.name.split(' ')[1]);
       // formBodyData.append('website', formData.website);
