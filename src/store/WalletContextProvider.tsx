@@ -50,6 +50,7 @@ const WalletProvider = ({ children }: any) => {
   const [isLoggedInState, dispatchIsLoggedIn] = useReducer(reducerIsLoggedIn, initialStateIsLoggedIn);
 
   const connectToBrowserWallets = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
     if (localStorage.getItem('accessToken') && hasProfileState.hasProfile === false)
       return navigate(PageRoutes.SIGN_UP);
     setIsLoading(true);
@@ -67,7 +68,14 @@ const WalletProvider = ({ children }: any) => {
           dispatchAccount({ type: 'success', payload: accounts[0] });
           account = accounts[0];
           fetchWalletBalance(accounts[0]);
+          // if ((provider?._network?.chainId) === config.CHAIN_ID) {
+          //   if (switchNetwork) {
+          //     switchNetwork(config.CHAIN_ID);
           handleSign(accounts[0]);
+          //   } else {
+          //     toast.error('Please change your network wallet!');
+          //   }
+          // } else handleSign(accounts[0]);
         } else toast.error('No account!!!');
         setIsLoading(false);
       } catch (error: any) {
@@ -163,7 +171,6 @@ const WalletProvider = ({ children }: any) => {
         variables: { ownedBy: address },
       });
 
-      console.log('profilesData?.profiles?.items', profilesData);
       if (profilesData?.profiles?.items?.length === 0) {
         dispatchHasProfile({ type: 'success', payload: false });
         dispatchIsLoggedIn({ type: 'success', payload: false });
