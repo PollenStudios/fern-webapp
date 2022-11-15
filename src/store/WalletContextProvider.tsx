@@ -50,7 +50,6 @@ const WalletProvider = ({ children }: any) => {
   const [isLoggedInState, dispatchIsLoggedIn] = useReducer(reducerIsLoggedIn, initialStateIsLoggedIn);
 
   const connectToBrowserWallets = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
     if (localStorage.getItem('accessToken') && hasProfileState.hasProfile === false)
       return navigate(PageRoutes.SIGN_UP);
     setIsLoading(true);
