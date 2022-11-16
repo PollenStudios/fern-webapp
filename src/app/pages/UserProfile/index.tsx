@@ -9,7 +9,7 @@ import { WalletContext } from 'store/WalletContextProvider';
 import noArtBoards from 'Assets/Images/noArtBoards.png';
 import ProfileLogo from 'Assets/Images/defaultLogo.png';
 import { ProfileDocument, ProfileFeedDocument, PublicationMainFocus, PublicationTypes } from 'graphql/generated/types';
-import { PageRoutes } from 'utils/config';
+import config, { PageRoutes } from 'utils/config';
 import ArtPreviewCard from 'app/components/ArtPreviewCard';
 import getIPFSLink from 'utils/getIPFSLink';
 import Instagram from 'Assets/Icons/instagram.svg';
@@ -31,7 +31,7 @@ function UserProfile() {
     publicationTypes: [PublicationTypes.Post],
     profileId: id,
     limit: 10,
-    sources: ['F3RN'],
+    sources: [config.APP_NAME],
     metadata: { mainContentFocus: [PublicationMainFocus.Image] },
   };
   const reactionRequest = { profileId: id };

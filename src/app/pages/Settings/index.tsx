@@ -11,7 +11,7 @@ import getSignature from 'utils/getSignature';
 import { Button } from 'app/components/atoms/Buttons';
 import ProfileImage from 'app/components/ProfileImage';
 import { useSignTypedData } from 'wagmi';
-import { PageRoutes } from 'utils/config';
+import config, { PageRoutes } from 'utils/config';
 import EnableDispatcher from 'app/components/Dispatcher/EnableDispatcher';
 import storeFiles from 'utils/web3Storage';
 import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
@@ -94,14 +94,14 @@ const Settings = () => {
           },
           {
             key: 'app',
-            value: 'F3rn',
+            value: config.APP_NAME,
             traitType: 'string',
           },
         ],
         version: '1.0.0',
         metadata_id: uuidv4(),
         createdOn: new Date(),
-        appId: 'F3rn',
+        appId: config.APP_NAME,
       };
       // toast.success('Submitting Profile');
 

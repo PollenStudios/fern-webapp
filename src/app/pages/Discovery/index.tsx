@@ -11,6 +11,7 @@ import { useQuery } from '@apollo/client';
 import FullPageLoader from 'app/components/FullPageLoader';
 import { useEffect } from 'react';
 import DiscoverySkelton from 'app/components/Skelton/DiscoverySkelton';
+import config from 'utils/config';
 const DiscoveryPage = () => {
   // Variables
   const request = {
@@ -18,7 +19,7 @@ const DiscoveryPage = () => {
     publicationTypes: [PublicationTypes.Post],
     noRandomize: true,
     limit: 20,
-    sources: ['F3RN'],
+    sources: [config.APP_NAME],
     metadata: { mainContentFocus: [PublicationMainFocus.Image] },
   };
   const { data } = useQuery(ExploreFeedDocument, {

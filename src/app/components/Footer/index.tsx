@@ -1,4 +1,4 @@
-import { PageRoutes } from 'utils/config';
+import config, { PageRoutes } from 'utils/config';
 import { Link, useNavigate } from 'react-router-dom';
 import socialMediaLinks from './socialMediaLinks';
 
@@ -22,7 +22,9 @@ export default function Footer() {
           ))}
         </div>
         <div className="mt-8 md:order-1 md:mt-0 flex flex-col md:flex-row gap-x-6">
-          <p className="text-center paragraph-2 text-gray-400">&copy; 2022 F3RN | All rights reserved</p>
+          <p className="text-center paragraph-2 text-gray-400">
+            &copy;{` 2022 ${config.APP_NAME} | All rights reserved`}
+          </p>
           <p
             className="text-center paragraph-2 text-gray-400 cursor-pointer"
             onClick={() => navigate(PageRoutes.PRIVACY_POLICY)}
