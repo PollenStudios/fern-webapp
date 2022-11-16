@@ -3,30 +3,21 @@ import { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input, TextArea } from 'app/components/atoms/FormElements';
 import { WalletContext } from 'store/WalletContextProvider';
-import {
-  BroadcastDocument,
-  CreateSetProfileMetadataTypedDataDocument,
-  HasTxHashBeenIndexedDocument,
-  HasTxHashBeenIndexedRequest,
-  ProfileDocument,
-} from 'graphql/generated/types';
+import { BroadcastDocument, CreateSetProfileMetadataTypedDataDocument, ProfileDocument } from 'graphql/generated/types';
 import { v4 as uuidv4 } from 'uuid';
-import { Buffer } from 'buffer';
-import { Web3Storage, File } from 'web3.storage';
 import toast from 'react-hot-toast';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import getSignature from 'utils/getSignature';
-import Client from 'utils/apolloClient';
 import { Button } from 'app/components/atoms/Buttons';
 import ProfileImage from 'app/components/ProfileImage';
 import { useSignTypedData } from 'wagmi';
-import config, { PageRoutes } from 'utils/config';
+import { PageRoutes } from 'utils/config';
 import EnableDispatcher from 'app/components/Dispatcher/EnableDispatcher';
 import storeFiles from 'utils/web3Storage';
 import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
-import axios from 'axios';
 import { getBackendProfile } from 'utils/generateNonce';
 import OverlayLoader from 'app/components/OverlayLoader';
+import { isEmpty } from 'utils/utility';
 
 const Settings = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -64,8 +55,6 @@ const Settings = () => {
     }
   }, [currentProfile, account]);
 
-  // managing dropdown items (list of dropdown items)
-  const items: Array<string> = ['John', 'Milos', 'Steph', 'Kathreine'];
   const {
     register,
     handleSubmit,
@@ -117,7 +106,6 @@ const Settings = () => {
       // toast.success('Submitting Profile');
 
       const uploadToWeb3result = await storeFiles(dataObject);
-      console.log('uploadToWeb3result', uploadToWeb3result);
       const createProfileMetadataRequest = {
         profileId: currentProfile?.id,
         metadata: `https://${uploadToWeb3result}.ipfs.w3s.link/hello.json`,
@@ -141,12 +129,8 @@ const Settings = () => {
         },
       });
 
-      console.log('broadcastResult', broadcastResult);
-
       if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
         const txId = broadcastResult.data?.broadcast?.txId!;
-        const txHash = broadcastResult.data?.broadcast?.txHash!;
-        console.log('txId,txHash', txId, txHash);
 
         const indexerResult = pollUntilIndexed({ txId });
 
@@ -155,7 +139,6 @@ const Settings = () => {
           success: <b>Profile Updated!</b>,
           error: <b>Could not update.</b>,
         });
-        console.log('indexerResult', await indexerResult);
         // toast.success('Profile Updated');
 
         const getProfileResult = await getBackendProfile();
@@ -185,13 +168,17 @@ const Settings = () => {
       toast.error('Something went wrong');
     }
   };
-  const handleSignUpClick = () => {
+  const SignUpForArtist = () => {
     const name = currentProfile?.name;
     const email = currentProfile?.attributes?.filter((attribute: any) => attribute?.key === 'email')[0]?.value;
-    const website = currentProfile?.attributes?.filter((attribute: any) => attribute?.key === 'website')[0]?.value;
+    // const website = currentProfile?.attributes?.filter((attribute: any) => attribute?.key === 'website')[0]?.value;
     const instagram = currentProfile?.attributes?.filter((attribute: any) => attribute?.key === 'instagram')[0]?.value;
-    if (name === undefined || email === undefined || website === undefined || instagram === undefined) {
-      toast.error('First Complete your Profile');
+    if (isEmpty(name)) {
+      toast.error('Please enter your name');
+    } else if (isEmpty(email)) {
+      toast.error('Please enter your email');
+    } else if (isEmpty(instagram)) {
+      toast.error('Please enter your instagram url');
     } else navigate(PageRoutes.SIGN_UP_ARTIST);
   };
   const checkRequestStatus = async () => {
@@ -230,7 +217,7 @@ const Settings = () => {
         <p className="heading-5 border-b-4 pb-2 border-primary flex items-end">Edit Profile</p>
         <div className="mb-2 sm:mb-4 flex justify-end items-end">
           {currentProfile?.approvalStatus === 'NONE' ? (
-            <Button onClick={handleSignUpClick} variant="outline" name="Sign up for Artist" type="button" />
+            <Button onClick={SignUpForArtist} variant="outline" name="Sign up for Artist" type="button" />
           ) : currentProfile?.approvalStatus === 'PENDING' ? (
             <Button
               onClick={checkRequestStatus}
@@ -299,11 +286,11 @@ const Settings = () => {
                   label="User name *"
                   placeholder="Enter your user name"
                   register={register}
-                  disabled={true}
+                  disabled
                 />
-                {errors.userName && errors.userName.type === 'pattern' && (
+                {/* {errors.userName && errors.userName.type === 'pattern' && (
                   <p className={errorMessageClassName}>Enter your user name</p>
-                )}
+                )} */}
               </div>
             </div>
             <div className="grid md:grid-cols-2 gap-2 md:gap-4">

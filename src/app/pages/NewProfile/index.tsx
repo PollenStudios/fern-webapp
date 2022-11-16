@@ -205,6 +205,7 @@ const NewProfile = () => {
       console.log(error);
       toast.error(error.message);
       setIsLoading(false);
+      navigate(PageRoutes.DISCOVERY);
     }
   };
   // useEffect(() => {
