@@ -20,7 +20,7 @@ import {
   reducerUserSigNonce,
   reducerWalletBalance,
 } from 'utils/useReducer';
-import { getBackendProfile, getToken } from 'utils/generateNonce';
+import generateNonce, { getBackendProfile } from 'utils/generateNonce';
 import clearStorage from 'utils/clearStorage';
 import axios from 'axios';
 import config, { DEFAULT_CHAIN_IDS, PageRoutes } from 'utils/config';
@@ -195,12 +195,8 @@ const WalletProvider = ({ children }: any) => {
         navigate(PageRoutes.SIGN_UP);
       } else {
         const profiles: any = profilesData?.profiles?.items;
-        await getToken({
-          userName: profiles[0].handle,
-          walletAddress: account,
-          profileId: profiles[0].id,
-        });
-
+        const generateNonceResult = await generateNonce(profiles[0].handle, account, profiles[0].id);
+        console.log('generateNonceResult', generateNonceResult);
         const getProfileResult = await getBackendProfile();
         console.log(getProfileResult);
         dispatchCurrentProfile({
