@@ -23,8 +23,8 @@ const config = {
   backendUriLocal: process.env.REACT_APP_BACKEND_URI_LOCAL ?? '',
   alchemyMainRpc: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_KEY}`,
   alchemyMumbaiRpc: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_KEY}`,
+  public_Key: process.env.REACT_APP_BACKEND_PUBLIC_KEY,
   APP_NAME: 'F3RN',
-  UPLOAD_MEDIA_END_POINT: '/upload-media/',
   CHAIN_ID: isMainNet ? POLYGON_MAINNET.id : POLYGON_MUMBAI.id,
 };
 export const PageRoutes = {
