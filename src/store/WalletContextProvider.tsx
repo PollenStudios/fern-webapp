@@ -52,7 +52,9 @@ const WalletProvider = ({ children }: any) => {
   const connectToBrowserWallets = async () => {
     if (localStorage.getItem('accessToken') && hasProfileState.hasProfile === false)
       return navigate(PageRoutes.SIGN_UP);
+
     setIsLoading(true);
+
     if (window.ethereum === 'undefined') {
       toast.error('Please Install Metamask');
       return false;
@@ -63,12 +65,13 @@ const WalletProvider = ({ children }: any) => {
           // fetch metamask account ID/address
           method: 'eth_requestAccounts',
         });
+
         if (accounts.length !== 0) {
           dispatchAccount({ type: 'success', payload: accounts[0] });
           account = accounts[0];
           fetchWalletBalance(accounts[0]);
 
-          if (parseInt(window.ethereum.networkVersion) === config.CHAIN_ID) {
+          if (parseInt(window.ethereum.chainId) === config.CHAIN_ID) {
             handleSign(accounts[0]);
           } else {
             if (switchNetwork) {
@@ -222,12 +225,12 @@ const WalletProvider = ({ children }: any) => {
     // handleAutoConnectWallet();
   }, []);
   useEffect(() => {
-    if (parseInt(window.ethereum.networkVersion) !== config.CHAIN_ID) {
+    window.ethereum.on('chainChanged', () => {
       dispatchIsLoggedIn({ type: 'success', payload: false });
       clearStorage();
       navigate('/');
-    }
-  }, [window.ethereum.networkVersion]);
+    });
+  }, []);
   return (
     <>
       <WalletContext.Provider
