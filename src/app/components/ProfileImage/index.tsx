@@ -22,6 +22,7 @@ import { Loader } from '../atoms/Loader';
 import { useSignTypedData } from 'wagmi';
 import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
 import OverlayLoader from '../OverlayLoader';
+import { apiRoutes } from 'API/apiRoutes';
 
 function ProfileImage() {
   const {
@@ -97,7 +98,7 @@ function ProfileImage() {
       formBodyData.append('file', value);
       const { data } = await axios({
         method: 'post',
-        url: config.backendUri + config.UPLOAD_MEDIA_END_POINT,
+        url: config.backendUriLocal + apiRoutes.uploadMedia,
         headers: {
           Authorization: 'TOKEN ' + localStorage.getItem('backendToken'),
         },

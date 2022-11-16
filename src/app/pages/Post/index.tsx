@@ -32,6 +32,7 @@ import ArtPreview from 'Assets/Images/artPreview.png';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import OverlayLoader from 'app/components/OverlayLoader';
+import { apiRoutes } from 'API/apiRoutes';
 
 function Post() {
   const navigate = useNavigate();
@@ -151,7 +152,7 @@ function Post() {
       formBodyData.append('file', value);
       const { data } = await axios({
         method: 'post',
-        url: config.backendUri + config.UPLOAD_MEDIA_END_POINT,
+        url: config.backendUriLocal + apiRoutes.uploadMedia,
         headers: {
           Authorization: 'TOKEN  ' + localStorage.getItem('backendToken'),
         },

@@ -67,7 +67,7 @@ export default function Navbar(): any {
                 <Link to={PageRoutes.DISCOVERY} className="text-gray-700 text-lg font-medium">
                   Discover
                 </Link>
-                {isLoggedIn && currentProfile?.approvalStatus === 'APPROVED' && (
+                {isLoggedIn && currentProfile?.approvalStatus === 'approved' && (
                   <Link to={PageRoutes.UPLOAD_ART} className="text-gray-700 text-lg font-medium">
                     Create
                   </Link>
@@ -99,7 +99,7 @@ export default function Navbar(): any {
             <Link to={PageRoutes.DISCOVERY} className="text-gray-700 text-lg font-medium">
               Discover
             </Link>
-            {isLoggedIn && currentProfile?.approvalStatus === 'APPROVED' && (
+            {isLoggedIn && currentProfile?.approvalStatus === 'approved' && (
               <Link to={PageRoutes.UPLOAD_ART} className="text-gray-700 text-lg font-medium">
                 Create
               </Link>

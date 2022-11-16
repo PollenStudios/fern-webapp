@@ -15,6 +15,7 @@ import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
 import { useSignTypedData } from 'wagmi';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { BroadcastDocument, CreateSetProfileMetadataTypedDataDocument, ProfileDocument } from 'graphql/generated/types';
+import { apiRoutes } from 'API/apiRoutes';
 
 function SignUpForArtist() {
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ function SignUpForArtist() {
       // formBodyData.append('website', formData.website);
       formBodyData.append('insta_profile', formData.instaHandle);
       const { data } = await axios({
-        url: config.backendUri + '/user-profile/me/',
+        url: config.backendUriLocal + apiRoutes.userProfileMe,
         method: 'patch',
         headers: {
           Authorization: 'TOKEN ' + localStorage.getItem('backendToken'),

@@ -192,9 +192,9 @@ const Settings = () => {
           },
         },
       });
-      if (getProfileResult?.artist_approval_status === 'APPROVED')
+      if (getProfileResult?.artist_approval_status === 'approved')
         toast.success('Congratulations Your Request is Approved');
-      if (getProfileResult?.artist_approval_status === 'PENDING')
+      if (getProfileResult?.artist_approval_status === 'pending')
         toast('Not Approved!!!!', {
           icon: '⏲',
         });
@@ -208,7 +208,7 @@ const Settings = () => {
   };
 
   const errorMessageClassName = 'paragraph-3 mt-1 text-red-600';
-  // console.log(current)
+
   return (
     <div className="main-container mb-10 mt-24">
       {isLoading && <OverlayLoader />}
@@ -216,9 +216,9 @@ const Settings = () => {
       <div className="flex justify-between">
         <p className="heading-5 border-b-4 pb-2 border-primary flex items-end">Edit Profile</p>
         <div className="mb-2 sm:mb-4 flex justify-end items-end">
-          {currentProfile?.approvalStatus === 'NONE' ? (
+          {currentProfile?.approvalStatus === null ? (
             <Button onClick={SignUpForArtist} variant="outline" name="Sign up for Artist" type="button" />
-          ) : currentProfile?.approvalStatus === 'PENDING' ? (
+          ) : currentProfile?.approvalStatus === 'pending' ? (
             <Button
               onClick={checkRequestStatus}
               variant="outline"
@@ -227,7 +227,7 @@ const Settings = () => {
               // additionalClasses="color-yellow"
             />
           ) : (
-            currentProfile?.currentProfile?.approvalStatus === 'APPROVED' && ''
+            currentProfile?.currentProfile?.approvalStatus === ('approved' || 'rejected') && ''
           )}
         </div>
       </div>
@@ -242,7 +242,7 @@ const Settings = () => {
                 ? currentProfile?.ownedBy?.slice(0, 9) + '...' + currentProfile?.ownedBy?.slice(-4)
                 : ''}
             </p>
-            {/* {currentProfile?.approvalStatus === 'APPROVED' && (
+            {/* {currentProfile?.approvalStatus === 'approved' && (
               <span className="heading-6 pb-3 text-blue-900 text-center">Artist </span>
             )} */}
           </div>
@@ -251,7 +251,7 @@ const Settings = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <div className="flex justify-between items-center pb-2 border-b border-primary">
               <p className="heading-5 ">Personal details</p>
-              {currentProfile?.approvalStatus === 'APPROVED' && (
+              {currentProfile?.approvalStatus === 'approved' && (
                 <Button
                   disabled
                   additionalClasses="heading-6 pb-3 text-white text-center"
