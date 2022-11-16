@@ -43,4 +43,6 @@ export const PageRoutes = {
 };
 export const IPFS_GATEWAY = 'https://lens.infura-ipfs.io/ipfs/';
 
+export const DEFAULT_CHAIN_IDS = ['0x13881', 80001, '80001'];
+
 export default config;

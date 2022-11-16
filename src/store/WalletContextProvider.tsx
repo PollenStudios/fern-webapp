@@ -23,7 +23,7 @@ import {
 import { getBackendProfile, getToken } from 'utils/generateNonce';
 import clearStorage from 'utils/clearStorage';
 import axios from 'axios';
-import config, { PageRoutes } from 'utils/config';
+import config, { DEFAULT_CHAIN_IDS, PageRoutes } from 'utils/config';
 import { useNetwork, useSwitchNetwork } from 'wagmi';
 
 export const WalletContext = createContext({});
@@ -31,7 +31,6 @@ export const WalletContext = createContext({});
 const WalletProvider = ({ children }: any) => {
   const navigate = useNavigate();
   const { switchNetwork } = useSwitchNetwork();
-  const { chain } = useNetwork();
 
   var account = ''; //, setAccount] = useState('');
   const [loadChallenge] = useLazyQuery(ChallengeDocument, {
@@ -48,6 +47,18 @@ const WalletProvider = ({ children }: any) => {
   const [userSigNonceState, dispatchUserSigNonce] = useReducer(reducerUserSigNonce, initialStateUserSigNonce);
   const [currentProfileState, dispatchCurrentProfile] = useReducer(reducerCurrentProfile, initialStateCurrentProfile);
   const [isLoggedInState, dispatchIsLoggedIn] = useReducer(reducerIsLoggedIn, initialStateIsLoggedIn);
+
+  const validateChain = async (account: string) => {
+    const fetchChainId = window.ethereum.chainId;
+    if (!DEFAULT_CHAIN_IDS.includes(fetchChainId)) {
+      if (switchNetwork) {
+        switchNetwork(config.CHAIN_ID);
+        toast.error('Please change your network wallet!');
+      }
+    } else {
+      handleSign(account);
+    }
+  };
 
   const connectToBrowserWallets = async () => {
     if (localStorage.getItem('accessToken') && hasProfileState.hasProfile === false)
@@ -70,15 +81,7 @@ const WalletProvider = ({ children }: any) => {
           dispatchAccount({ type: 'success', payload: accounts[0] });
           account = accounts[0];
           fetchWalletBalance(accounts[0]);
-
-          if (parseInt(window.ethereum.chainId) === config.CHAIN_ID) {
-            handleSign(accounts[0]);
-          } else {
-            if (switchNetwork) {
-              switchNetwork(config.CHAIN_ID);
-              toast.error('Please change your network wallet!');
-            }
-          }
+          validateChain(accounts[0]);
         } else toast.error('No account!!!');
         setIsLoading(false);
       } catch (error: any) {
