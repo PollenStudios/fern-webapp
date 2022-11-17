@@ -40,6 +40,7 @@ export const PageRoutes = {
   PRIVACY_POLICY: '/privacy-policy',
   THANKYOU: '/thankyou',
   ENABLE_DISPATCHER: '/enable-dispatcher',
+  SOMETHING_WENT_WRONG: '/something-went-wrong',
 };
 export const IPFS_GATEWAY = 'https://lens.infura-ipfs.io/ipfs/';
 
