@@ -204,7 +204,7 @@ const WalletProvider = ({ children }: any) => {
           console.log('getProfileResult', getProfileResult);
           dispatchCurrentProfile({
             type: 'success',
-            payload: { ...profiles[0], approvalStatus: getProfileResult?.artist_approval_status },
+            payload: { ...profiles[0], artistApprovalStatus: getProfileResult?.artist_approval_status },
           });
           dispatchIsLoggedIn({ type: 'success', payload: true });
           dispatchHasProfile({ type: 'success', payload: true });

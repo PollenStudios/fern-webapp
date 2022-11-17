@@ -21,6 +21,19 @@ import { isEmpty } from 'utils/utility';
 
 const token = localStorage.getItem('backendToken');
 
+// const artistStatus = (status: string) => {
+//   switch (status) {
+//     case 'approved':
+//       return '';
+//     case 'pending':
+//       return '';
+//     case 'rejected':
+//       return '';
+//     default:
+//       return '';
+//   }
+// };
+
 const Settings = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -35,7 +48,7 @@ const Settings = () => {
   const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData();
 
   const [createSetProfileMetadataTypedData] = useMutation(CreateSetProfileMetadataTypedDataDocument);
-
+  console.log('currentProfile', currentProfile);
   useEffect(() => {
     if (currentProfile && Object.keys(currentProfile).length !== 0) {
       setValue('firstName', currentProfile.name);
@@ -135,7 +148,7 @@ const Settings = () => {
         const txId = broadcastResult.data?.broadcast?.txId!;
 
         const indexerResult = pollUntilIndexed({ txId });
-
+        // (await indexerResult) === true && console.log('indexerResult');
         toast.promise(indexerResult, {
           loading: 'Indexing...',
           success: <b>Profile Updated!</b>,
@@ -155,7 +168,7 @@ const Settings = () => {
 
         dispatchCurrentProfile({
           type: 'success',
-          payload: { ...profile.data?.profile, approvalStatus: getProfileResult?.artist_approval_status },
+          payload: { ...profile.data?.profile, artistApprovalStatus: getProfileResult?.artist_approval_status },
         });
       }
 
@@ -176,11 +189,11 @@ const Settings = () => {
     // const website = currentProfile?.attributes?.filter((attribute: any) => attribute?.key === 'website')[0]?.value;
     const instagram = currentProfile?.attributes?.filter((attribute: any) => attribute?.key === 'instagram')[0]?.value;
     if (isEmpty(name)) {
-      toast.error('Please enter your name');
+      toast.error('Please update your name');
     } else if (isEmpty(email)) {
-      toast.error('Please enter your email');
+      toast.error('Please update your email');
     } else if (isEmpty(instagram)) {
-      toast.error('Please enter your instagram url');
+      toast.error('Please update your instagram url');
     } else navigate(PageRoutes.SIGN_UP_ARTIST);
   };
   const checkRequestStatus = async () => {
@@ -195,14 +208,14 @@ const Settings = () => {
         },
       });
       if (getProfileResult?.artist_approval_status === 'approved')
-        toast.success('Congratulations Your Request is Approved');
+        toast.success('Congratulations, Your Request has been Approved.');
       if (getProfileResult?.artist_approval_status === 'pending')
-        toast('Not Approved!!!!', {
+        toast("Your request hasn't been approved yet.", {
           icon: '⏲',
         });
       dispatchCurrentProfile({
         type: 'success',
-        payload: { ...profile.data?.profile, approvalStatus: getProfileResult?.artist_approval_status },
+        payload: { ...profile.data?.profile, artistApprovalStatus: getProfileResult?.artist_approval_status },
       });
     } catch (error) {
       console.log(error);
@@ -218,9 +231,9 @@ const Settings = () => {
       <div className="flex justify-between">
         <p className="heading-5 border-b-4 pb-2 border-primary flex items-end">Edit Profile</p>
         <div className="mb-2 sm:mb-4 flex justify-end items-end">
-          {currentProfile?.approvalStatus === null ? (
+          {currentProfile?.artistApprovalStatus === null ? (
             <Button onClick={SignUpForArtist} variant="outline" name="Sign up for Artist" type="button" />
-          ) : currentProfile?.approvalStatus === 'pending' ? (
+          ) : currentProfile?.artistApprovalStatus === 'pending' ? (
             <Button
               onClick={checkRequestStatus}
               variant="outline"
@@ -229,7 +242,7 @@ const Settings = () => {
               // additionalClasses="color-yellow"
             />
           ) : (
-            currentProfile?.currentProfile?.approvalStatus === ('approved' || 'rejected') && ''
+            currentProfile?.currentProfile?.artistApprovalStatus === ('approved' || 'rejected') && ''
           )}
         </div>
       </div>
@@ -244,7 +257,7 @@ const Settings = () => {
                 ? currentProfile?.ownedBy?.slice(0, 9) + '...' + currentProfile?.ownedBy?.slice(-4)
                 : ''}
             </p>
-            {/* {currentProfile?.approvalStatus === 'approved' && (
+            {/* {currentProfile?.artistApprovalStatus === 'approved' && (
               <span className="heading-6 pb-3 text-blue-900 text-center">Artist </span>
             )} */}
           </div>
@@ -253,7 +266,7 @@ const Settings = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <div className="flex justify-between items-center pb-2 border-b border-primary">
               <p className="heading-5 ">Personal details</p>
-              {currentProfile?.approvalStatus === 'approved' && (
+              {currentProfile?.artistApprovalStatus === 'approved' && (
                 <Button
                   disabled
                   additionalClasses="heading-6 pb-3 text-white text-center"

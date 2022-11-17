@@ -54,7 +54,7 @@ function SignUpForArtist() {
   }, [currentProfile, account]);
   const onSubmit = async (formData: any) => {
     try {
-      if (currentProfile?.attributes.filter((attribute: any) => attribute.key === 'isArtist').length > 0) {
+      if (currentProfile?.artistApprovalStatus === 'approved') {
         toast.success('You are already a Artist');
         navigate('/settings');
         return 0;
