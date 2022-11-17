@@ -171,7 +171,7 @@ const WalletProvider = ({ children }: any) => {
       localStorage.setItem('accessToken', auth.data?.authenticate.accessToken);
       localStorage.setItem('refreshToken', auth.data?.authenticate.refreshToken);
 
-      dispatchIsLoggedIn({ type: 'success', payload: true });
+      // dispatchIsLoggedIn({ type: 'success', payload: true });
       const { data: profilesData } = await getProfiles({
         variables: { ownedBy: address },
       });
@@ -195,20 +195,26 @@ const WalletProvider = ({ children }: any) => {
         navigate(PageRoutes.SIGN_UP);
       } else {
         const profiles: any = profilesData?.profiles?.items;
+
         const generateNonceResult = await generateNonce(profiles[0].handle, account, profiles[0].id);
-        console.log('generateNonceResult', generateNonceResult);
-        const getProfileResult = await getBackendProfile();
-        console.log(getProfileResult);
-        dispatchCurrentProfile({
-          type: 'success',
-          payload: { ...profiles[0], approvalStatus: getProfileResult?.artist_approval_status },
-        });
-        dispatchIsLoggedIn({ type: 'success', payload: true });
-        dispatchHasProfile({ type: 'success', payload: true });
-        dispatchUserSigNonce({
-          type: 'success',
-          payload: { userSignNonce: profilesData?.userSigNonces?.lensHubOnChainSigNonce },
-        });
+
+        if (generateNonceResult?.token) {
+          const getProfileResult = await getBackendProfile();
+          console.log('getProfileResult', getProfileResult);
+          dispatchCurrentProfile({
+            type: 'success',
+            payload: { ...profiles[0], approvalStatus: getProfileResult?.artist_approval_status },
+          });
+          dispatchIsLoggedIn({ type: 'success', payload: true });
+          dispatchHasProfile({ type: 'success', payload: true });
+          dispatchUserSigNonce({
+            type: 'success',
+            payload: { userSignNonce: profilesData?.userSigNonces?.lensHubOnChainSigNonce },
+          });
+        } else {
+          dispatchIsLoggedIn({ type: 'error', payload: 'error' });
+          navigate(PageRoutes.SOMETHING_WENT_WRONG);
+        }
       }
     } catch (error) {
       // dispatchSignature({ type: 'error', payload:  error } );
@@ -217,6 +223,7 @@ const WalletProvider = ({ children }: any) => {
       dispatchCurrentProfile({ type: 'error', payload: error });
       dispatchUserSigNonce({ type: 'error', payload: error });
       dispatchIsLoggedIn({ type: 'error', payload: error });
+      navigate(PageRoutes.SOMETHING_WENT_WRONG);
     }
   };
 
