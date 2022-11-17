@@ -72,7 +72,7 @@ const PersistState = ({ children }: any) => {
         });
         // toast.success('Kindly create a profile');
         navigate(PageRoutes.SIGN_UP);
-      } else {
+      } else if (localStorage.getItem('backendToken') && localStorage.getItem('backendToken') !== 'undefined') {
         dispatchHasProfile({ type: 'success', payload: true });
 
         dispatchIsLoggedIn({ type: 'success', payload: true });
@@ -87,6 +87,19 @@ const PersistState = ({ children }: any) => {
           type: 'success',
           payload: { userSignNonce: profilesData?.userSigNonces?.lensHubOnChainSigNonce },
         });
+      } else {
+        dispatchHasProfile({ type: 'success', payload: true });
+        dispatchCurrentProfile({
+          type: 'success',
+          payload: {
+            currentProfile: {},
+          },
+        });
+        dispatchUserSigNonce({
+          type: 'success',
+          payload: '',
+        });
+        dispatchIsLoggedIn({ type: 'success', payload: false });
       }
     } catch (error) {
       dispatchHasProfile({ type: 'error', payload: error });
