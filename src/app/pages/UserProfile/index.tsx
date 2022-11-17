@@ -59,8 +59,11 @@ function UserProfile() {
   useEffect(() => {
     getPosts({ variables: { request, reactionRequest, profileId } });
     getProfile({ variables: { request: reactionRequest } });
-    userProfileStatus(id);
   }, [data, userProfileResult, id]);
+
+  useEffect(() => {
+    userProfileStatus(id);
+  }, [id]);
 
   return (
     <div className="mb-10 mt-16">

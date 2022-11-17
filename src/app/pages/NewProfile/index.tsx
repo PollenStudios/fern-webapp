@@ -199,13 +199,14 @@ const NewProfile = () => {
         dispatchCurrentProfile({ type: 'success', payload: allProfiles.items[0] });
 
         setIsLoading(false);
-        navigate('/');
+        navigate(PageRoutes.DISCOVERY);
       }
     } catch (error: any) {
       console.log(error);
       toast.error(error.message);
       setIsLoading(false);
-      navigate(PageRoutes.DISCOVERY);
+      dispatchIsLoggedIn({ type: 'error', payload: error });
+      navigate(PageRoutes.SOMETHING_WENT_WRONG);
     }
   };
   // useEffect(() => {
