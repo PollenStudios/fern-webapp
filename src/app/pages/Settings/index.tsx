@@ -19,6 +19,8 @@ import { getBackendProfile } from 'utils/generateNonce';
 import OverlayLoader from 'app/components/OverlayLoader';
 import { isEmpty } from 'utils/utility';
 
+const token = localStorage.getItem('backendToken');
+
 const Settings = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -141,7 +143,7 @@ const Settings = () => {
         });
         // toast.success('Profile Updated');
 
-        const getProfileResult = await getBackendProfile();
+        const getProfileResult = await getBackendProfile(token);
 
         const profile = await getProfile({
           variables: {
@@ -183,7 +185,7 @@ const Settings = () => {
   };
   const checkRequestStatus = async () => {
     try {
-      const getProfileResult = await getBackendProfile();
+      const getProfileResult = await getBackendProfile(token);
 
       const profile = await getProfile({
         variables: {

@@ -199,7 +199,8 @@ const WalletProvider = ({ children }: any) => {
         const generateNonceResult = await generateNonce(profiles[0].handle, account, profiles[0].id);
 
         if (generateNonceResult?.token) {
-          const getProfileResult = await getBackendProfile();
+          const token = localStorage.getItem('backendToken');
+          const getProfileResult = await getBackendProfile(token);
           console.log('getProfileResult', getProfileResult);
           dispatchCurrentProfile({
             type: 'success',

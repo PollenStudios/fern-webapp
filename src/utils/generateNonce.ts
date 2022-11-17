@@ -106,9 +106,8 @@ export const userProfileLens = async (id: string | undefined) => {
 //     return error;
 //   }
 // };
-export const getBackendProfile = async () => {
+export const getBackendProfile = async (token: string | null) => {
   try {
-    const token = localStorage.getItem('backendToken');
     const { data } = await axios({
       method: 'get',
       url: config.backendUri + apiRoutes.userProfileMe,

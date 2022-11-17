@@ -11,6 +11,8 @@ import { getBackendProfile } from 'utils/generateNonce';
 import { PageRoutes } from 'utils/config';
 // import { useLocation } from 'react-router-dom';
 
+const token = localStorage.getItem('backendToken');
+
 const PersistState = ({ children }: any) => {
   // const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -77,7 +79,7 @@ const PersistState = ({ children }: any) => {
 
         dispatchIsLoggedIn({ type: 'success', payload: true });
         const profiles: any = profilesData?.profiles?.items;
-        const getProfileResult = await getBackendProfile();
+        const getProfileResult = await getBackendProfile(token);
 
         dispatchCurrentProfile({
           type: 'success',
