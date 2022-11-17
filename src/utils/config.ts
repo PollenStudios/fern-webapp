@@ -20,7 +20,7 @@ export const POLYGON_MUMBAI = {
 
 const config = {
   lensUri: process.env.REACT_APP_LENS_API_URI ?? 'https://api.lens.dev',
-  isMainNet: process.env.REACT_APP_IS_MAINNET,
+  isMainNet: process.env.REACT_APP_IS_MAINNET === 'true', //this condition gives false, so that we can use mumbai
   lensMumbaiUri: process.env.REACT_APP_LENS_API_MUMBAI_URI ?? 'https://api-mumbai.lens.dev',
   pinataJwt: process.env.REACT_APP_PINATA_JWT ?? '',
   w3StorageToken: process.env.REACT_APP_W3_STORAGE_TOKEN ?? '',
