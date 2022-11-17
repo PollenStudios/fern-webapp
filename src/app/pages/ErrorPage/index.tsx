@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { PageRoutes } from 'utils/config';
 
-function SomethingWentWrong() {
+function ErrorPage() {
   return (
     <>
       <div className="main-container h-[93vh] flex md:flex-col bg-white pt-20 pb-12">
@@ -26,4 +26,4 @@ function SomethingWentWrong() {
   );
 }
 
-export default SomethingWentWrong;
+export default ErrorPage;

@@ -214,7 +214,7 @@ const WalletProvider = ({ children }: any) => {
           });
         } else {
           dispatchIsLoggedIn({ type: 'error', payload: 'error' });
-          navigate(PageRoutes.SOMETHING_WENT_WRONG);
+          navigate(PageRoutes.ERROR_PAGE);
         }
       }
     } catch (error) {
@@ -224,7 +224,7 @@ const WalletProvider = ({ children }: any) => {
       dispatchCurrentProfile({ type: 'error', payload: error });
       dispatchUserSigNonce({ type: 'error', payload: error });
       dispatchIsLoggedIn({ type: 'error', payload: error });
-      navigate(PageRoutes.SOMETHING_WENT_WRONG);
+      navigate(PageRoutes.ERROR_PAGE);
     }
   };
 

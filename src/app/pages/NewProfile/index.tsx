@@ -206,7 +206,7 @@ const NewProfile = () => {
       toast.error(error.message);
       setIsLoading(false);
       dispatchIsLoggedIn({ type: 'error', payload: error });
-      navigate(PageRoutes.SOMETHING_WENT_WRONG);
+      navigate(PageRoutes.ERROR_PAGE);
     }
   };
   // useEffect(() => {

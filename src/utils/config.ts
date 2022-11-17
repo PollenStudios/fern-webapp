@@ -48,7 +48,7 @@ export const PageRoutes = {
   PRIVACY_POLICY: '/privacy-policy',
   THANKYOU: '/thankyou',
   ENABLE_DISPATCHER: '/enable-dispatcher',
-  SOMETHING_WENT_WRONG: '/something-went-wrong',
+  ERROR_PAGE: '/something-went-wrong',
 };
 
 export const DEFAULT_CHAIN_IDS = ['0x13881', 80001, '80001'];
