@@ -1,6 +1,7 @@
 import { apiRoutes } from 'API/apiRoutes';
 import axios from 'axios';
 import forge from 'node-forge';
+import toast from 'react-hot-toast';
 import config from './config';
 
 const generateNonce = async (userName: string, walletAddress: string, profileId: string) => {
@@ -25,8 +26,8 @@ const generateNonce = async (userName: string, walletAddress: string, profileId:
     });
     var base64 = forge.util.encode64(encrypted);
     const generateTokenResult = await generateToken(base64, walletAddress);
-    console.log(generateTokenResult.token);
     localStorage.setItem('backendToken', generateTokenResult.token);
+    return generateTokenResult;
   } catch (error) {
     console.log(error);
   }
@@ -44,6 +45,7 @@ const generateToken = async (key: string, walletAddress: string) => {
     return data;
   } catch (error) {
     console.log(error);
+    toast.error('login is not successful');
     return error;
   }
 };
