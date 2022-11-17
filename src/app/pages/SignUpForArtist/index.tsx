@@ -69,7 +69,7 @@ function SignUpForArtist() {
       // formBodyData.append('website', formData.website);
       formBodyData.append('insta_profile', formData.instaHandle);
       const { data } = await axios({
-        url: config.backendUriLocal + apiRoutes.userProfileMe,
+        url: config.backendUri + apiRoutes.userProfileMe,
         method: 'patch',
         headers: {
           Authorization: 'TOKEN ' + localStorage.getItem('backendToken'),

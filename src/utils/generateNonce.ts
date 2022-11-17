@@ -8,7 +8,7 @@ const generateNonce = async (userName: string, walletAddress: string, profileId:
   try {
     const { data } = await axios({
       method: 'post',
-      url: config.backendUriLocal + apiRoutes.generateNonce,
+      url: config.backendUri + apiRoutes.generateNonce,
       data: {
         username: userName,
         wallet_address: walletAddress,
@@ -17,7 +17,7 @@ const generateNonce = async (userName: string, walletAddress: string, profileId:
     });
 
     const { otp } = data;
-    var publicKey = forge.pki.publicKeyFromPem(config?.public_Key ? config?.public_Key : '');
+    var publicKey = forge.pki.publicKeyFromPem(config?.public_Key || '');
 
     var secretMessage = `${userName}@${profileId}@${otp}`;
     var encrypted = publicKey.encrypt(secretMessage, 'RSA-OAEP', {
@@ -36,7 +36,7 @@ const generateToken = async (key: string, walletAddress: string) => {
   try {
     const { data } = await axios({
       method: 'post',
-      url: config.backendUriLocal + apiRoutes.generateToken,
+      url: config.backendUri + apiRoutes.generateToken,
       data: {
         encoded_data: key,
         wallet_address: walletAddress,
@@ -53,7 +53,7 @@ export const createUser = async (formData: FormData) => {
   try {
     const data = await axios({
       method: 'post',
-      url: config.backendUriLocal + apiRoutes.userProfile,
+      url: config.backendUri + apiRoutes.userProfile,
       data: formData,
     });
     // console.log(data);
@@ -68,7 +68,7 @@ export const userProfileLens = async (id: string | undefined) => {
   try {
     const { data } = await axios({
       method: 'get',
-      url: config.backendUriLocal + apiRoutes.userProfile + id + '/',
+      url: config.backendUri + apiRoutes.userProfile + id + '/',
     });
     // console.log(data);
     return data;
@@ -90,7 +90,7 @@ export const userProfileLens = async (id: string | undefined) => {
 //   try {
 //     const { data } = await axios({
 //       method: 'post',
-//       url: config.backendUriLocal + '/get-token/',
+//       url: config.backendUri + '/get-token/',
 //       data: {
 //         username: userName,
 //         wallet_address: walletAddress,
@@ -111,7 +111,7 @@ export const getBackendProfile = async () => {
     const token = localStorage.getItem('backendToken');
     const { data } = await axios({
       method: 'get',
-      url: config.backendUriLocal + apiRoutes.userProfileMe,
+      url: config.backendUri + apiRoutes.userProfileMe,
       headers: {
         Authorization: `TOKEN ${token}`,
       },

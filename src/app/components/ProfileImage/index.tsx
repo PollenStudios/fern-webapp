@@ -98,7 +98,7 @@ function ProfileImage() {
       formBodyData.append('file', value);
       const { data } = await axios({
         method: 'post',
-        url: config.backendUriLocal + apiRoutes.uploadMedia,
+        url: config.backendUri + apiRoutes.uploadMedia,
         headers: {
           Authorization: 'TOKEN ' + localStorage.getItem('backendToken'),
         },
