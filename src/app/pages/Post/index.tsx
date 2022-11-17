@@ -197,7 +197,7 @@ function Post() {
         media: [{ item: attachment, type: 'image/png', altTag: '' }],
         locale: getUserLocale(),
         createdOn: new Date(),
-        appId: config.APP_NAME,
+        appId: config.APP_NAME_FOR_LENS_API,
       };
 
       const buffer = Buffer.from(JSON.stringify(dataObject));

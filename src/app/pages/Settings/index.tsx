@@ -96,14 +96,14 @@ const Settings = () => {
           },
           {
             key: 'app',
-            value: config.APP_NAME,
+            value: config.APP_NAME_FOR_LENS_API,
             traitType: 'string',
           },
         ],
         version: '1.0.0',
         metadata_id: uuidv4(),
         createdOn: new Date(),
-        appId: config.APP_NAME,
+        appId: config.APP_NAME_FOR_LENS_API,
       };
       // toast.success('Submitting Profile');
 

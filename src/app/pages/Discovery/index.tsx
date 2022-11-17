@@ -8,8 +8,6 @@ import {
 import { useQuery } from '@apollo/client';
 
 // import cardImg from '../Assets/Images/defaultLogo.png';
-import FullPageLoader from 'app/components/FullPageLoader';
-import { useEffect } from 'react';
 import DiscoverySkelton from 'app/components/Skelton/DiscoverySkelton';
 import config from 'utils/config';
 const DiscoveryPage = () => {
@@ -19,7 +17,7 @@ const DiscoveryPage = () => {
     publicationTypes: [PublicationTypes.Post],
     noRandomize: true,
     limit: 20,
-    sources: [config.APP_NAME],
+    sources: [config.APP_NAME_FOR_LENS_API],
     metadata: { mainContentFocus: [PublicationMainFocus.Image] },
   };
   const { data } = useQuery(ExploreFeedDocument, {
