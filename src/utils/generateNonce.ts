@@ -8,7 +8,7 @@ const generateNonce = async (userName: string, walletAddress: string, profileId:
   try {
     const { data } = await axios({
       method: 'post',
-      url: config.backendUri + apiRoutes.generateNonce,
+      url: config.baseUrl + apiRoutes.generateNonce,
       data: {
         username: userName,
         wallet_address: walletAddress,
@@ -36,7 +36,7 @@ const generateToken = async (key: string, walletAddress: string) => {
   try {
     const { data } = await axios({
       method: 'post',
-      url: config.backendUri + apiRoutes.generateToken,
+      url: config.baseUrl + apiRoutes.generateToken,
       data: {
         encoded_data: key,
         wallet_address: walletAddress,
@@ -53,7 +53,7 @@ export const createUser = async (formData: FormData) => {
   try {
     const data = await axios({
       method: 'post',
-      url: config.backendUri + apiRoutes.userProfile,
+      url: config.baseUrl + apiRoutes.userProfile,
       data: formData,
     });
     // console.log(data);
@@ -68,7 +68,7 @@ export const userProfileLens = async (id: string | undefined) => {
   try {
     const { data } = await axios({
       method: 'get',
-      url: config.backendUri + apiRoutes.userProfile + id + '/',
+      url: config.baseUrl + apiRoutes.userProfile + id + '/',
     });
     // console.log(data);
     return data;
@@ -90,7 +90,7 @@ export const userProfileLens = async (id: string | undefined) => {
 //   try {
 //     const { data } = await axios({
 //       method: 'post',
-//       url: config.backendUri + '/get-token/',
+//       url: config.baseUrl + '/get-token/',
 //       data: {
 //         username: userName,
 //         wallet_address: walletAddress,
@@ -110,7 +110,7 @@ export const getBackendProfile = async (token: string | null) => {
   try {
     const { data } = await axios({
       method: 'get',
-      url: config.backendUri + apiRoutes.userProfileMe,
+      url: config.baseUrl + apiRoutes.userProfileMe,
       headers: {
         Authorization: `TOKEN ${token}`,
       },
