@@ -30,3 +30,6 @@ generated-cra-app
 template
 .eslintcache
 yarn.lock
+.env.dev
+.env.prod
+.env.local
