@@ -48,7 +48,7 @@ const Settings = () => {
   const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData();
 
   const [createSetProfileMetadataTypedData] = useMutation(CreateSetProfileMetadataTypedDataDocument);
-  console.log('currentProfile', currentProfile);
+
   useEffect(() => {
     if (currentProfile && Object.keys(currentProfile).length !== 0) {
       setValue('firstName', currentProfile.name);
@@ -223,7 +223,6 @@ const Settings = () => {
   };
 
   const errorMessageClassName = 'paragraph-3 mt-1 text-red-600';
-
   return (
     <div className="main-container mb-10 mt-24">
       {isLoading && <OverlayLoader />}
@@ -233,16 +232,10 @@ const Settings = () => {
         <div className="mb-2 sm:mb-4 flex justify-end items-end">
           {currentProfile?.artistApprovalStatus === null ? (
             <Button onClick={SignUpForArtist} variant="outline" name="Sign up for Artist" type="button" />
-          ) : currentProfile?.artistApprovalStatus === 'pending' ? (
-            <Button
-              onClick={checkRequestStatus}
-              variant="outline"
-              name="Check Request Status"
-              type="button"
-              // additionalClasses="color-yellow"
-            />
           ) : (
-            currentProfile?.currentProfile?.artistApprovalStatus === ('approved' || 'rejected') && ''
+            currentProfile?.artistApprovalStatus === 'pending' && (
+              <Button onClick={checkRequestStatus} variant="outline" name="Check Request Status" type="button" />
+            )
           )}
         </div>
       </div>
