@@ -17,14 +17,14 @@ const generateNonce = async (userName: string, walletAddress: string, profileId:
     });
 
     const { otp } = data;
-    var publicKey = forge.pki.publicKeyFromPem(config?.public_Key || '');
+    const publicKey = forge.pki.publicKeyFromPem(config?.public_Key || '');
 
-    var secretMessage = `${userName}@${profileId}@${otp}`;
-    var encrypted = publicKey.encrypt(secretMessage, 'RSA-OAEP', {
+    const secretMessage = `${userName}@${profileId}@${otp}`;
+    const encrypted = publicKey.encrypt(secretMessage, 'RSA-OAEP', {
       md: forge.md.sha256.create(),
       mgf1: forge.mgf.mgf1.create(secretMessage),
     });
-    var base64 = forge.util.encode64(encrypted);
+    const base64 = forge.util.encode64(encrypted);
     const generateTokenResult = await generateToken(base64, walletAddress);
     localStorage.setItem('backendToken', generateTokenResult.token);
     return generateTokenResult;
