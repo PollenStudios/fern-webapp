@@ -20,11 +20,12 @@ import {
   reducerUserSigNonce,
   reducerWalletBalance,
 } from 'utils/useReducer';
-import generateNonce, { getBackendProfile } from 'utils/generateNonce';
+import generateNonce, { createUser, getBackendProfile } from 'utils/generateNonce';
 import clearStorage from 'utils/clearStorage';
 
 import config, { DEFAULT_CHAIN_IDS, PageRoutes } from 'utils/config';
 import { useSwitchNetwork } from 'wagmi';
+import Client from 'utils/apolloClient';
 
 export const WalletContext = createContext({});
 
@@ -49,6 +50,26 @@ const WalletProvider = ({ children }: any) => {
   const [isLoggedInState, dispatchIsLoggedIn] = useReducer(reducerIsLoggedIn, initialStateIsLoggedIn);
 
   const walletProvider = useRef(window.ethereum);
+
+  const verifyBackendGeneratedToken = async (token: string, profilesData: any) => {
+    if (token) {
+      const token = localStorage.getItem('backendToken');
+      const getProfileResult = await getBackendProfile(token);
+      dispatchCurrentProfile({
+        type: 'success',
+        payload: {
+          ...profilesData?.profiles?.items[0],
+          artistApprovalStatus: getProfileResult?.artist_approval_status,
+        },
+      });
+      dispatchIsLoggedIn({ type: 'success', payload: true });
+      dispatchHasProfile({ type: 'success', payload: true });
+      dispatchUserSigNonce({
+        type: 'success',
+        payload: { userSignNonce: profilesData?.userSigNonces?.lensHubOnChainSigNonce },
+      });
+    }
+  };
 
   const connectToBrowserWallets = async () => {
     if (localStorage.getItem('accessToken') && hasProfileState.hasProfile === false)
@@ -200,24 +221,21 @@ const WalletProvider = ({ children }: any) => {
         const profiles: any = profilesData?.profiles?.items;
 
         const generateNonceResult = await generateNonce(profiles[0].handle, account, profiles[0].id);
-
-        if (generateNonceResult?.token) {
-          const token = localStorage.getItem('backendToken');
-          const getProfileResult = await getBackendProfile(token);
-          dispatchCurrentProfile({
-            type: 'success',
-            payload: { ...profiles[0], artistApprovalStatus: getProfileResult?.artist_approval_status },
-          });
-          dispatchIsLoggedIn({ type: 'success', payload: true });
-          dispatchHasProfile({ type: 'success', payload: true });
-          dispatchUserSigNonce({
-            type: 'success',
-            payload: { userSignNonce: profilesData?.userSigNonces?.lensHubOnChainSigNonce },
-          });
-        } else {
-          dispatchIsLoggedIn({ type: 'error', payload: 'error' });
-          navigate(PageRoutes.ERROR_PAGE);
+        //if backend does not have this profile but lens have then we will create it on backend
+        //if generateNonce api response i user does not exist error,then it will return us true boolean
+        if (generateNonceResult === true) {
+          const formBodyData = new FormData();
+          formBodyData.append('username', profiles[0].handle);
+          formBodyData.append('wallet_address', account);
+          formBodyData.append('lens_profile', profiles[0].id);
+          const createUserResult = await createUser(formBodyData);
+          //now if user is created on backend then generate it nonce and token and make him/her login
+          if (createUserResult) {
+            const generateNonceResult = await generateNonce(profiles[0].handle, account, profiles[0].id);
+            verifyBackendGeneratedToken(generateNonceResult?.token, profilesData);
+          }
         }
+        generateNonceResult?.token && verifyBackendGeneratedToken(generateNonceResult?.token, profilesData);
       }
     } catch (error) {
       // dispatchSignature({ type: 'error', payload:  error } );

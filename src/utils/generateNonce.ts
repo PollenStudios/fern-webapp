@@ -28,8 +28,14 @@ const generateNonce = async (userName: string, walletAddress: string, profileId:
     const generateTokenResult = await generateToken(base64, walletAddress);
     localStorage.setItem('backendToken', generateTokenResult.token);
     return generateTokenResult;
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    const {
+      response: {
+        data: { message },
+      },
+    } = error;
+    if (message === 'user does not exists') return true;
+    else console.log('else', message);
   }
 };
 const generateToken = async (key: string, walletAddress: string) => {
