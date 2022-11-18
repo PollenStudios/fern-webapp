@@ -59,7 +59,7 @@ const ProfileDropdown = () => {
                     : profileImg
                 }
                 alt={currentProfile?.name}
-                className="w-10 h-10 rounded-full mr-2"
+                className="w-10 h-10 rounded-full mr-2 object-cover"
               />
             </div>
           </Popover.Button>
@@ -89,7 +89,7 @@ const ProfileDropdown = () => {
                               : profileImg
                           }
                           alt={currentProfile?.name ?? currentProfile?.id}
-                          className="w-12 h-12 rounded-full mr-2"
+                          className="w-12 h-12 rounded-full mr-2 object-cover"
                         />
                       </div>
                       <h6 className="font-semibold ml-2 w-36 truncate capitalize">

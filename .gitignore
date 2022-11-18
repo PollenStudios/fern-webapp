@@ -33,3 +33,4 @@ yarn.lock
 .env.dev
 .env.prod
 .env.local
+.env.test

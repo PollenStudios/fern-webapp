@@ -29,7 +29,7 @@ const token = localStorage.getItem('backendToken');
 
 // const artistStatus = (status: string) => {
 //   switch (status) {
-//     case 'approved':
+//     case 'approved':x
 //       return '';
 //     case 'pending':
 //       return '';
@@ -45,7 +45,7 @@ const Settings = () => {
   const navigate = useNavigate();
   const {
     accountState: { account },
-    currentProfileState: { currentProfile },
+    currentProfileState: { currentProfile, loading: userProfileDataLoader },
     dispatchCurrentProfile,
   }: any = useContext(WalletContext);
   const [broadcast] = useMutation(BroadcastDocument);
@@ -56,6 +56,8 @@ const Settings = () => {
   const [createSetProfileMetadataTypedData] = useMutation(CreateSetProfileMetadataTypedDataDocument);
 
   const updateProfile = async (request: CreatePublicSetProfileMetadataUriRequest) => {
+    dispatchCurrentProfile({ loading: true, currentProfile: {} });
+
     const result = await createSetProfileMetadataTypedData({
       variables: {
         request,
@@ -79,13 +81,12 @@ const Settings = () => {
       const txId = broadcastResult.data?.broadcast?.txId!;
 
       const indexerResult = pollUntilIndexed({ txId });
-      // (await indexerResult) === true && console.log('indexerResult');
+
       toast.promise(indexerResult, {
         loading: 'Indexing...',
-        success: 'Profile updated',
+        success: 'Please refresh the page now, to see updated data',
         error: 'Could not update',
       });
-      // toast.success('Profile Updated');
 
       const getProfileResult = await getBackendProfile(token);
 
@@ -107,7 +108,6 @@ const Settings = () => {
       console.error('create profile metadata via broadcast: failed', broadcastResult);
     } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
     setIsLoading(false);
-    window.location.reload();
   };
 
   useEffect(() => {
@@ -252,15 +252,23 @@ const Settings = () => {
   };
 
   const errorMessageClassName = 'paragraph-3 mt-1 text-red-600';
+  console.log({ userProfileDataLoader });
+  if (userProfileDataLoader) {
+    return <OverlayLoader />;
+  }
   return (
     <div className="main-container mb-10 mt-24">
       {isLoading && <OverlayLoader />}
       <p className="heading-4 mb-6 md:mb-2">Settings</p>
       <div className="flex justify-between">
         <p className="heading-5 border-b-4 pb-2 border-primary flex items-end">Edit Profile</p>
+
         <div className="mb-2 sm:mb-4 flex justify-end items-end">
-          {currentProfile?.artistApprovalStatus === null ? (
-            <Button onClick={SignUpForArtist} variant="outline" name="Sign up for Artist" type="button" />
+          {currentProfile?.artistApprovalStatus === null || 'NONE' ? (
+            <>
+              {console.log(currentProfile?.artistApprovalStatus)}
+              <Button onClick={SignUpForArtist} variant="outline" name="Sign up for Artist" type="button" />
+            </>
           ) : (
             currentProfile?.artistApprovalStatus === 'pending' && (
               <Button onClick={checkRequestStatus} variant="outline" name="Check Request Status" type="button" />
