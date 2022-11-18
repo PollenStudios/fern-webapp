@@ -239,7 +239,7 @@ const WalletProvider = ({ children }: any) => {
       clearStorage();
       navigate('/');
     });
-  }, []);
+  }, [walletProvider.current.chainId]);
   return (
     <>
       <WalletContext.Provider
