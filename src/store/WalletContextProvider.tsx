@@ -239,7 +239,6 @@ const WalletProvider = ({ children }: any) => {
       }
     } catch (error) {
       // dispatchSignature({ type: 'error', payload:  error } );
-      console.log(error);
       dispatchHasProfile({ type: 'error', payload: error });
       dispatchCurrentProfile({ type: 'error', payload: error });
       dispatchUserSigNonce({ type: 'error', payload: error });
@@ -252,9 +251,18 @@ const WalletProvider = ({ children }: any) => {
     // handleAutoConnectWallet();
   }, []);
   useEffect(() => {
+    walletProvider.current.on('accountsChanged', () => {
+      dispatchIsLoggedIn({ type: 'success', payload: false });
+      // clearStorage();
+      localStorage.clear();
+      navigate('/');
+    });
+  }, [walletProvider.current.selectedAddress]);
+  useEffect(() => {
     walletProvider.current.on('chainChanged', () => {
       dispatchIsLoggedIn({ type: 'success', payload: false });
-      clearStorage();
+      // clearStorage();
+      localStorage.clear();
       navigate('/');
     });
   }, [walletProvider.current.chainId]);
