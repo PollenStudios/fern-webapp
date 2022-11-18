@@ -52,7 +52,7 @@ const WalletProvider = ({ children }: any) => {
     const fetchChainId = window.ethereum.chainId;
     if (!DEFAULT_CHAIN_IDS.includes(fetchChainId)) {
       if (switchNetwork) {
-        switchNetwork(config.CHAIN_ID);
+        switchNetwork(config.chainId);
         toast.error('Please change your network wallet!');
       }
     } else {
