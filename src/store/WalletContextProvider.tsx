@@ -234,7 +234,7 @@ const WalletProvider = ({ children }: any) => {
     // handleAutoConnectWallet();
   }, []);
   useEffect(() => {
-    window.ethereum.on('chainChanged', () => {
+    walletProvider.current.on('chainChanged', () => {
       dispatchIsLoggedIn({ type: 'success', payload: false });
       clearStorage();
       navigate('/');
