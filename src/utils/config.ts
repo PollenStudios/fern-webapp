@@ -33,7 +33,7 @@ const config = {
   public_Key: process.env.REACT_APP_BACKEND_PUBLIC_KEY,
   appName: process.env.REACT_APP_APP_NAME,
   appNameForLensApi: process.env.REACT_APP_APP_NAME_TO_GET_DATA_FROM_LENS,
-  chainId: process.env.REACT_APP_IS_MAINNET ? POLYGON_MAINNET.id : POLYGON_MUMBAI.id,
+  chainId: process.env.REACT_APP_IS_MAINNET === 'true' ? POLYGON_MAINNET.id : POLYGON_MUMBAI.id,
 };
 export const PageRoutes = {
   HOMEPAGE: '/',

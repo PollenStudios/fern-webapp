@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
-import { createContext, useState, useEffect, useReducer } from 'react';
+import { createContext, useState, useEffect, useReducer, useRef } from 'react';
 import { AuthenticateDocument, ChallengeDocument, UserProfilesDocument } from 'graphql/generated/types';
 import { ethers } from 'ethers';
 import { useNavigate } from 'react-router-dom';
@@ -22,9 +22,9 @@ import {
 } from 'utils/useReducer';
 import generateNonce, { getBackendProfile } from 'utils/generateNonce';
 import clearStorage from 'utils/clearStorage';
-import axios from 'axios';
+
 import config, { DEFAULT_CHAIN_IDS, PageRoutes } from 'utils/config';
-import { useNetwork, useSwitchNetwork } from 'wagmi';
+import { useSwitchNetwork } from 'wagmi';
 
 export const WalletContext = createContext({});
 
@@ -48,17 +48,7 @@ const WalletProvider = ({ children }: any) => {
   const [currentProfileState, dispatchCurrentProfile] = useReducer(reducerCurrentProfile, initialStateCurrentProfile);
   const [isLoggedInState, dispatchIsLoggedIn] = useReducer(reducerIsLoggedIn, initialStateIsLoggedIn);
 
-  const validateChain = async (account: string) => {
-    const fetchChainId = window.ethereum.chainId;
-    if (!DEFAULT_CHAIN_IDS.includes(fetchChainId)) {
-      if (switchNetwork) {
-        switchNetwork(config.chainId);
-        toast.error('Please change your network wallet!');
-      }
-    } else {
-      handleSign(account);
-    }
-  };
+  const walletProvider = useRef(window.ethereum);
 
   const connectToBrowserWallets = async () => {
     if (localStorage.getItem('accessToken') && hasProfileState.hasProfile === false)
@@ -76,13 +66,13 @@ const WalletProvider = ({ children }: any) => {
           // fetch metamask account ID/address
           method: 'eth_requestAccounts',
         });
-
+        walletProvider.current = window.ethereum;
         if (accounts.length !== 0) {
           dispatchAccount({ type: 'success', payload: accounts[0] });
           account = accounts[0];
           fetchWalletBalance(accounts[0]);
           validateChain(accounts[0]);
-        } else toast.error('No account!!!');
+        } else toast.error('No account found');
         setIsLoading(false);
       } catch (error: any) {
         console.log('error', error, error.message);
@@ -108,6 +98,19 @@ const WalletProvider = ({ children }: any) => {
       dispatchWalletBalance({ type: 'error', payload: error });
     }
   };
+
+  const validateChain = async (account: string) => {
+    const fetchChainId = walletProvider.current.chainId;
+    if (!DEFAULT_CHAIN_IDS.includes(fetchChainId)) {
+      if (switchNetwork) {
+        switchNetwork(config.chainId);
+        toast.error('Please change your network wallet!');
+      }
+    } else {
+      handleSign(account);
+    }
+  };
+
   // Is wallet is connected
 
   const handleAutoConnectWallet = () => {
