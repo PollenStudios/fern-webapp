@@ -63,8 +63,8 @@ function ProfileImage() {
             const res = pollUntilIndexed({ txId });
             toast.promise(res, {
               loading: 'Indexing...',
-              success: <b>Profile Updated!</b>,
-              error: <b>Could not update.</b>,
+              success: 'Profile updated',
+              error: 'Could not update',
             });
             await res;
             const profile = await getProfile({

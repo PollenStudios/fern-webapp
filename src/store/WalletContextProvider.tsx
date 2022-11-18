@@ -201,7 +201,6 @@ const WalletProvider = ({ children }: any) => {
         if (generateNonceResult?.token) {
           const token = localStorage.getItem('backendToken');
           const getProfileResult = await getBackendProfile(token);
-          console.log('getProfileResult', getProfileResult);
           dispatchCurrentProfile({
             type: 'success',
             payload: { ...profiles[0], artistApprovalStatus: getProfileResult?.artist_approval_status },

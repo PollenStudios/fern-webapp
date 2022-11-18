@@ -56,7 +56,6 @@ export const createUser = async (formData: FormData) => {
       url: config.baseUrl + apiRoutes.userProfile,
       data: formData,
     });
-    // console.log(data);
     return data;
   } catch (error) {
     console.log(error);
@@ -70,7 +69,6 @@ export const userProfileLens = async (id: string | undefined) => {
       method: 'get',
       url: config.baseUrl + apiRoutes.userProfile + id + '/',
     });
-    // console.log(data);
     return data;
   } catch (error) {
     console.log(error);
