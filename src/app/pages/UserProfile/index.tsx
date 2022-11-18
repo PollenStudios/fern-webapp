@@ -9,16 +9,18 @@ import { WalletContext } from 'store/WalletContextProvider';
 import noArtBoards from 'Assets/Images/noArtBoards.png';
 import ProfileLogo from 'Assets/Images/defaultLogo.png';
 import { ProfileDocument, ProfileFeedDocument, PublicationMainFocus, PublicationTypes } from 'graphql/generated/types';
-import { PageRoutes } from 'utils/config';
+import config, { PageRoutes } from 'utils/config';
 import ArtPreviewCard from 'app/components/ArtPreviewCard';
 import getIPFSLink from 'utils/getIPFSLink';
 import Instagram from 'Assets/Icons/instagram.svg';
 import Twitter from 'Assets/Icons/twitter.svg';
+import { userProfileLens } from 'utils/generateNonce';
 
 function UserProfile() {
   const { id } = useParams();
   const [userProfile, setUserProfile] = useState<any>();
   const [userPosts, setUserPosts] = useState<any>();
+  const [isArtist, setIsArtist] = useState<boolean>(false);
 
   const {
     // userProfileState: { userProfile },
@@ -31,7 +33,7 @@ function UserProfile() {
     publicationTypes: [PublicationTypes.Post],
     profileId: id,
     limit: 10,
-    sources: ['F3RN'],
+    sources: [config.appNameForLensApi],
     metadata: { mainContentFocus: [PublicationMainFocus.Image] },
   };
   const reactionRequest = { profileId: id };
@@ -39,27 +41,29 @@ function UserProfile() {
 
   const [getPosts, { data }] = useLazyQuery(ProfileFeedDocument, {
     onCompleted: async () => {
-      console.log(data);
       // setUserProfile(data?.publications?.items[0]?.profile);
       setUserPosts(data?.publications.items);
     },
   });
   const [getProfile, { data: userProfileResult }] = useLazyQuery(ProfileDocument, {
     onCompleted: async () => {
-      console.log(userProfileResult);
       setUserProfile(userProfileResult?.profile);
-      // setUserProfile(userProfileResult?.profile);
     },
   });
-  // const fetchPosts = async () => {
-  //   const getPostsResult = await getPosts({ variables: { request, reactionRequest, profileId } });
-  //   return getPostsResult.data?.publications.items;
-  // };
-  console.log(data);
+
+  const userProfileStatus = async (id: string | undefined) => {
+    const userStatus = await userProfileLens(id);
+    userStatus[0]?.artist_approval_status === 'approved' && setIsArtist(true);
+  };
+
   useEffect(() => {
     getPosts({ variables: { request, reactionRequest, profileId } });
     getProfile({ variables: { request: reactionRequest } });
   }, [data, userProfileResult, id]);
+
+  useEffect(() => {
+    userProfileStatus(id);
+  }, [id]);
 
   return (
     <div className="mb-10 mt-16">
@@ -83,9 +87,7 @@ function UserProfile() {
             <p className="w-40 md:w-60 heading-6 sm:heading-5 text-center pt-28 capitalize">
               {userProfile?.name ?? userProfile?.id}
             </p>
-            {/* {userProfile?.attributes?.filter((attribute: any) => attribute.key === 'isArtist')[0]?.value && (
-              <span className="w-40 md:w-60 heading-5  text-center text-blue-900 ">Artist </span>
-            )} */}
+            {isArtist && <span className="w-40 md:w-60 heading-5  text-center text-blue-900 ">Artist </span>}
             <p className="w-40 md:w-60 heading-6 sm:heading-5 text-gray-40 text-center pt-2 pb-5">
               {userProfile?.ownedBy ? userProfile?.ownedBy?.slice(0, 9) + '...' + userProfile?.ownedBy?.slice(-4) : ''}
             </p>

@@ -6,7 +6,9 @@
     "node": "16.17.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "local": "env-cmd -f .env.local react-scripts start",
+    "dev": "env-cmd -f .env.dev react-scripts start",
+    "start": "env-cmd -f .env.prod react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "deploy-prod": "export AWS_PROFILE=pollinate-webapp && npm run build && aws s3 cp build/ s3://pollen-web3-webapp --recursive",
@@ -31,8 +33,9 @@
     "@types/react-dom": "^18.0.0",
     "axios": "^1.1.3",
     "buffer": "^6.0.3",
+    "env-cmd": "^10.1.0",
     "eslint-config-react-app": "^7.0.1",
-    "ethers": "^5.7.2",
+    "ethers": "5.6.0",
     "graphql": "^16.6.0",
     "node-forge": "^1.3.1",
     "react": "^18.2.0",

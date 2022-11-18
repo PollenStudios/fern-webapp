@@ -7,14 +7,8 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import config, { PageRoutes } from 'utils/config';
 import { useContext, useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { WalletContext } from 'store/WalletContextProvider';
-import storeFiles from 'utils/web3Storage';
-import getSignature from 'utils/getSignature';
-import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
-import { useSignTypedData } from 'wagmi';
-import { useLazyQuery, useMutation } from '@apollo/client';
-import { BroadcastDocument, CreateSetProfileMetadataTypedDataDocument, ProfileDocument } from 'graphql/generated/types';
+import { apiRoutes } from 'API/apiRoutes';
 
 function SignUpForArtist() {
   const navigate = useNavigate();
@@ -23,12 +17,7 @@ function SignUpForArtist() {
   const {
     accountState: { account },
     currentProfileState: { currentProfile },
-    dispatchCurrentProfile,
   }: any = useContext(WalletContext);
-  const [createSetProfileMetadataTypedData] = useMutation(CreateSetProfileMetadataTypedDataDocument);
-  const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData();
-  const [broadcast] = useMutation(BroadcastDocument);
-  const [getProfile] = useLazyQuery(ProfileDocument);
 
   const {
     register,
@@ -53,7 +42,7 @@ function SignUpForArtist() {
   }, [currentProfile, account]);
   const onSubmit = async (formData: any) => {
     try {
-      if (currentProfile?.attributes.filter((attribute: any) => attribute.key === 'isArtist').length > 0) {
+      if (currentProfile?.artistApprovalStatus === 'approved') {
         toast.success('You are already a Artist');
         navigate('/settings');
         return 0;
@@ -61,14 +50,13 @@ function SignUpForArtist() {
       setIsLoading(true);
       const formBodyData = new FormData();
       formBodyData.append('email', formData.email);
-      // formBodyData.append('is_artist', 'true');
       formBodyData.append('artist_approval_status', 'pending');
       formBodyData.append('first_name', formData.name.split(' ')[0]);
       formBodyData.append('last_name', formData.name.split(' ')[1]);
       // formBodyData.append('website', formData.website);
       formBodyData.append('insta_profile', formData.instaHandle);
       const { data } = await axios({
-        url: config.backendUri + '/user-profile/me/',
+        url: config.baseUrl + apiRoutes.userProfileMe,
         method: 'patch',
         headers: {
           Authorization: 'TOKEN ' + localStorage.getItem('backendToken'),
@@ -77,97 +65,6 @@ function SignUpForArtist() {
       });
       toast.success('Request pending for approval');
       navigate(PageRoutes.THANKYOU);
-
-      // const newProfile = {
-      //   name: currentProfile?.name,
-      //   bio: currentProfile?.bio,
-      //   cover_picture: null,
-      //   attributes: [
-      //     {
-      //       key: 'website',
-      //       value: currentProfile?.attributes.filter((attribute: any) => attribute.key === 'website')[0]?.value,
-      //       traitType: 'string',
-      //     },
-      //     {
-      //       key: 'twitter',
-      //       value: currentProfile?.attributes.filter((attribute: any) => attribute.key === 'twitter')[0]?.value,
-      //       traitType: 'string',
-      //     },
-      //     {
-      //       key: 'email',
-      //       value: currentProfile?.attributes.filter((attribute: any) => attribute.key === 'email')[0]?.value,
-      //       traitType: 'string',
-      //     },
-      //     {
-      //       key: 'instagram',
-      //       value: currentProfile?.attributes.filter((attribute: any) => attribute.key === 'instagram')[0]?.value,
-      //       traitType: 'string',
-      //     },
-      //     {
-      //       key: 'isArtist',
-      //       value: true,
-      //       traitType: 'string',
-      //     },
-      //     {
-      //       key: 'app',
-      //       value: 'F3rn',
-      //       traitType: 'string',
-      //     },
-      //   ],
-      //   version: '1.0.0',
-      //   metadata_id: uuidv4(),
-      //   createdOn: new Date(),
-      //   appId: 'F3rn',
-      // };
-
-      // const uploadToWeb3result = await storeFiles(newProfile);
-      // console.log('uploadToWeb3result', uploadToWeb3result);
-      // const createProfileMetadataRequest = {
-      //   profileId: currentProfile?.id,
-      //   metadata: `https://${uploadToWeb3result}.ipfs.w3s.link/hello.json`,
-      // };
-      // const result = await createSetProfileMetadataTypedData({
-      //   variables: {
-      //     request: createProfileMetadataRequest,
-      //   },
-      // });
-      // const typedData = result.data?.createSetProfileMetadataTypedData.typedData;
-
-      // const signatureTyped = getSignature(typedData);
-      // const signature = await signTypedDataAsync(signatureTyped);
-      // const broadcastResult = await broadcast({
-      //   variables: {
-      //     request: {
-      //       id: result?.data?.createSetProfileMetadataTypedData.id,
-      //       signature: signature,
-      //     },
-      //   },
-      // });
-
-      // console.log('broadcastResult', broadcastResult);
-
-      // if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
-      //   const txId = broadcastResult.data?.broadcast?.txId!;
-      //   const txHash = broadcastResult.data?.broadcast?.txHash!;
-      //   console.log('txId,txHash', txId, txHash);
-
-      //   const indexerResult = await pollUntilIndexed({ txId });
-      //   console.log('indexerResult', indexerResult);
-
-      //   toast.success('Profile Updated');
-      //   const profile = await getProfile({
-      //     variables: {
-      //       request: {
-      //         profileId: currentProfile.id,
-      //       },
-      //     },
-      //   });
-      //   dispatchCurrentProfile({ type: 'success', payload: profile.data?.profile });
-      //   toast.success('Sign Up as Artist Successful');
-
-      //   setIsLoading(false);
-      //   navigate('/settings');
-      // }
     } catch (error: any) {
       console.log(error);
       toast.error(error.message);

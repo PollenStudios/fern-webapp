@@ -147,17 +147,16 @@ const NewProfile = () => {
         setIsLoading(false);
         return 0;
       } else if (createProfileResult?.__typename === 'RelayerResult') {
-        console.log('createProfileResult', createProfileResult);
         const indexingResult = pollUntilIndexed({ txHash: createProfileResult.txHash });
         toast.promise(indexingResult, {
           loading: 'Creating...',
-          success: <b>Profile Created!</b>,
-          error: <b>Could not create.</b>,
+          success: 'Profile Created',
+          error: 'Could not create.',
         });
         console.log('indexingResult', await indexingResult);
 
         const allProfiles = await getAllProfiles({ ownedBy: account });
-        console.log('allProfiles', allProfiles);
+
         const firstProfile = allProfiles.items[0];
         const formBodyData = new FormData();
         formBodyData.append('username', firstProfile.handle);
@@ -168,10 +167,8 @@ const NewProfile = () => {
 
         toast.success('User profile created');
         // const createUserResult = await createUser(formData.handle, account, allProfiles.items[0].id);
-        console.log('createUserResult', createUserResult);
-        console.log('User profile created Metadata not saved ', createProfileResult);
         const generateNonceResult = await generateNonce(firstProfile.handle, account, firstProfile.id);
-        console.log('generateNonceResult', generateNonceResult);
+
         const { id, typedData } = await uploadImageToLens(createUserResult.data.profile_pic, firstProfile.id);
         const signature = await signTypedDataAsync(getSignature(typedData));
         const broadcastResult = await broadcast({ request: { id, signature } });
@@ -180,8 +177,8 @@ const NewProfile = () => {
           const indexingResult = pollUntilIndexed({ txHash: broadcastResult?.data?.broadcast?.txHash });
           toast.promise(indexingResult, {
             loading: 'Creating...',
-            success: <b>Profile Created!</b>,
-            error: <b>Could not create.</b>,
+            success: 'Profile Created',
+            error: 'Could not created',
           });
           console.log('indexerResult ', await indexingResult);
           const profiles = await getAllProfiles({
@@ -199,13 +196,14 @@ const NewProfile = () => {
         dispatchCurrentProfile({ type: 'success', payload: allProfiles.items[0] });
 
         setIsLoading(false);
-        navigate('/');
+        navigate(PageRoutes.DISCOVERY);
       }
     } catch (error: any) {
       console.log(error);
       toast.error(error.message);
       setIsLoading(false);
-      navigate(PageRoutes.DISCOVERY);
+      dispatchIsLoggedIn({ type: 'error', payload: error });
+      navigate(PageRoutes.ERROR_PAGE);
     }
   };
   // useEffect(() => {

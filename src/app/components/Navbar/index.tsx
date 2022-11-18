@@ -10,7 +10,7 @@ import { Button } from '../atoms/Buttons';
 import { useContext } from 'react';
 import { WalletContext } from 'store/WalletContextProvider';
 import ProfileDropdown from '../ProfileDropdown';
-import { PageRoutes } from 'utils/config';
+import config, { PageRoutes } from 'utils/config';
 
 export default function Navbar(): any {
   const {
@@ -38,7 +38,7 @@ export default function Navbar(): any {
               </div>
               <div className="flex flex-1 gap-8 lg:gap-12 items-center justify-center sm:justify-start">
                 <Link to={PageRoutes.HOMEPAGE}>
-                  <h4 className="heading-4">F3RN</h4>
+                  <h4 className="heading-4">{config.appName}</h4>
                 </Link>
                 <div className="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">
                   <div className="flex items-center px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
@@ -67,7 +67,7 @@ export default function Navbar(): any {
                 <Link to={PageRoutes.DISCOVERY} className="text-gray-700 text-lg font-medium">
                   Discover
                 </Link>
-                {isLoggedIn && currentProfile?.approvalStatus === 'APPROVED' && (
+                {isLoggedIn && currentProfile?.artistApprovalStatus === 'approved' && (
                   <Link to={PageRoutes.UPLOAD_ART} className="text-gray-700 text-lg font-medium">
                     Create
                   </Link>
@@ -99,7 +99,7 @@ export default function Navbar(): any {
             <Link to={PageRoutes.DISCOVERY} className="text-gray-700 text-lg font-medium">
               Discover
             </Link>
-            {isLoggedIn && currentProfile?.approvalStatus === 'APPROVED' && (
+            {isLoggedIn && currentProfile?.artistApprovalStatus === 'approved' && (
               <Link to={PageRoutes.UPLOAD_ART} className="text-gray-700 text-lg font-medium">
                 Create
               </Link>

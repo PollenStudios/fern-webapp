@@ -55,8 +55,8 @@ const EnableDispatcher = () => {
             const res = pollUntilIndexed({ txHash: result.txHash });
             toast.promise(res, {
               loading: 'Indexing...',
-              success: <b>Updated!</b>,
-              error: <b>Could not update.</b>,
+              success: 'Updated',
+              error: 'Could not update.',
             });
             (await res) && window.location.reload();
           }

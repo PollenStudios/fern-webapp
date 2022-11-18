@@ -29,6 +29,7 @@ import Post from './pages/Post';
 import PublicRoute from './components/PublicRoute';
 import Thankyou from './pages/Thankyou';
 import PrivateRoute from './components/PrivateRoute';
+import ErrorPage from './pages/ErrorPage';
 
 function App() {
   return (
@@ -81,6 +82,7 @@ function App() {
                   <Route path={PageRoutes.THANKYOU} element={<Thankyou />} />
 
                   <Route path="/*" element={<NotFoundPage />} />
+                  <Route path={PageRoutes.ERROR_PAGE} element={<ErrorPage />} />
                 </PublicRoute>
                 <Footer />
                 <Toaster position="top-right" />

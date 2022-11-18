@@ -3,7 +3,13 @@ import { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input, TextArea } from 'app/components/atoms/FormElements';
 import { WalletContext } from 'store/WalletContextProvider';
-import { BroadcastDocument, CreateSetProfileMetadataTypedDataDocument, ProfileDocument } from 'graphql/generated/types';
+import {
+  BroadcastDocument,
+  CreatePublicSetProfileMetadataUriRequest,
+  CreateSetProfileMetadataTypedDataDocument,
+  CreateSetProfileMetadataViaDispatcherDocument,
+  ProfileDocument,
+} from 'graphql/generated/types';
 import { v4 as uuidv4 } from 'uuid';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -11,13 +17,28 @@ import getSignature from 'utils/getSignature';
 import { Button } from 'app/components/atoms/Buttons';
 import ProfileImage from 'app/components/ProfileImage';
 import { useSignTypedData } from 'wagmi';
-import { PageRoutes } from 'utils/config';
+import config, { PageRoutes } from 'utils/config';
 import EnableDispatcher from 'app/components/Dispatcher/EnableDispatcher';
 import storeFiles from 'utils/web3Storage';
 import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
 import { getBackendProfile } from 'utils/generateNonce';
 import OverlayLoader from 'app/components/OverlayLoader';
 import { isEmpty } from 'utils/utility';
+
+const token = localStorage.getItem('backendToken');
+
+// const artistStatus = (status: string) => {
+//   switch (status) {
+//     case 'approved':
+//       return '';
+//     case 'pending':
+//       return '';
+//     case 'rejected':
+//       return '';
+//     default:
+//       return '';
+//   }
+// };
 
 const Settings = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +54,61 @@ const Settings = () => {
   const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData();
 
   const [createSetProfileMetadataTypedData] = useMutation(CreateSetProfileMetadataTypedDataDocument);
+
+  const updateProfile = async (request: CreatePublicSetProfileMetadataUriRequest) => {
+    const result = await createSetProfileMetadataTypedData({
+      variables: {
+        request,
+      },
+    });
+
+    const typedData = result.data?.createSetProfileMetadataTypedData.typedData;
+
+    const signatureTyped = getSignature(typedData);
+    const signature = await signTypedDataAsync(signatureTyped);
+    const broadcastResult = await broadcast({
+      variables: {
+        request: {
+          id: result?.data?.createSetProfileMetadataTypedData.id,
+          signature: signature,
+        },
+      },
+    });
+
+    if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
+      const txId = broadcastResult.data?.broadcast?.txId!;
+
+      const indexerResult = pollUntilIndexed({ txId });
+      // (await indexerResult) === true && console.log('indexerResult');
+      toast.promise(indexerResult, {
+        loading: 'Indexing...',
+        success: 'Profile updated',
+        error: 'Could not update',
+      });
+      // toast.success('Profile Updated');
+
+      const getProfileResult = await getBackendProfile(token);
+
+      const profile = await getProfile({
+        variables: {
+          request: {
+            profileId: currentProfile.id,
+          },
+        },
+      });
+
+      dispatchCurrentProfile({
+        type: 'success',
+        payload: { ...profile.data?.profile, artistApprovalStatus: getProfileResult?.artist_approval_status },
+      });
+    }
+
+    if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
+      console.error('create profile metadata via broadcast: failed', broadcastResult);
+    } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
+    setIsLoading(false);
+    window.location.reload();
+  };
 
   useEffect(() => {
     if (currentProfile && Object.keys(currentProfile).length !== 0) {
@@ -64,6 +140,25 @@ const Settings = () => {
     mode: 'onBlur',
   });
 
+  const [updateProfileViaDispatcher] = useMutation(CreateSetProfileMetadataViaDispatcherDocument, {
+    onCompleted: data => {
+      if (data.createSetProfileMetadataViaDispatcher.__typename === 'RelayerResult') {
+        console.log('txId', { txId: data.createSetProfileMetadataViaDispatcher });
+        setIsLoading(false);
+        // window.location.reload();
+      }
+    },
+  });
+
+  const updateViaDispatcher = async (request: CreatePublicSetProfileMetadataUriRequest) => {
+    const { data } = await updateProfileViaDispatcher({
+      variables: { request },
+    });
+    if (data?.createSetProfileMetadataViaDispatcher?.__typename === 'RelayError') {
+      updateProfile(request);
+    }
+  };
+
   const onSubmit = async (formData: any) => {
     try {
       setIsLoading(true);
@@ -92,16 +187,11 @@ const Settings = () => {
             value: formData.instagram,
             traitType: 'string',
           },
-          {
-            key: 'app',
-            value: 'F3rn',
-            traitType: 'string',
-          },
         ],
         version: '1.0.0',
         metadata_id: uuidv4(),
         createdOn: new Date(),
-        appId: 'F3rn',
+        appId: config.appNameForLensApi,
       };
       // toast.success('Submitting Profile');
 
@@ -110,58 +200,12 @@ const Settings = () => {
         profileId: currentProfile?.id,
         metadata: `https://${uploadToWeb3result}.ipfs.w3s.link/hello.json`,
       };
-      const result = await createSetProfileMetadataTypedData({
-        variables: {
-          request: createProfileMetadataRequest,
-        },
-      });
 
-      const typedData = result.data?.createSetProfileMetadataTypedData.typedData;
-
-      const signatureTyped = getSignature(typedData);
-      const signature = await signTypedDataAsync(signatureTyped);
-      const broadcastResult = await broadcast({
-        variables: {
-          request: {
-            id: result?.data?.createSetProfileMetadataTypedData.id,
-            signature: signature,
-          },
-        },
-      });
-
-      if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
-        const txId = broadcastResult.data?.broadcast?.txId!;
-
-        const indexerResult = pollUntilIndexed({ txId });
-
-        toast.promise(indexerResult, {
-          loading: 'Indexing...',
-          success: <b>Profile Updated!</b>,
-          error: <b>Could not update.</b>,
-        });
-        // toast.success('Profile Updated');
-
-        const getProfileResult = await getBackendProfile();
-
-        const profile = await getProfile({
-          variables: {
-            request: {
-              profileId: currentProfile.id,
-            },
-          },
-        });
-
-        dispatchCurrentProfile({
-          type: 'success',
-          payload: { ...profile.data?.profile, approvalStatus: getProfileResult?.artist_approval_status },
-        });
+      if (currentProfile?.dispatcher?.canUseRelay) {
+        updateViaDispatcher(createProfileMetadataRequest);
+      } else {
+        updateProfile(createProfileMetadataRequest);
       }
-
-      if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
-        console.error('create profile metadata via broadcast: failed', broadcastResult);
-      } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
-      setIsLoading(false);
-      window.location.reload();
     } catch (error: any) {
       setIsLoading(false);
       console.log(error);
@@ -174,16 +218,16 @@ const Settings = () => {
     // const website = currentProfile?.attributes?.filter((attribute: any) => attribute?.key === 'website')[0]?.value;
     const instagram = currentProfile?.attributes?.filter((attribute: any) => attribute?.key === 'instagram')[0]?.value;
     if (isEmpty(name)) {
-      toast.error('Please enter your name');
+      toast.error('Please update your name');
     } else if (isEmpty(email)) {
-      toast.error('Please enter your email');
+      toast.error('Please update your email');
     } else if (isEmpty(instagram)) {
-      toast.error('Please enter your instagram url');
+      toast.error('Please update your instagram url');
     } else navigate(PageRoutes.SIGN_UP_ARTIST);
   };
   const checkRequestStatus = async () => {
     try {
-      const getProfileResult = await getBackendProfile();
+      const getProfileResult = await getBackendProfile(token);
 
       const profile = await getProfile({
         variables: {
@@ -192,15 +236,15 @@ const Settings = () => {
           },
         },
       });
-      if (getProfileResult?.artist_approval_status === 'APPROVED')
-        toast.success('Congratulations Your Request is Approved');
-      if (getProfileResult?.artist_approval_status === 'PENDING')
-        toast('Not Approved!!!!', {
+      if (getProfileResult?.artist_approval_status === 'approved')
+        toast.success('Congratulations, Your Request has been Approved.');
+      if (getProfileResult?.artist_approval_status === 'pending')
+        toast("Your request hasn't been approved yet.", {
           icon: '⏲',
         });
       dispatchCurrentProfile({
         type: 'success',
-        payload: { ...profile.data?.profile, approvalStatus: getProfileResult?.artist_approval_status },
+        payload: { ...profile.data?.profile, artistApprovalStatus: getProfileResult?.artist_approval_status },
       });
     } catch (error) {
       console.log(error);
@@ -208,7 +252,6 @@ const Settings = () => {
   };
 
   const errorMessageClassName = 'paragraph-3 mt-1 text-red-600';
-  // console.log(current)
   return (
     <div className="main-container mb-10 mt-24">
       {isLoading && <OverlayLoader />}
@@ -216,18 +259,12 @@ const Settings = () => {
       <div className="flex justify-between">
         <p className="heading-5 border-b-4 pb-2 border-primary flex items-end">Edit Profile</p>
         <div className="mb-2 sm:mb-4 flex justify-end items-end">
-          {currentProfile?.approvalStatus === 'NONE' ? (
+          {currentProfile?.artistApprovalStatus === null ? (
             <Button onClick={SignUpForArtist} variant="outline" name="Sign up for Artist" type="button" />
-          ) : currentProfile?.approvalStatus === 'PENDING' ? (
-            <Button
-              onClick={checkRequestStatus}
-              variant="outline"
-              name="Check Request Status"
-              type="button"
-              // additionalClasses="color-yellow"
-            />
           ) : (
-            currentProfile?.currentProfile?.approvalStatus === 'APPROVED' && ''
+            currentProfile?.artistApprovalStatus === 'pending' && (
+              <Button onClick={checkRequestStatus} variant="outline" name="Check Request Status" type="button" />
+            )
           )}
         </div>
       </div>
@@ -242,7 +279,7 @@ const Settings = () => {
                 ? currentProfile?.ownedBy?.slice(0, 9) + '...' + currentProfile?.ownedBy?.slice(-4)
                 : ''}
             </p>
-            {/* {currentProfile?.approvalStatus === 'APPROVED' && (
+            {/* {currentProfile?.artistApprovalStatus === 'approved' && (
               <span className="heading-6 pb-3 text-blue-900 text-center">Artist </span>
             )} */}
           </div>
@@ -251,7 +288,7 @@ const Settings = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <div className="flex justify-between items-center pb-2 border-b border-primary">
               <p className="heading-5 ">Personal details</p>
-              {currentProfile?.approvalStatus === 'APPROVED' && (
+              {currentProfile?.artistApprovalStatus === 'approved' && (
                 <Button
                   disabled
                   additionalClasses="heading-6 pb-3 text-white text-center"
@@ -352,9 +389,9 @@ const Settings = () => {
                   register={register}
                   required
                 />
-                {errors.instagram && errors.instagram.type === 'pattern' && (
+                {/* {errors.instagram && errors.instagram.type === 'pattern' && (
                   <p className={errorMessageClassName}>Enter your Instagram profile URL</p>
-                )}
+                )} */}
                 {errors.instagram && errors.instagram.type === 'required' && (
                   <p className={errorMessageClassName}>Enter your Instagram profile URL</p>
                 )}

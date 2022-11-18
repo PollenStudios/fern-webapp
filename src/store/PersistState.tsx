@@ -9,7 +9,10 @@ import { UserProfilesDocument, VerifyDocument } from 'graphql/generated/types';
 import { useNavigate } from 'react-router-dom';
 import { getBackendProfile } from 'utils/generateNonce';
 import { PageRoutes } from 'utils/config';
+import toast from 'react-hot-toast';
 // import { useLocation } from 'react-router-dom';
+
+const token = localStorage.getItem('backendToken');
 
 const PersistState = ({ children }: any) => {
   // const { pathname } = useLocation();
@@ -43,14 +46,13 @@ const PersistState = ({ children }: any) => {
       console.log(error);
     }
   };
-  const handleSign = async (address: string) => {
+  const verifyProfileForLogin = async (address: string) => {
     try {
-      // Get challenge
       dispatchHasProfile({ type: 'loading' });
       dispatchCurrentProfile({ type: 'loading' });
       dispatchUserSigNonce({ type: 'loading' });
 
-      // Get authenticated profiles
+      //get all profiles
 
       const { data: profilesData } = await getProfiles({
         variables: { ownedBy: address },
@@ -72,27 +74,43 @@ const PersistState = ({ children }: any) => {
         });
         // toast.success('Kindly create a profile');
         navigate(PageRoutes.SIGN_UP);
-      } else {
+      } else if (token && token !== 'undefined') {
         dispatchHasProfile({ type: 'success', payload: true });
-
         dispatchIsLoggedIn({ type: 'success', payload: true });
+
         const profiles: any = profilesData?.profiles?.items;
-        const getProfileResult = await getBackendProfile();
+        const getProfileResult = await getBackendProfile(token);
 
         dispatchCurrentProfile({
           type: 'success',
-          payload: { ...profiles[0], approvalStatus: getProfileResult?.artist_approval_status },
+          payload: { ...profiles[0], artistApprovalStatus: getProfileResult?.artist_approval_status },
         });
         dispatchUserSigNonce({
           type: 'success',
           payload: { userSignNonce: profilesData?.userSigNonces?.lensHubOnChainSigNonce },
         });
+      } else {
+        dispatchHasProfile({ type: 'success', payload: true });
+        dispatchCurrentProfile({
+          type: 'success',
+          payload: {
+            currentProfile: {},
+          },
+        });
+        dispatchUserSigNonce({
+          type: 'success',
+          payload: '',
+        });
+        dispatchIsLoggedIn({ type: 'success', payload: false });
+        toast.error('No profile found');
       }
     } catch (error) {
       dispatchHasProfile({ type: 'error', payload: error });
       dispatchCurrentProfile({ type: 'error', payload: error });
       dispatchUserSigNonce({ type: 'error', payload: error });
       dispatchIsLoggedIn({ type: 'error', payload: error });
+      toast.error('Something went wrong');
+      navigate(PageRoutes.ERROR_PAGE);
     }
   };
 
@@ -121,7 +139,7 @@ const PersistState = ({ children }: any) => {
           if (accounts.length !== 0) {
             dispatchAccount({ type: 'success', payload: accounts[0] });
           }
-          handleSign(accounts[0]);
+          verifyProfileForLogin(accounts[0]);
           const provider = new ethers.providers.Web3Provider(window.ethereum);
           const balance = await provider.getBalance(accounts[0]);
           const balanceInEth = ethers.utils.formatEther(balance);
@@ -130,6 +148,7 @@ const PersistState = ({ children }: any) => {
           console.log('error', error);
           dispatchAccount({ type: 'error', payload: error });
           setIsLoading(false);
+          toast.error('Something went wrong');
         }
       };
 

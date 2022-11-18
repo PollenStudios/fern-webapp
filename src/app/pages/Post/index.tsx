@@ -32,6 +32,7 @@ import ArtPreview from 'Assets/Images/artPreview.png';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import OverlayLoader from 'app/components/OverlayLoader';
+import { apiRoutes } from 'API/apiRoutes';
 
 function Post() {
   const navigate = useNavigate();
@@ -151,7 +152,7 @@ function Post() {
       formBodyData.append('file', value);
       const { data } = await axios({
         method: 'post',
-        url: config.backendUri + config.UPLOAD_MEDIA_END_POINT,
+        url: config.baseUrl + apiRoutes.uploadMedia,
         headers: {
           Authorization: 'TOKEN  ' + localStorage.getItem('backendToken'),
         },
@@ -196,7 +197,7 @@ function Post() {
         media: [{ item: attachment, type: 'image/png', altTag: '' }],
         locale: getUserLocale(),
         createdOn: new Date(),
-        appId: config.APP_NAME,
+        appId: config.appNameForLensApi,
       };
 
       const buffer = Buffer.from(JSON.stringify(dataObject));
@@ -240,8 +241,8 @@ function Post() {
 
           toast.promise(res, {
             loading: 'Indexing...',
-            success: <b>Profile Updated!</b>,
-            error: <b>Could not update.</b>,
+            success: 'Profile Updated',
+            error: 'Could not update',
           });
           await res;
           navigate('/');
