@@ -197,7 +197,7 @@ function Post() {
         media: [{ item: attachment, type: 'image/png', altTag: '' }],
         locale: getUserLocale(),
         createdOn: new Date(),
-        appId: config.APP_NAME_FOR_LENS_API,
+        appId: config.appNameForLensApi,
       };
 
       const buffer = Buffer.from(JSON.stringify(dataObject));
@@ -241,8 +241,8 @@ function Post() {
 
           toast.promise(res, {
             loading: 'Indexing...',
-            success: <b>Profile Updated!</b>,
-            error: <b>Could not update.</b>,
+            success: 'Profile Updated',
+            error: 'Could not update',
           });
           await res;
           navigate('/');

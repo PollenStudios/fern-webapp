@@ -23,7 +23,7 @@ export default function Footer() {
         </div>
         <div className="mt-8 md:order-1 md:mt-0 flex flex-col md:flex-row gap-x-6">
           <p className="text-center paragraph-2 text-gray-400">
-            &copy;{` 2022 ${config.APP_NAME} | All rights reserved`}
+            &copy;{` 2022 ${config.appName} | All rights reserved`}
           </p>
           <p
             className="text-center paragraph-2 text-gray-400 cursor-pointer"

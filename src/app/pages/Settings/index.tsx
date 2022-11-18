@@ -107,16 +107,11 @@ const Settings = () => {
             value: formData.instagram,
             traitType: 'string',
           },
-          {
-            key: 'app',
-            value: config.APP_NAME_FOR_LENS_API,
-            traitType: 'string',
-          },
         ],
         version: '1.0.0',
         metadata_id: uuidv4(),
         createdOn: new Date(),
-        appId: config.APP_NAME_FOR_LENS_API,
+        appId: config.appNameForLensApi,
       };
       // toast.success('Submitting Profile');
 
@@ -151,8 +146,8 @@ const Settings = () => {
         // (await indexerResult) === true && console.log('indexerResult');
         toast.promise(indexerResult, {
           loading: 'Indexing...',
-          success: <b>Profile Updated!</b>,
-          error: <b>Could not update.</b>,
+          success: 'Profile updated',
+          error: 'Could not update',
         });
         // toast.success('Profile Updated');
 
@@ -360,9 +355,9 @@ const Settings = () => {
                   register={register}
                   required
                 />
-                {errors.instagram && errors.instagram.type === 'pattern' && (
+                {/* {errors.instagram && errors.instagram.type === 'pattern' && (
                   <p className={errorMessageClassName}>Enter your Instagram profile URL</p>
-                )}
+                )} */}
                 {errors.instagram && errors.instagram.type === 'required' && (
                   <p className={errorMessageClassName}>Enter your Instagram profile URL</p>
                 )}

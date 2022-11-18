@@ -4,7 +4,7 @@ export const privacy_policy_data = {
   main_heading: 'PRIVACY POLICY',
   main_paragraph: 'Please read these Terms carefully, and contact us if you have any questions.',
   updated_date: 'This document was last updated on November 9, 2022',
-  updated_paragraph: `{This Privacy Policy governs the manner in which ${config.APP_NAME} collects, uses, maintains, and discloses information collected from users (each, a "User") of the www.F3RN.xyz website ("Site"). This privacy policy applies to the Site and all products and services offered by ${config.APP_NAME}.}`,
+  updated_paragraph: `{This Privacy Policy governs the manner in which ${config.appName} collects, uses, maintains, and discloses information collected from users (each, a "User") of the www.F3RN.xyz website ("Site"). This privacy policy applies to the Site and all products and services offered by ${config.appName}.}`,
   personal: 'Personal identification information',
   personal_paragraph:
     'We may collect personal identification information from Users in a variety of ways, including, but not limited to, when Users visit our site, subscribe to the newsletter, and in connection with other activities, services, features, or resources we make available on our Site. Users may visit our Site anonymously. We will collect personal identification information from Users only if they voluntarily submit such information to us. Users can always refuse to supply personally identification information, except that it may prevent them from engaging in certain Site related activities.',
@@ -18,7 +18,7 @@ export const privacy_policy_data = {
     'Our Site may use "cookies" to enhance User experience. User\'s web browser places cookies on their hard drive for record-keeping purposes and sometimes to track information about them. Users may choose to set their web browser to refuse cookies or to alert you when cookies are being sent. If they do so, note that some parts of the Site may not function properly. ',
 
   collected_information: 'How we use collected information',
-  collected_information_paragraph: `{${config.APP_NAME} may collect and use Users personal information for the following purposes: }`,
+  collected_information_paragraph: `{${config.appName} may collect and use Users personal information for the following purposes: }`,
   collected_information_points: [
     'To run a promotion, contest, survey or other Site feature ',
     'To send Users information they agreed to receive about topics we think will be of interest to them.',
@@ -39,7 +39,7 @@ export const privacy_policy_data = {
     "Users may find advertising or other content on our Site that link to the sites and services of our partners, suppliers, advertisers, sponsors, licensors, and other third parties. We do not control the content or links that appear on these sites and are not responsible for the practices employed by websites linked to or from our Site. In addition, these sites or services, including their content and links, may be constantly changing. These sites and services may have their own privacy policies and customer service policies. Browsing and interaction on any other website, including websites which have a link to our Site, is subject to that website's own terms and policies.",
 
   change_privacy_policy: 'Changes to this privacy policy',
-  change_privacy_policy_paragraph: `{${config.APP_NAME} has the discretion to update this privacy policy at any time. When we do, we will revise the updated date at the top of this page. We encourage Users to frequently check this page for any changes to stay informed about how we are helping to protect the personal information we collect. You acknowledge and agree that it is your responsibility to review this privacy policy periodically and become aware of modifications.}`,
+  change_privacy_policy_paragraph: `{${config.appName} has the discretion to update this privacy policy at any time. When we do, we will revise the updated date at the top of this page. We encourage Users to frequently check this page for any changes to stay informed about how we are helping to protect the personal information we collect. You acknowledge and agree that it is your responsibility to review this privacy policy periodically and become aware of modifications.}`,
 
   acceptance_terms: 'Your acceptance of these terms',
   acceptance_terms_paragarph:

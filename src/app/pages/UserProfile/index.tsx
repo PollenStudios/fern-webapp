@@ -33,7 +33,7 @@ function UserProfile() {
     publicationTypes: [PublicationTypes.Post],
     profileId: id,
     limit: 10,
-    sources: [config.APP_NAME_FOR_LENS_API],
+    sources: [config.appNameForLensApi],
     metadata: { mainContentFocus: [PublicationMainFocus.Image] },
   };
   const reactionRequest = { profileId: id };

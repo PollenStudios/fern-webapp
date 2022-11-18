@@ -11,7 +11,7 @@ export const POLYGON_MUMBAI = {
   rpcUrls: { default: 'https://rpc-mumbai.maticvigil.com' },
 };
 
-// const networkData = getNetworkDetails(process.env.netow)
+// const networkData = getNetworkDetails(process.env.network)
 
 // getNetworkDetails = () =>{
 
@@ -31,9 +31,9 @@ const config = {
   alchemyMainRpc: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_KEY}`,
   alchemyMumbaiRpc: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_KEY}`,
   public_Key: process.env.REACT_APP_BACKEND_PUBLIC_KEY,
-  APP_NAME: process.env.REACT_APP_APP_NAME,
-  APP_NAME_FOR_LENS_API: process.env.REACT_APP_APP_NAME_TO_GET_DATA_FROM_LENS,
-  CHAIN_ID: process.env.REACT_APP_IS_MAINNET ? POLYGON_MAINNET.id : POLYGON_MUMBAI.id,
+  appName: process.env.REACT_APP_APP_NAME,
+  appNameForLensApi: process.env.REACT_APP_APP_NAME_TO_GET_DATA_FROM_LENS,
+  chainId: process.env.REACT_APP_IS_MAINNET ? POLYGON_MAINNET.id : POLYGON_MUMBAI.id,
 };
 export const PageRoutes = {
   HOMEPAGE: '/',
