@@ -247,23 +247,21 @@ const WalletProvider = ({ children }: any) => {
     }
   };
 
-  useEffect(() => {
-    // handleAutoConnectWallet();
-  }, []);
+  const logout = () => {
+    dispatchIsLoggedIn({ type: 'success', payload: false });
+    dispatchCurrentProfile({ type: 'success', payload: {} });
+    clearStorage();
+    navigate('/');
+  };
+
   useEffect(() => {
     walletProvider.current.on('accountsChanged', () => {
-      dispatchIsLoggedIn({ type: 'success', payload: false });
-      // clearStorage();
-      localStorage.clear();
-      navigate('/');
+      logout();
     });
   }, [walletProvider.current.selectedAddress]);
   useEffect(() => {
     walletProvider.current.on('chainChanged', () => {
-      dispatchIsLoggedIn({ type: 'success', payload: false });
-      // clearStorage();
-      localStorage.clear();
-      navigate('/');
+      logout();
     });
   }, [walletProvider.current.chainId]);
   return (
