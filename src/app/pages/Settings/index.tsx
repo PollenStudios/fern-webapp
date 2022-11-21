@@ -42,6 +42,15 @@ const token = localStorage.getItem('backendToken');
 // };
 
 const Settings = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isDirty },
+    setValue,
+  } = useForm({
+    mode: 'onBlur',
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const {
@@ -131,15 +140,6 @@ const Settings = () => {
       );
     }
   }, [currentProfile, account]);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm({
-    mode: 'onBlur',
-  });
 
   const [updateProfileViaDispatcher] = useMutation(CreateSetProfileMetadataViaDispatcherDocument, {
     onCompleted: data => {
@@ -257,6 +257,7 @@ const Settings = () => {
   if (userProfileDataLoader) {
     return <OverlayLoader />;
   }
+
   return (
     <div className="main-container mb-10 mt-24">
       {isLoading && <OverlayLoader />}
@@ -440,8 +441,8 @@ const Settings = () => {
             <div className="mt-4">
               <Button
                 variant="primary"
-                disabled={isLoading}
-                additionalClasses={isLoading ? 'cursor-not-allowed' : ''}
+                disabled={isLoading || !isDirty}
+                additionalClasses={isLoading || !isDirty ? 'cursor-not-allowed' : ''}
                 name={isLoading ? 'Saving...' : 'Save'}
                 type="submit"
               />
