@@ -1,6 +1,5 @@
 import { useMutation } from '@apollo/client';
-import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { WalletContext } from 'store/WalletContextProvider';
 import {
@@ -9,21 +8,17 @@ import {
   Mutation,
   ProfilesDocument,
 } from 'graphql/generated/types';
-import { Button } from 'app/components/atoms/Buttons';
-import { Input } from 'app/components/atoms/FormElements';
-import ImageUploader, { ImagePreviewer } from 'app/components/atoms/UploadFiles';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import generateNonce, { createUser } from 'utils/generateNonce';
 import Client from 'utils/apolloClient';
 import getSignature from 'utils/getSignature';
-import { ethers } from 'ethers';
 import useBroadcast from 'hooks/useBroadcast';
 import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
 
-import OverlayLoader from 'app/components/OverlayLoader';
-import config, { PageRoutes } from 'utils/config';
+import { PageRoutes } from 'utils/config';
 import { useSignTypedData } from 'wagmi';
+import View from './view';
 
 const NewProfile = () => {
   const {
@@ -38,15 +33,11 @@ const NewProfile = () => {
 
   const {
     accountState: { account },
-    isLoggedInState: { isLoggedin },
-    currentProfileState: { currentProfile },
     dispatchCurrentProfile,
     dispatchIsLoggedIn,
   }: any = useContext(WalletContext);
   const navigate = useNavigate();
 
-  // const [] = useMutation();
-  // const [getProfile] = useLazyQuery(ProfileDocument);
   const getAllProfiles = async (request: any) => {
     const result = await Client.query({
       query: ProfilesDocument,
@@ -73,40 +64,7 @@ const NewProfile = () => {
     return result.data!.createProfile;
   };
 
-  const [createSetProfileImageURITypedData] = useMutation<Mutation>(CreateSetProfileImageUriTypedDataDocument, {
-    // onCompleted: async ({ createSetProfileImageURITypedData }) => {
-    //   try {
-    //     console.log('createSetProfileImageURITypedData', createSetProfileImageURITypedData);
-    //     const { id, typedData } = createSetProfileImageURITypedData;
-    //     // const signatureTyped = getSignature(typedData);
-    //     // const provider = new ethers.providers.Web3Provider(window.ethereum);
-    //     // const signer = provider.getSigner();
-    //     const signature = await signTypedDataAsync(getSignature(typedData));
-    //     // const signature = await signer._signTypedData(
-    //     //   signatureTyped.domain,
-    //     //   signatureTyped.types,
-    //     //   signatureTyped.value,
-    //     // );
-    //     const broadcastResult = await broadcast({ request: { id, signature } });
-    //     if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
-    //       const txId = broadcastResult.data?.broadcast?.txId!;
-    //       const txHash = broadcastResult.data?.broadcast?.txHash!;
-    //       const indexingResult = await pollUntilIndexed({ txHash: broadcastResult.txHash });
-    //       console.log('indexerResult ', indexingResult);
-    //       const profiles = await getAllProfiles({
-    //         profileId: currentProfile.id,
-    //       });
-    //       dispatchCurrentProfile({ type: 'success', payload: profiles.items[0] });
-    //     }
-    //     if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
-    //       console.error('create profile metadata via broadcast: failed', broadcastResult);
-    //     } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // },
-    // onError
-  });
+  const [createSetProfileImageURITypedData] = useMutation<Mutation>(CreateSetProfileImageUriTypedDataDocument);
 
   const uploadImageToLens = async (image: string, id: string) => {
     try {
@@ -120,7 +78,6 @@ const NewProfile = () => {
           request,
         },
       });
-      console.log('data', data);
       return {
         id: data?.createSetProfileImageURITypedData?.id,
         typedData: data?.createSetProfileImageURITypedData?.typedData,
@@ -131,9 +88,8 @@ const NewProfile = () => {
       return error;
     }
   };
-  const errorMessageClassName = 'paragraph-3 mt-1 text-red-600';
 
-  const onSubmit = async (formData: any) => {
+  const onSubmit = async (formData: { [key: string]: string }) => {
     try {
       setIsLoading(true);
       const request = {
@@ -142,7 +98,6 @@ const NewProfile = () => {
       };
       const createProfileResult = await createProfile(request);
       if (createProfileResult?.__typename === 'RelayError') {
-        // toast.error('Handle  already taken try something else');
         setIsHandleExist(true);
         setIsLoading(false);
         return 0;
@@ -156,127 +111,77 @@ const NewProfile = () => {
         console.log('indexingResult', await indexingResult);
 
         const allProfiles = await getAllProfiles({ ownedBy: account });
-
         const firstProfile = allProfiles.items[0];
+
         const formBodyData = new FormData();
         formBodyData.append('username', firstProfile.handle);
         formBodyData.append('wallet_address', account);
         formBodyData.append('lens_profile', firstProfile.id);
         formBodyData.append('profile_pic', avatar ?? '');
+
         const createUserResult: any = await createUser(formBodyData);
-
         toast.success('User profile created');
-        // const createUserResult = await createUser(formData.handle, account, allProfiles.items[0].id);
         const generateNonceResult = await generateNonce(firstProfile.handle, account, firstProfile.id);
+        if (generateNonceResult.token) {
+          try {
+            const { id, typedData } = await uploadImageToLens(createUserResult.data.profile_pic, firstProfile.id);
+            const signature = await signTypedDataAsync(getSignature(typedData));
+            const broadcastResult = await broadcast({ request: { id, signature } });
 
-        const { id, typedData } = await uploadImageToLens(createUserResult.data.profile_pic, firstProfile.id);
-        const signature = await signTypedDataAsync(getSignature(typedData));
-        const broadcastResult = await broadcast({ request: { id, signature } });
-        // console.log('broadcastResult', broadcastResult);
-        if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
-          const indexingResult = pollUntilIndexed({ txHash: broadcastResult?.data?.broadcast?.txHash });
-          toast.promise(indexingResult, {
-            loading: 'Creating...',
-            success: 'Profile Created',
-            error: 'Could not created',
-          });
-          console.log('indexerResult ', await indexingResult);
-          const profiles = await getAllProfiles({
-            // profileId: currentProfile.id,
-            ownedBy: account,
-          });
-          dispatchCurrentProfile({ type: 'success', payload: profiles.items[0] });
+            if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
+              const indexingResult = pollUntilIndexed({ txHash: broadcastResult?.data?.broadcast?.txHash });
+              toast.promise(indexingResult, {
+                loading: 'Creating...',
+                success: 'Profile Created',
+                error: 'Could not created',
+              });
+              console.log('indexerResult ', await indexingResult);
+
+              const profiles = await getAllProfiles({
+                ownedBy: account,
+              });
+              dispatchCurrentProfile({ type: 'success', payload: profiles.items[0] });
+            }
+            if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
+              console.error('create profile metadata via broadcast: failed', broadcastResult);
+            } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
+
+            dispatchIsLoggedIn({ type: 'success', payload: true });
+            dispatchCurrentProfile({ type: 'success', payload: allProfiles.items[0] });
+          } catch ({ message }) {
+            console.log('error', message);
+          } finally {
+            navigate(PageRoutes.DISCOVERY);
+          }
         }
-        if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
-          console.error('create profile metadata via broadcast: failed', broadcastResult);
-        } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
-
-        dispatchIsLoggedIn({ type: 'success', payload: true });
-
-        dispatchCurrentProfile({ type: 'success', payload: allProfiles.items[0] });
-
-        setIsLoading(false);
-        navigate(PageRoutes.DISCOVERY);
       }
     } catch (error: any) {
       console.log(error);
       toast.error(error.message);
-      setIsLoading(false);
       dispatchIsLoggedIn({ type: 'error', payload: error });
       navigate(PageRoutes.ERROR_PAGE);
+    } finally {
+      setIsLoading(false);
     }
   };
-  // useEffect(() => {
-  //   if (currentProfile?.handle) {
-  //     navigate(PageRoutes.SETTINGS);
-  //   }
-  // }, [currentProfile]);
+  useEffect(() => {
+    if (localStorage.getItem('backendToken')) {
+      navigate(PageRoutes.DISCOVERY);
+    }
+  }, [localStorage.getItem('backendToken')]);
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      encType="multipart/form-data"
-      className="flex flex-col gap-4 my-28 h-[69.5vh]  justify-center w-full md:w-[50vw] xl:w-[40vw] main-container"
-    >
-      {isLoading && <OverlayLoader />}
-      <p className="heading-5 pb-2 border-b border-primary">Create new profile</p>
-      <div className="flex flex-col gap-6 ">
-        {/* <div className=" flex justify-center">
-          <ImageUploader
-            parentDivClassName=" w-60 h-60 hover:bg-gray-400"
-            imageClassName="object-cover"
-            maximumFiles={1}
-            images={avatar}
-            setImages={setAvatar}
-          />
-        </div> */}
-        <div className="flex flex-col gap-4">
-          <label htmlFor={'image'} className="heading-6  mt-5">
-            Profile image *
-          </label>
-          <div className="flex flex-col gap-4">
-            <ImagePreviewer profileImage imagePreview={avatar && URL.createObjectURL(avatar)} />
-
-            <input
-              name="image"
-              className=""
-              type="file"
-              accept=".png, .jpg, .jpeg, .gif"
-              onChange={e => {
-                e.target.files && setAvatar(e.target.files[0]);
-              }}
-            />
-          </div>
-        </div>
-        <div>
-          <Input
-            type="text"
-            name="handle"
-            label="User handle *"
-            placeholder="Enter your handle"
-            register={register}
-            onChange={() => {
-              setIsHandleExist(false);
-            }}
-            required
-            pattern={/^[a-z0-9_]{5,30}$/}
-          />
-          {errors.handle && errors.handle.type === 'pattern' && (
-            <p className={errorMessageClassName}>Check handle format</p>
-          )}
-          {isHandleExist && <p className={errorMessageClassName}>Handle already taken try something else</p>}
-        </div>
-      </div>
-      <div className="mt-10">
-        <Button
-          variant="primary"
-          disabled={isLoading}
-          additionalClasses={isLoading ? 'cursor-not-allowed' : ''}
-          name={isLoading ? 'Creating...' : 'Create'}
-          type="submit"
-        />
-      </div>
-    </form>
+    <View
+      avatar={avatar}
+      handleSubmit={handleSubmit}
+      register={register}
+      onSubmit={onSubmit}
+      isLoading={isLoading}
+      setAvatar={setAvatar}
+      isHandleExist={isHandleExist}
+      errors={errors}
+      setIsHandleExist={setIsHandleExist}
+    />
   );
 };
 
