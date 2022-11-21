@@ -11,8 +11,7 @@ export interface IInput {
   rows?: number;
   disabled?: boolean;
   onChange?: any;
-  mark?: string;
-  prefix?: string;
+  prefix?: 'https';
 }
 
 export interface ISearch {

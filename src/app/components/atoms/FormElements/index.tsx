@@ -9,7 +9,6 @@ const tailwindCssClass = {
 
 export const Input = ({
   label,
-  mark,
   prefix,
   type,
   name,
@@ -18,13 +17,13 @@ export const Input = ({
   required,
   pattern,
   disabled,
-  onChange,
+  onChange, //we are using onChange for handle validation on sign up page,if user type handle name which exist on lens, so we will show error of same handle exist and when user change it so onchange we setishandlestate false;
 }: IInput) => {
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor={name} className="heading-6 ">
         {label}
-        {mark && <span className="pl-1 text-red-600">{mark}</span>}
+        {required && <span className="pl-1 text-red-600">*</span>}
       </label>
       <div className="flex">
         {prefix && (

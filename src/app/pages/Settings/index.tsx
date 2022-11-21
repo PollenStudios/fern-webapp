@@ -45,7 +45,7 @@ const Settings = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty }, //isDirty gives boolean value ->if input field value is changed by user then isDirty will automatically becomes true otherwise it will be false.
     setValue,
   } = useForm({
     mode: 'onBlur',
@@ -315,7 +315,6 @@ const Settings = () => {
                   type="text"
                   name="firstName"
                   label="Name"
-                  mark="*"
                   placeholder="Enter your name"
                   register={register}
                   required
@@ -333,10 +332,10 @@ const Settings = () => {
                   type="text"
                   name="userName"
                   label="User name"
-                  mark="*"
                   placeholder="Enter your user name"
                   register={register}
                   disabled
+                  required
                 />
                 {/* {errors.userName && errors.userName.type === 'pattern' && (
                   <p className={errorMessageClassName}>Enter your user name</p>
@@ -349,7 +348,6 @@ const Settings = () => {
                   type="email"
                   name="email"
                   label="Email"
-                  mark="*"
                   placeholder="Enter your email "
                   register={register}
                   required
@@ -398,7 +396,6 @@ const Settings = () => {
                   type="text"
                   name="instagram"
                   label="Instagram"
-                  mark="*"
                   prefix="https"
                   placeholder="www.instagram.com/f3rn/"
                   pattern={URL_REGEX}
