@@ -324,9 +324,9 @@ const Settings = () => {
                 {errors.firstName && errors.firstName.type === 'pattern' && (
                   <p className={errorMessageClassName}>Enter your name correctly</p>
                 )}
-                {/* {errors.firstName && errors.firstName.type === 'required' && (
+                {errors.firstName && errors.firstName.type === 'required' && (
                   <p className={errorMessageClassName}>Enter your name</p>
-                )} */}
+                )}
               </div>
               <div>
                 <Input
@@ -357,6 +357,9 @@ const Settings = () => {
                 />
                 {errors.email && errors.email.type === 'pattern' && (
                   <p className={errorMessageClassName}>Enter your correct email id</p>
+                )}
+                {errors.email && errors.email.type === 'required' && (
+                  <p className={errorMessageClassName}>Enter your email id</p>
                 )}
               </div>
               {/* <p
