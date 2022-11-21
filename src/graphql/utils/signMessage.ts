@@ -8,7 +8,6 @@ export const signMessage = async (message: string) => {
     const signature = await signer.signMessage(message);
     return signature;
   } catch (error) {
-    console.log(error);
     toast.error('Rejected');
   }
 };
