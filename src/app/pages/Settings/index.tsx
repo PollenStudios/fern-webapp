@@ -24,6 +24,7 @@ import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
 import { getBackendProfile } from 'utils/generateNonce';
 import OverlayLoader from 'app/components/OverlayLoader';
 import { isEmpty } from 'utils/utility';
+import { EMAIL_REGEX, NAME_REGEX, URL_REGEX } from 'utils/constant';
 
 const token = localStorage.getItem('backendToken');
 
@@ -313,7 +314,7 @@ const Settings = () => {
                   placeholder="Enter your name"
                   register={register}
                   required
-                  pattern={/^[a-zA-Z0-9 ]*$/}
+                  pattern={NAME_REGEX}
                 />
                 {errors.firstName && errors.firstName.type === 'pattern' && (
                   <p className={errorMessageClassName}>Enter your name correctly</p>
@@ -347,9 +348,7 @@ const Settings = () => {
                   placeholder="Enter your email "
                   register={register}
                   required
-                  pattern={
-                    /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                  }
+                  pattern={EMAIL_REGEX}
                 />
                 {errors.email && errors.email.type === 'pattern' && (
                   <p className={errorMessageClassName}>Enter your correct email id</p>
@@ -374,27 +373,27 @@ const Settings = () => {
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <Input
-                  type="url"
+                  type="text"
                   name="website"
                   label="Website"
-                  placeholder="http or https://www.xyz.com"
+                  placeholder="www.f3rn.com"
                   register={register}
-                  // required
+                  pattern={URL_REGEX}
+                  prefix="https"
                 />
                 {errors.website && errors.website.type === 'pattern' && (
                   <p className={errorMessageClassName}>Enter your valid website URL</p>
                 )}
-                {/* {errors.website && errors.website.type === 'required' && (
-                  <p className={errorMessageClassName}>Enter your website URL</p>
-                )} */}
               </div>
               <div>
                 <Input
-                  type="url"
+                  type="text"
                   name="instagram"
                   label="Instagram"
                   mark="*"
+                  prefix="https"
                   placeholder="www.instagram.com/f3rn/"
+                  pattern={URL_REGEX}
                   register={register}
                   required
                 />
@@ -407,14 +406,14 @@ const Settings = () => {
               </div>
             </div>
             <div className="grid md:grid-cols-2 gap-4">
-              {/* <Input type='text' name='twitter' label='Twitter' placeholder='Enter your Twitter id' register={register} required /> */}
               <Input
-                type="url"
+                type="text"
                 name="twitter"
                 label="Twitter"
+                prefix="https"
                 placeholder="www.twitter.com/f3rnapp/"
                 register={register}
-                // required
+                pattern={URL_REGEX}
               />
             </div>
             {errors.instagram && errors.instagram.type === 'pattern' && (

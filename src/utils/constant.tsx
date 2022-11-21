@@ -1,5 +1,16 @@
 import config from './config';
 
+//Regex
+export const URL_REGEX =
+  /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[\da-z]+([.\-][\da-z]+)*\.[a-z]{2,63}(:\d{1,5})?(\/.*)?$/;
+
+export const EMAIL_REGEX =
+  /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+export const HANDLE_REGEX = /^[\da-z]+$/;
+
+export const NAME_REGEX = /^[a-zA-Z0-9 ]*$/;
+
 //privacy policy data
 
 export const PRIVACY_POLICY_DATA = {

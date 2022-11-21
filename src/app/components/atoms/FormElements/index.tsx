@@ -10,6 +10,7 @@ const tailwindCssClass = {
 export const Input = ({
   label,
   mark,
+  prefix,
   type,
   name,
   placeholder,
@@ -25,19 +26,25 @@ export const Input = ({
         {label}
         {mark && <span className="pl-1 text-red-600">{mark}</span>}
       </label>
-
-      <input
-        {...register(name, { required, pattern: { value: pattern } })}
-        type={type}
-        id={name}
-        name={name}
-        disabled={disabled}
-        onChange={onChange}
-        placeholder={placeholder}
-        className={`${tailwindCssClass.inputClass} px-2 py-3 ${
-          disabled ? 'bg-gray-30 cursor-not-allowed' : 'bg-white'
-        }`}
-      />
+      <div className="flex">
+        {prefix && (
+          <span className="paragraph-3 rounded-sm border-gray-20  border border-r-0 inline-flex items-center px-3 text-gray-500 bg-gray-100 ">
+            {prefix}
+          </span>
+        )}
+        <input
+          {...register(name, { required, pattern: { value: pattern } })}
+          type={type}
+          id={name}
+          name={name}
+          disabled={disabled}
+          onChange={onChange}
+          placeholder={placeholder}
+          className={`${tailwindCssClass.inputClass} px-2 py-3 w-full ${
+            disabled ? 'bg-gray-30 cursor-not-allowed' : 'bg-white'
+          }`}
+        />
+      </div>
     </div>
   );
 };

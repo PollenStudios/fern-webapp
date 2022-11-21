@@ -12,6 +12,7 @@ export interface IInput {
   disabled?: boolean;
   onChange?: any;
   mark?: string;
+  prefix?: string;
 }
 
 export interface ISearch {
