@@ -24,6 +24,7 @@ import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
 import { getBackendProfile } from 'utils/generateNonce';
 import OverlayLoader from 'app/components/OverlayLoader';
 import { isEmpty } from 'utils/utility';
+import { EMAIL_REGEX, NAME_REGEX, URL_REGEX } from 'utils/constant';
 
 const token = localStorage.getItem('backendToken');
 
@@ -41,6 +42,15 @@ const token = localStorage.getItem('backendToken');
 // };
 
 const Settings = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isDirty }, //isDirty gives boolean value ->if input field value is changed by user then isDirty will automatically becomes true otherwise it will be false.
+    setValue,
+  } = useForm({
+    mode: 'onBlur',
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const {
@@ -57,57 +67,61 @@ const Settings = () => {
 
   const updateProfile = async (request: CreatePublicSetProfileMetadataUriRequest) => {
     dispatchCurrentProfile({ loading: true, currentProfile: {} });
-
-    const result = await createSetProfileMetadataTypedData({
-      variables: {
-        request,
-      },
-    });
-
-    const typedData = result.data?.createSetProfileMetadataTypedData.typedData;
-
-    const signatureTyped = getSignature(typedData);
-    const signature = await signTypedDataAsync(signatureTyped);
-    const broadcastResult = await broadcast({
-      variables: {
-        request: {
-          id: result?.data?.createSetProfileMetadataTypedData.id,
-          signature: signature,
+    try {
+      const result = await createSetProfileMetadataTypedData({
+        variables: {
+          request,
         },
-      },
-    });
-
-    if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
-      const txId = broadcastResult.data?.broadcast?.txId!;
-
-      const indexerResult = pollUntilIndexed({ txId });
-
-      toast.promise(indexerResult, {
-        loading: 'Indexing...',
-        success: 'Please refresh the page now, to see updated data',
-        error: 'Could not update',
       });
 
-      const getProfileResult = await getBackendProfile(token);
+      const typedData = result.data?.createSetProfileMetadataTypedData.typedData;
 
-      const profile = await getProfile({
+      const signatureTyped = getSignature(typedData);
+      const signature = await signTypedDataAsync(signatureTyped);
+      const broadcastResult = await broadcast({
         variables: {
           request: {
-            profileId: currentProfile.id,
+            id: result?.data?.createSetProfileMetadataTypedData.id,
+            signature: signature,
           },
         },
       });
 
-      dispatchCurrentProfile({
-        type: 'success',
-        payload: { ...profile.data?.profile, artistApprovalStatus: getProfileResult?.artist_approval_status },
-      });
-    }
+      if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
+        const txId = broadcastResult.data?.broadcast?.txId!;
 
-    if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
-      console.error('create profile metadata via broadcast: failed', broadcastResult);
-    } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
-    setIsLoading(false);
+        const indexerResult = pollUntilIndexed({ txId });
+
+        toast.promise(indexerResult, {
+          loading: 'Indexing...',
+          success: 'Please refresh the page now, to see updated data',
+          error: 'Could not update',
+        });
+
+        const getProfileResult = await getBackendProfile(token);
+
+        const profile = await getProfile({
+          variables: {
+            request: {
+              profileId: currentProfile.id,
+            },
+          },
+        });
+
+        dispatchCurrentProfile({
+          type: 'success',
+          payload: { ...profile.data?.profile, artistApprovalStatus: getProfileResult?.artist_approval_status },
+        });
+      }
+
+      if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
+        console.error('create profile metadata via broadcast: failed', broadcastResult);
+      } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
+      setIsLoading(false);
+    } catch ({ message }) {
+      toast.error(`${message}`);
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -130,15 +144,6 @@ const Settings = () => {
       );
     }
   }, [currentProfile, account]);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm({
-    mode: 'onBlur',
-  });
 
   const [updateProfileViaDispatcher] = useMutation(CreateSetProfileMetadataViaDispatcherDocument, {
     onCompleted: data => {
@@ -256,6 +261,7 @@ const Settings = () => {
   if (userProfileDataLoader) {
     return <OverlayLoader />;
   }
+
   return (
     <div className="main-container mb-10 mt-24">
       {isLoading && <OverlayLoader />}
@@ -308,14 +314,14 @@ const Settings = () => {
                 <Input
                   type="text"
                   name="firstName"
-                  label="Name *"
+                  label="Name"
                   placeholder="Enter your name"
                   register={register}
                   required
-                  pattern={/^[a-zA-Z ]*$/}
+                  pattern={NAME_REGEX}
                 />
                 {errors.firstName && errors.firstName.type === 'pattern' && (
-                  <p className={errorMessageClassName}>Enter your name</p>
+                  <p className={errorMessageClassName}>Enter your name correctly</p>
                 )}
                 {errors.firstName && errors.firstName.type === 'required' && (
                   <p className={errorMessageClassName}>Enter your name</p>
@@ -325,10 +331,11 @@ const Settings = () => {
                 <Input
                   type="text"
                   name="userName"
-                  label="User name *"
+                  label="User name"
                   placeholder="Enter your user name"
                   register={register}
                   disabled
+                  required
                 />
                 {/* {errors.userName && errors.userName.type === 'pattern' && (
                   <p className={errorMessageClassName}>Enter your user name</p>
@@ -340,16 +347,17 @@ const Settings = () => {
                 <Input
                   type="email"
                   name="email"
-                  label="Email *"
+                  label="Email"
                   placeholder="Enter your email "
                   register={register}
                   required
-                  pattern={
-                    /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                  }
+                  pattern={EMAIL_REGEX}
                 />
                 {errors.email && errors.email.type === 'pattern' && (
                   <p className={errorMessageClassName}>Enter your correct email id</p>
+                )}
+                {errors.email && errors.email.type === 'required' && (
+                  <p className={errorMessageClassName}>Enter your email id</p>
                 )}
               </div>
               {/* <p
@@ -371,48 +379,51 @@ const Settings = () => {
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <Input
-                  type="url"
+                  type="text"
                   name="website"
                   label="Website"
-                  placeholder="http or https://www.xyz.com"
+                  placeholder="www.f3rn.com"
                   register={register}
-                  // required
+                  pattern={URL_REGEX}
+                  prefix="https"
                 />
                 {errors.website && errors.website.type === 'pattern' && (
-                  <p className={errorMessageClassName}>Enter your website URL</p>
+                  <p className={errorMessageClassName}>Enter your valid website URL</p>
                 )}
-                {/* {errors.website && errors.website.type === 'required' && (
-                  <p className={errorMessageClassName}>Enter your website URL</p>
-                )} */}
               </div>
               <div>
                 <Input
-                  type="url"
+                  type="text"
                   name="instagram"
-                  label="Instagram *"
-                  placeholder="http or https://www.instagram.com"
+                  label="Instagram"
+                  prefix="https"
+                  placeholder="www.instagram.com/f3rn/"
+                  pattern={URL_REGEX}
                   register={register}
                   required
                 />
-                {/* {errors.instagram && errors.instagram.type === 'pattern' && (
-                  <p className={errorMessageClassName}>Enter your Instagram profile URL</p>
-                )} */}
+                {errors.instagram && errors.instagram.type === 'pattern' && (
+                  <p className={errorMessageClassName}>Enter your valid Instagram profile URL</p>
+                )}
                 {errors.instagram && errors.instagram.type === 'required' && (
                   <p className={errorMessageClassName}>Enter your Instagram profile URL</p>
                 )}
               </div>
             </div>
             <div className="grid md:grid-cols-2 gap-4">
-              {/* <Input type='url' name='twitter' label='Twitter' placeholder='Enter your Twitter id' register={register} required /> */}
               <Input
-                type="url"
+                type="text"
                 name="twitter"
                 label="Twitter"
-                placeholder="http or https://www.twitter.com"
+                prefix="https"
+                placeholder="www.twitter.com/f3rnapp/"
                 register={register}
-                // required
+                pattern={URL_REGEX}
               />
             </div>
+            {errors.instagram && errors.instagram.type === 'pattern' && (
+              <p className={errorMessageClassName}>Enter your valid Twitter profile URL</p>
+            )}
             {/* <div className='grid md:grid-cols-2 gap-4'>
             <MultiSelect
               selectedItems={selectedItems}
@@ -434,8 +445,8 @@ const Settings = () => {
             <div className="mt-4">
               <Button
                 variant="primary"
-                disabled={isLoading}
-                additionalClasses={isLoading ? 'cursor-not-allowed' : ''}
+                disabled={isLoading || !isDirty}
+                additionalClasses={isLoading || !isDirty ? 'cursor-not-allowed' : ''}
                 name={isLoading ? 'Saving...' : 'Save'}
                 type="submit"
               />

@@ -1,6 +1,19 @@
 import config from './config';
 
-export const privacy_policy_data = {
+//Regex
+export const URL_REGEX =
+  /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[\da-z]+([.\-][\da-z]+)*\.[a-z]{2,63}(:\d{1,5})?(\/.*)?$/;
+
+export const EMAIL_REGEX =
+  /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+export const HANDLE_REGEX = /^[\da-z]+$/;
+
+export const NAME_REGEX = /^[a-zA-Z0-9 ]*$/;
+
+//privacy policy data
+
+export const PRIVACY_POLICY_DATA = {
   main_heading: 'PRIVACY POLICY',
   main_paragraph: 'Please read these Terms carefully, and contact us if you have any questions.',
   updated_date: 'This document was last updated on November 9, 2022',

@@ -7,24 +7,43 @@ const tailwindCssClass = {
   inputClass: 'paragraph-3 rounded-sm border-gray-20  border focus:border-gray-500 focus:ring-gray-100',
 };
 
-export const Input = ({ label, type, name, placeholder, register, required, pattern, disabled, onChange }: IInput) => {
+export const Input = ({
+  label,
+  prefix,
+  type,
+  name,
+  placeholder,
+  register,
+  required,
+  pattern,
+  disabled,
+  onChange, //we are using onChange for handle validation on sign up page,if user type handle name which exist on lens, so we will show error of same handle exist and when user change it so onchange we setishandlestate false;
+}: IInput) => {
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor={name} className="heading-6 ">
         {label}
+        {required && <span className="pl-1 text-red-600">*</span>}
       </label>
-      <input
-        {...register(name, { required, pattern: { value: pattern } })}
-        type={type}
-        id={name}
-        name={name}
-        disabled={disabled}
-        onChange={onChange}
-        placeholder={placeholder}
-        className={`${tailwindCssClass.inputClass} px-2 py-3 ${
-          disabled ? 'bg-gray-30 cursor-not-allowed' : 'bg-white'
-        }`}
-      />
+      <div className="flex">
+        {prefix && (
+          <span className="paragraph-3 rounded-sm border-gray-20  border border-r-0 inline-flex items-center px-3 text-gray-500 bg-gray-100 ">
+            {prefix}
+          </span>
+        )}
+        <input
+          {...register(name, { required, pattern: { value: pattern } })}
+          type={type}
+          id={name}
+          name={name}
+          disabled={disabled}
+          onChange={onChange}
+          placeholder={placeholder}
+          className={`${tailwindCssClass.inputClass} px-2 py-3 w-full ${
+            disabled ? 'bg-gray-30 cursor-not-allowed' : 'bg-white'
+          }`}
+        />
+      </div>
     </div>
   );
 };
