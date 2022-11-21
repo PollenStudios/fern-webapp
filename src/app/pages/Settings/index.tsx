@@ -252,7 +252,7 @@ const Settings = () => {
   };
 
   const errorMessageClassName = 'paragraph-3 mt-1 text-red-600';
-  console.log({ userProfileDataLoader });
+
   if (userProfileDataLoader) {
     return <OverlayLoader />;
   }
@@ -264,11 +264,8 @@ const Settings = () => {
         <p className="heading-5 border-b-4 pb-2 border-primary flex items-end">Edit Profile</p>
 
         <div className="mb-2 sm:mb-4 flex justify-end items-end">
-          {currentProfile?.artistApprovalStatus === null || 'NONE' ? (
-            <>
-              {console.log(currentProfile?.artistApprovalStatus)}
-              <Button onClick={SignUpForArtist} variant="outline" name="Sign up for Artist" type="button" />
-            </>
+          {currentProfile?.artistApprovalStatus === (null || 'NONE') ? (
+            <Button onClick={SignUpForArtist} variant="outline" name="Sign up for Artist" type="button" />
           ) : (
             currentProfile?.artistApprovalStatus === 'pending' && (
               <Button onClick={checkRequestStatus} variant="outline" name="Check Request Status" type="button" />
