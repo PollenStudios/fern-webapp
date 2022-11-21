@@ -1,18 +1,12 @@
 import ART_PREVIEW from 'Assets/Images/artPreview.png';
-import { ArrowsRightLeftIcon, ArrowLongRightIcon } from '@heroicons/react/24/outline';
-import { HeartIcon, ArrowLeftIcon } from '@heroicons/react/24/solid';
-
-import { TextArea } from 'app/components/atoms/FormElements';
-import { useForm } from 'react-hook-form';
+import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import { WalletContext } from 'store/WalletContextProvider';
 import { PublicationDocument } from 'graphql/generated/types';
 import { useQuery } from '@apollo/client';
-import FullPageLoader from 'app/components/FullPageLoader';
 import getIPFSLink from 'utils/getIPFSLink';
 import { PageRoutes } from 'utils/config';
-import { Button } from 'app/components/atoms/Buttons';
 import ArtPreviewSkelton from 'app/components/Skelton/ArtPreviewSkelton';
 
 const ArtPreviewScreen = () => {
@@ -31,8 +25,6 @@ const ArtPreviewScreen = () => {
     },
     skip: !id,
   });
-  console.log(data);
-  const { register } = useForm();
 
   useEffect(() => {
     window.scroll(0, 0);
@@ -42,7 +34,7 @@ const ArtPreviewScreen = () => {
       {loading ? (
         <ArtPreviewSkelton />
       ) : (
-        <div className="main-container md:min-h-[82.5vh] mt-24 mb-24 md:mb-auto md:mt-24">
+        <div className="main-container md:min-h-screen mt-24 mb-24 md:mb-auto md:mt-24">
           <div className="pt-2 pb-6  flex items-center gap-x-2 cursor-pointer" onClick={() => navigate(-1)}>
             <ArrowLeftIcon className="h-6 w-6" />
             <p className="heading-5">back</p>
