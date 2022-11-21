@@ -67,57 +67,61 @@ const Settings = () => {
 
   const updateProfile = async (request: CreatePublicSetProfileMetadataUriRequest) => {
     dispatchCurrentProfile({ loading: true, currentProfile: {} });
-
-    const result = await createSetProfileMetadataTypedData({
-      variables: {
-        request,
-      },
-    });
-
-    const typedData = result.data?.createSetProfileMetadataTypedData.typedData;
-
-    const signatureTyped = getSignature(typedData);
-    const signature = await signTypedDataAsync(signatureTyped);
-    const broadcastResult = await broadcast({
-      variables: {
-        request: {
-          id: result?.data?.createSetProfileMetadataTypedData.id,
-          signature: signature,
+    try {
+      const result = await createSetProfileMetadataTypedData({
+        variables: {
+          request,
         },
-      },
-    });
-
-    if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
-      const txId = broadcastResult.data?.broadcast?.txId!;
-
-      const indexerResult = pollUntilIndexed({ txId });
-
-      toast.promise(indexerResult, {
-        loading: 'Indexing...',
-        success: 'Please refresh the page now, to see updated data',
-        error: 'Could not update',
       });
 
-      const getProfileResult = await getBackendProfile(token);
+      const typedData = result.data?.createSetProfileMetadataTypedData.typedData;
 
-      const profile = await getProfile({
+      const signatureTyped = getSignature(typedData);
+      const signature = await signTypedDataAsync(signatureTyped);
+      const broadcastResult = await broadcast({
         variables: {
           request: {
-            profileId: currentProfile.id,
+            id: result?.data?.createSetProfileMetadataTypedData.id,
+            signature: signature,
           },
         },
       });
 
-      dispatchCurrentProfile({
-        type: 'success',
-        payload: { ...profile.data?.profile, artistApprovalStatus: getProfileResult?.artist_approval_status },
-      });
-    }
+      if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
+        const txId = broadcastResult.data?.broadcast?.txId!;
 
-    if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
-      console.error('create profile metadata via broadcast: failed', broadcastResult);
-    } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
-    setIsLoading(false);
+        const indexerResult = pollUntilIndexed({ txId });
+
+        toast.promise(indexerResult, {
+          loading: 'Indexing...',
+          success: 'Please refresh the page now, to see updated data',
+          error: 'Could not update',
+        });
+
+        const getProfileResult = await getBackendProfile(token);
+
+        const profile = await getProfile({
+          variables: {
+            request: {
+              profileId: currentProfile.id,
+            },
+          },
+        });
+
+        dispatchCurrentProfile({
+          type: 'success',
+          payload: { ...profile.data?.profile, artistApprovalStatus: getProfileResult?.artist_approval_status },
+        });
+      }
+
+      if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
+        console.error('create profile metadata via broadcast: failed', broadcastResult);
+      } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
+      setIsLoading(false);
+    } catch ({ message }) {
+      toast.error(`${message}`);
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
