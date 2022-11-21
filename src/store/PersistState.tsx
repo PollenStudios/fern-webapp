@@ -12,8 +12,6 @@ import { PageRoutes } from 'utils/config';
 import toast from 'react-hot-toast';
 // import { useLocation } from 'react-router-dom';
 
-const token = localStorage.getItem('backendToken');
-
 const PersistState = ({ children }: any) => {
   // const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -21,6 +19,7 @@ const PersistState = ({ children }: any) => {
 
   const [getProfiles] = useLazyQuery(UserProfilesDocument);
 
+  const token = localStorage.getItem('backendToken');
   const {
     setIsLoading,
     isLoggedIn,

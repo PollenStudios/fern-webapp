@@ -26,8 +26,6 @@ import OverlayLoader from 'app/components/OverlayLoader';
 import { isEmpty } from 'utils/utility';
 import { EMAIL_REGEX, NAME_REGEX, URL_REGEX } from 'utils/constant';
 
-const token = localStorage.getItem('backendToken');
-
 // const artistStatus = (status: string) => {
 //   switch (status) {
 //     case 'approved':x
@@ -50,6 +48,8 @@ const Settings = () => {
   } = useForm({
     mode: 'onBlur',
   });
+
+  const token = localStorage.getItem('backendToken');
 
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
