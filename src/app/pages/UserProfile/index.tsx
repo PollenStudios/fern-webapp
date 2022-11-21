@@ -51,6 +51,12 @@ function UserProfile() {
     },
   });
 
+  const userProfileAttributes = {
+    emailValue: userProfile?.attributes.filter((attribute: any) => attribute.key === 'email'),
+    twitterValue: userProfile?.attributes.filter((attribute: any) => attribute.key === 'twitter'),
+    instagramValue: userProfile?.attributes.filter((attribute: any) => attribute.key === 'instagram'),
+  };
+
   const userProfileStatus = async (id: string | undefined) => {
     const userStatus = await userProfileLens(id);
     userStatus[0]?.artist_approval_status === 'approved' && setIsArtist(true);
@@ -106,42 +112,46 @@ function UserProfile() {
               </div>
             )}
 
-            {userProfile?.attributes &&
-              userProfile?.attributes.filter((attribute: any) => attribute.key === 'email').length > 0 && (
-                <div>
-                  <p className="heading-5 text-left  pt-2">Contact Info</p>
-                  <a
-                    className="paragraph-1 sm:paragraph-2 text-left  pt-2 pb-5 text-black underline block"
-                    href={`mailto:${
-                      userProfile?.attributes.filter((attribute: any) => attribute.key === 'email')[0]?.value
-                    }`}
-                  >
-                    {userProfile?.attributes.filter((attribute: any) => attribute.key === 'email')[0]?.value}
-                  </a>
-                </div>
-              )}
-
-            <div>
-              <p className="heading-6 sm:heading-5 text-left pt-2">Follow me</p>
-              <div className="flex space-x-6 pt-2">
+            {userProfile?.attributes && userProfileAttributes.emailValue.length > 0 && (
+              <div>
+                <p className="heading-5 text-left  pt-2">Contact Info</p>
                 <a
-                  href={userProfile?.attributes.filter((attribute: any) => attribute.key === 'twitter')[0]?.value}
-                  className="text-gray-400 hover:text-gray-500 cursor-pointer"
-                  target="blank"
+                  className="paragraph-1 sm:paragraph-2 text-left  pt-2 pb-5 text-black underline block"
+                  href={`mailto:${userProfileAttributes.emailValue[0]?.value}`}
                 >
-                  <span className="sr-only">Twitter</span>
-                  <img src={Twitter} className="h-6 w-6" aria-hidden="true" alt="Twitter" />
-                </a>
-                <a
-                  href={userProfile?.attributes.filter((attribute: any) => attribute.key === 'instagram')[0]?.value}
-                  className="text-gray-400 hover:text-gray-500 cursor-pointer"
-                  target="blank"
-                >
-                  <span className="sr-only">Instagram</span>
-                  <img src={Instagram} className="h-6 w-6" aria-hidden="true" alt="Instagram" />
+                  {userProfileAttributes.emailValue[0]?.value}
                 </a>
               </div>
-            </div>
+            )}
+
+            {userProfile?.attributes &&
+              (userProfileAttributes.twitterValue.length > 0 || userProfileAttributes.instagramValue.length > 0) && (
+                <div>
+                  <p className="heading-6 sm:heading-5 text-left pt-2">Follow me</p>
+                  <div className="flex space-x-6 pt-2">
+                    {userProfileAttributes.twitterValue.length > 0 && (
+                      <a
+                        href={userProfileAttributes.twitterValue[0]?.value}
+                        className="text-gray-400 hover:text-gray-500 cursor-pointer"
+                        target="blank"
+                      >
+                        <span className="sr-only">Twitter</span>
+                        <img src={Twitter} className="h-6 w-6" aria-hidden="true" alt="Twitter" />
+                      </a>
+                    )}
+                    {userProfileAttributes.instagramValue.length > 0 && (
+                      <a
+                        href={userProfileAttributes.instagramValue[0]?.value}
+                        className="text-gray-400 hover:text-gray-500 cursor-pointer"
+                        target="blank"
+                      >
+                        <span className="sr-only">Instagram</span>
+                        <img src={Instagram} className="h-6 w-6" aria-hidden="true" alt="Instagram" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
           </div>
         </div>
 
