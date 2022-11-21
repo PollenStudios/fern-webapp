@@ -308,24 +308,26 @@ const Settings = () => {
                 <Input
                   type="text"
                   name="firstName"
-                  label="Name *"
+                  label="Name"
+                  mark="*"
                   placeholder="Enter your name"
                   register={register}
                   required
-                  pattern={/^[a-zA-Z ]*$/}
+                  pattern={/^[a-zA-Z0-9 ]*$/}
                 />
                 {errors.firstName && errors.firstName.type === 'pattern' && (
-                  <p className={errorMessageClassName}>Enter your name</p>
+                  <p className={errorMessageClassName}>Enter your name correctly</p>
                 )}
-                {errors.firstName && errors.firstName.type === 'required' && (
+                {/* {errors.firstName && errors.firstName.type === 'required' && (
                   <p className={errorMessageClassName}>Enter your name</p>
-                )}
+                )} */}
               </div>
               <div>
                 <Input
                   type="text"
                   name="userName"
-                  label="User name *"
+                  label="User name"
+                  mark="*"
                   placeholder="Enter your user name"
                   register={register}
                   disabled
@@ -340,7 +342,8 @@ const Settings = () => {
                 <Input
                   type="email"
                   name="email"
-                  label="Email *"
+                  label="Email"
+                  mark="*"
                   placeholder="Enter your email "
                   register={register}
                   required
@@ -379,7 +382,7 @@ const Settings = () => {
                   // required
                 />
                 {errors.website && errors.website.type === 'pattern' && (
-                  <p className={errorMessageClassName}>Enter your website URL</p>
+                  <p className={errorMessageClassName}>Enter your valid website URL</p>
                 )}
                 {/* {errors.website && errors.website.type === 'required' && (
                   <p className={errorMessageClassName}>Enter your website URL</p>
@@ -389,30 +392,34 @@ const Settings = () => {
                 <Input
                   type="url"
                   name="instagram"
-                  label="Instagram *"
-                  placeholder="http or https://www.instagram.com"
+                  label="Instagram"
+                  mark="*"
+                  placeholder="www.instagram.com/f3rn/"
                   register={register}
                   required
                 />
-                {/* {errors.instagram && errors.instagram.type === 'pattern' && (
-                  <p className={errorMessageClassName}>Enter your Instagram profile URL</p>
-                )} */}
+                {errors.instagram && errors.instagram.type === 'pattern' && (
+                  <p className={errorMessageClassName}>Enter your valid Instagram profile URL</p>
+                )}
                 {errors.instagram && errors.instagram.type === 'required' && (
                   <p className={errorMessageClassName}>Enter your Instagram profile URL</p>
                 )}
               </div>
             </div>
             <div className="grid md:grid-cols-2 gap-4">
-              {/* <Input type='url' name='twitter' label='Twitter' placeholder='Enter your Twitter id' register={register} required /> */}
+              {/* <Input type='text' name='twitter' label='Twitter' placeholder='Enter your Twitter id' register={register} required /> */}
               <Input
                 type="url"
                 name="twitter"
                 label="Twitter"
-                placeholder="http or https://www.twitter.com"
+                placeholder="www.twitter.com/f3rnapp/"
                 register={register}
                 // required
               />
             </div>
+            {errors.instagram && errors.instagram.type === 'pattern' && (
+              <p className={errorMessageClassName}>Enter your valid Twitter profile URL</p>
+            )}
             {/* <div className='grid md:grid-cols-2 gap-4'>
             <MultiSelect
               selectedItems={selectedItems}

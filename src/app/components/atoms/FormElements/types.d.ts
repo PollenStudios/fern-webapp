@@ -11,6 +11,7 @@ export interface IInput {
   rows?: number;
   disabled?: boolean;
   onChange?: any;
+  mark?: string;
 }
 
 export interface ISearch {

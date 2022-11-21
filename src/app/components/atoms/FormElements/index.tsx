@@ -7,12 +7,25 @@ const tailwindCssClass = {
   inputClass: 'paragraph-3 rounded-sm border-gray-20  border focus:border-gray-500 focus:ring-gray-100',
 };
 
-export const Input = ({ label, type, name, placeholder, register, required, pattern, disabled, onChange }: IInput) => {
+export const Input = ({
+  label,
+  mark,
+  type,
+  name,
+  placeholder,
+  register,
+  required,
+  pattern,
+  disabled,
+  onChange,
+}: IInput) => {
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor={name} className="heading-6 ">
         {label}
+        {mark && <span className="pl-1 text-red-600">{mark}</span>}
       </label>
+
       <input
         {...register(name, { required, pattern: { value: pattern } })}
         type={type}

@@ -1,8 +1,4 @@
-import { Button } from 'app/components/atoms/Buttons';
-
-import { useNavigate } from 'react-router-dom';
-import { PageRoutes } from 'utils/config';
-import { privacy_policy_data } from 'utils/constant';
+import { PRIVACY_POLICY_DATA } from 'utils/constant';
 
 const PrivacyPolicy = () => {
   return (
@@ -10,38 +6,38 @@ const PrivacyPolicy = () => {
       <div className="bg-blue-300 w-full">
         <div className="  pt-40 pb-32 ">
           <div className="text-center">
-            <h1 className="heading-3">{privacy_policy_data.main_heading}</h1>
-            <h5 className="heading-6 pt-3 md:w-5/12 mx-auto">{privacy_policy_data.main_paragraph}</h5>
-            <h6 className="paragraph-1 mt-3">{privacy_policy_data.updated_date}</h6>
+            <h1 className="heading-3">{PRIVACY_POLICY_DATA.main_heading}</h1>
+            <h5 className="heading-6 pt-3 md:w-5/12 mx-auto">{PRIVACY_POLICY_DATA.main_paragraph}</h5>
+            <h6 className="paragraph-1 mt-3">{PRIVACY_POLICY_DATA.updated_date}</h6>
           </div>
         </div>
       </div>
 
       <div className="py-10 main-container">
         <div>
-          <p className="paragraph-1">{privacy_policy_data.updated_paragraph}</p>
-          <h1 className="heading-3 mt-10">{privacy_policy_data.personal}</h1>
-          <p className="mt-2 paragraph-1">{privacy_policy_data.personal_paragraph}</p>
+          <p className="paragraph-1">{PRIVACY_POLICY_DATA.updated_paragraph}</p>
+          <h1 className="heading-3 mt-10">{PRIVACY_POLICY_DATA.personal}</h1>
+          <p className="mt-2 paragraph-1">{PRIVACY_POLICY_DATA.personal_paragraph}</p>
         </div>
         {/*  */}
         <div>
-          <h1 className="heading-3 mt-10">{privacy_policy_data.non_personal}</h1>
+          <h1 className="heading-3 mt-10">{PRIVACY_POLICY_DATA.non_personal}</h1>
 
-          <p className="mt-2 paragraph-1">{privacy_policy_data.non_personal_paragraph}</p>
+          <p className="mt-2 paragraph-1">{PRIVACY_POLICY_DATA.non_personal_paragraph}</p>
         </div>
         {/*  */}
         <div>
-          <h1 className="heading-3 mt-10">{privacy_policy_data.web_browser}</h1>
-          <p className="mt-2 paragraph-1">{privacy_policy_data.web_browser_paragraph}</p>
+          <h1 className="heading-3 mt-10">{PRIVACY_POLICY_DATA.web_browser}</h1>
+          <p className="mt-2 paragraph-1">{PRIVACY_POLICY_DATA.web_browser_paragraph}</p>
         </div>
 
         {/*  */}
         <div>
-          <h1 className="heading-3 mt-10">{privacy_policy_data.collected_information}</h1>
+          <h1 className="heading-3 mt-10">{PRIVACY_POLICY_DATA.collected_information}</h1>
           <p className="mt-2 paragraph-1">
-            {privacy_policy_data.collected_information_paragraph}
+            {PRIVACY_POLICY_DATA.collected_information_paragraph}
             <ul className="list-disc list-inside">
-              {privacy_policy_data.collected_information_points.map((point, index) => (
+              {PRIVACY_POLICY_DATA.collected_information_points.map((point, index) => (
                 <li key={index}>{point}</li>
               ))}
             </ul>
@@ -50,33 +46,33 @@ const PrivacyPolicy = () => {
 
         {/*  */}
         <div>
-          <h1 className="heading-3 mt-10">{privacy_policy_data.protect_information}</h1>
-          <p className="mt-2 paragraph-1">{privacy_policy_data.protect_information_paragraph}</p>
+          <h1 className="heading-3 mt-10">{PRIVACY_POLICY_DATA.protect_information}</h1>
+          <p className="mt-2 paragraph-1">{PRIVACY_POLICY_DATA.protect_information_paragraph}</p>
         </div>
         {/*  */}
         <div>
-          <h1 className="heading-3 mt-10">{privacy_policy_data.personal_information}</h1>
-          <p className="mt-2 paragraph-1">{privacy_policy_data.personal_information_paragraph}</p>
+          <h1 className="heading-3 mt-10">{PRIVACY_POLICY_DATA.personal_information}</h1>
+          <p className="mt-2 paragraph-1">{PRIVACY_POLICY_DATA.personal_information_paragraph}</p>
         </div>
         {/*  */}
         <div>
-          <h1 className="heading-3 mt-10">{privacy_policy_data.third_websites}</h1>
-          <p className="mt-2 paragraph-1">{privacy_policy_data.third_websites_paragarph}</p>
+          <h1 className="heading-3 mt-10">{PRIVACY_POLICY_DATA.third_websites}</h1>
+          <p className="mt-2 paragraph-1">{PRIVACY_POLICY_DATA.third_websites_paragarph}</p>
         </div>
         {/*  */}
         <div>
-          <h1 className="heading-3 mt-10">{privacy_policy_data.change_privacy_policy}</h1>
-          <p className="mt-2 paragraph-1">{privacy_policy_data.change_privacy_policy_paragraph}</p>
+          <h1 className="heading-3 mt-10">{PRIVACY_POLICY_DATA.change_privacy_policy}</h1>
+          <p className="mt-2 paragraph-1">{PRIVACY_POLICY_DATA.change_privacy_policy_paragraph}</p>
         </div>
         {/*  */}
         <div>
-          <h1 className="heading-3 mt-10">{privacy_policy_data.acceptance_terms}</h1>
-          <p className="mt-2 paragraph-1">{privacy_policy_data.acceptance_terms_paragarph}</p>
+          <h1 className="heading-3 mt-10">{PRIVACY_POLICY_DATA.acceptance_terms}</h1>
+          <p className="mt-2 paragraph-1">{PRIVACY_POLICY_DATA.acceptance_terms_paragarph}</p>
         </div>
         {/*  */}
         <div>
-          <h1 className="heading-3 mt-10">{privacy_policy_data.contacting_us}</h1>
-          <p className="mt-2 paragraph-1">{privacy_policy_data.contacting_us_paragraph}</p>
+          <h1 className="heading-3 mt-10">{PRIVACY_POLICY_DATA.contacting_us}</h1>
+          <p className="mt-2 paragraph-1">{PRIVACY_POLICY_DATA.contacting_us_paragraph}</p>
         </div>
       </div>
     </div>

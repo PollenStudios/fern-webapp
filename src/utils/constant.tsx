@@ -1,6 +1,8 @@
 import config from './config';
 
-export const privacy_policy_data = {
+//privacy policy data
+
+export const PRIVACY_POLICY_DATA = {
   main_heading: 'PRIVACY POLICY',
   main_paragraph: 'Please read these Terms carefully, and contact us if you have any questions.',
   updated_date: 'This document was last updated on November 9, 2022',
