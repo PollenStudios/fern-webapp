@@ -19,6 +19,7 @@ import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
 import { PageRoutes } from 'utils/config';
 import { useSignTypedData } from 'wagmi';
 import View from './view';
+import { backendToken } from 'utils/getBackendToken';
 
 const NewProfile = () => {
   const {
@@ -27,8 +28,8 @@ const NewProfile = () => {
     formState: { errors },
   } = useForm();
   const [avatar, setAvatar] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isHandleExist, setIsHandleExist] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isHandleExist, setIsHandleExist] = useState<boolean>(false);
   const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData();
 
   const {
@@ -89,7 +90,7 @@ const NewProfile = () => {
     }
   };
 
-  const onSubmit = async (formData: { [key: string]: string }) => {
+  const createNewLensProfile = async (formData: { [key: string]: string }) => {
     try {
       setIsLoading(true);
       const request = {
@@ -165,17 +166,17 @@ const NewProfile = () => {
     }
   };
   useEffect(() => {
-    if (localStorage.getItem('backendToken')) {
+    if (backendToken()) {
       navigate(PageRoutes.DISCOVERY);
     }
-  }, [localStorage.getItem('backendToken')]);
+  }, [backendToken()]);
 
   return (
     <View
       avatar={avatar}
       handleSubmit={handleSubmit}
       register={register}
-      onSubmit={onSubmit}
+      onSubmit={createNewLensProfile}
       isLoading={isLoading}
       setAvatar={setAvatar}
       isHandleExist={isHandleExist}

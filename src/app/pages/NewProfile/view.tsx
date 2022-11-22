@@ -2,9 +2,20 @@ import { Button } from 'app/components/atoms/Buttons';
 import { Input } from 'app/components/atoms/FormElements';
 import { ImagePreviewer } from 'app/components/atoms/UploadFiles';
 import OverlayLoader from 'app/components/OverlayLoader';
-import { IProps } from './types';
 
 const errorMessageClassName = 'paragraph-3 mt-1 text-red-600';
+
+export interface IProps {
+  avatar: any;
+  register: any;
+  handleSubmit: any;
+  onSubmit: any;
+  isLoading: boolean;
+  setAvatar: any;
+  isHandleExist: boolean;
+  errors: any;
+  setIsHandleExist: any;
+}
 
 function View({
   avatar,
