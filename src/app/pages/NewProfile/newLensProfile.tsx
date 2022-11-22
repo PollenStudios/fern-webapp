@@ -17,7 +17,7 @@ export interface IProps {
   setIsHandleExist: any;
 }
 
-function View({
+function NewLensProfile({
   avatar,
   register,
   handleSubmit,
@@ -38,9 +38,12 @@ function View({
       <p className="heading-5 pb-2 border-b border-primary">Create new profile</p>
       <div className="flex flex-col gap-6 ">
         <div className="flex flex-col gap-4">
-          <label htmlFor={'image'} className="heading-6  mt-5">
-            Profile image *
-          </label>
+          <div>
+            <label htmlFor={'image'} className="heading-6  mt-5">
+              Profile image
+            </label>
+            <span className="pl-1 text-red-600">*</span>
+          </div>
           <div className="flex flex-col gap-4">
             <ImagePreviewer profileImage imagePreview={avatar && URL.createObjectURL(avatar)} />
 
@@ -91,4 +94,4 @@ function View({
   );
 }
 
-export default View;
+export default NewLensProfile;

@@ -18,8 +18,8 @@ import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
 
 import { PageRoutes } from 'utils/config';
 import { useSignTypedData } from 'wagmi';
-import View from './view';
 import { backendToken } from 'utils/getBackendToken';
+import NewLensProfile from './newLensProfile';
 
 const NewProfile = () => {
   const {
@@ -172,7 +172,7 @@ const NewProfile = () => {
   }, [backendToken()]);
 
   return (
-    <View
+    <NewLensProfile
       avatar={avatar}
       handleSubmit={handleSubmit}
       register={register}
