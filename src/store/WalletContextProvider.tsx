@@ -216,26 +216,6 @@ const WalletProvider = ({ children }: any) => {
     }
   };
 
-  const verifyBackendGeneratedToken = async (token: string, profilesData: any) => {
-    if (token) {
-      const token = localStorage.getItem('backendToken');
-      const getProfileResult = await getBackendProfile(token);
-      dispatchCurrentProfile({
-        type: 'success',
-        payload: {
-          ...profilesData?.profiles?.items[0],
-          artistApprovalStatus: getProfileResult?.artist_approval_status,
-        },
-      });
-      dispatchIsLoggedIn({ type: 'success', payload: true });
-      dispatchHasProfile({ type: 'success', payload: true });
-      dispatchUserSigNonce({
-        type: 'success',
-        payload: { userSignNonce: profilesData?.userSigNonces?.lensHubOnChainSigNonce },
-      });
-    }
-  };
-
   const logout = () => {
     dispatchIsLoggedIn({ type: 'success', payload: false });
     dispatchCurrentProfile({ type: 'success', payload: {} });
