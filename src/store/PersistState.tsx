@@ -22,7 +22,7 @@ const PersistState = ({ children }: any) => {
   const token = localStorage.getItem('backendToken');
   const {
     setIsLoading,
-    isLoggedIn,
+    isLoggedInState: { isLoggedIn },
     dispatchAccount,
     dispatchWalletBalance,
     dispatchHasProfile,
@@ -58,7 +58,6 @@ const PersistState = ({ children }: any) => {
       });
 
       if (profilesData?.profiles?.items?.length === 0) {
-        // setHasProfile(false);
         dispatchHasProfile({ type: 'success', payload: false });
 
         dispatchCurrentProfile({
@@ -71,7 +70,6 @@ const PersistState = ({ children }: any) => {
           type: 'success',
           payload: '',
         });
-        // toast.success('Kindly create a profile');
         navigate(PageRoutes.SIGN_UP);
       } else if (token && token !== 'undefined') {
         dispatchHasProfile({ type: 'success', payload: true });
@@ -115,18 +113,16 @@ const PersistState = ({ children }: any) => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      const accessToken = localStorage.getItem('accessToken')! as string;
+      const accessToken = localStorage.getItem('accessToken');
       if (!accessToken || accessToken === 'undefined') {
         clearStorage();
         dispatchIsLoggedIn({ type: 'success', payload: false });
-        // toast.error('kindly Connect Again');
         return;
       }
       const isExpired = Date.now() >= parseJwt(accessToken)?.exp * 1000;
       if (isExpired) {
         clearStorage();
         dispatchIsLoggedIn({ type: 'success', payload: false });
-        // toast.error('kindly Connect Again');
         return;
       }
       verifyToken(accessToken);
