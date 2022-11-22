@@ -268,7 +268,7 @@ const Settings = () => {
         <p className="heading-5 border-b-4 pb-2 border-primary flex items-end">Edit Profile</p>
 
         <div className="mb-2 sm:mb-4 flex justify-end items-end">
-          {currentProfile?.artistApprovalStatus === (null || 'NONE') ? (
+          {currentProfile?.artistApprovalStatus === null ? (
             <Button onClick={SignUpForArtist} variant="outline" name="Sign up for Artist" type="button" />
           ) : (
             currentProfile?.artistApprovalStatus === 'pending' && (
