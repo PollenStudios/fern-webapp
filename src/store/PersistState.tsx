@@ -78,7 +78,7 @@ const PersistState = ({ children }: any) => {
         dispatchIsLoggedIn({ type: 'success', payload: true });
 
         const profiles: any = profilesData?.profiles?.items;
-        const getProfileResult = await getBackendProfile(token);
+        const getProfileResult = await getBackendProfile();
 
         dispatchCurrentProfile({
           type: 'success',

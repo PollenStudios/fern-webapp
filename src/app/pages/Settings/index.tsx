@@ -49,8 +49,6 @@ const Settings = () => {
     mode: 'onBlur',
   });
 
-  const token = localStorage.getItem('backendToken');
-
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const {
@@ -98,7 +96,7 @@ const Settings = () => {
           error: 'Could not update',
         });
 
-        const getProfileResult = await getBackendProfile(token);
+        const getProfileResult = await getBackendProfile();
 
         const profile = await getProfile({
           variables: {
@@ -232,7 +230,7 @@ const Settings = () => {
   };
   const checkRequestStatus = async () => {
     try {
-      const getProfileResult = await getBackendProfile(token);
+      const getProfileResult = await getBackendProfile();
 
       const profile = await getProfile({
         variables: {

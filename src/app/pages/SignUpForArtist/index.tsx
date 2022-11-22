@@ -9,6 +9,7 @@ import config, { PageRoutes } from 'utils/config';
 import { useContext, useEffect, useState } from 'react';
 import { WalletContext } from 'store/WalletContextProvider';
 import { apiRoutes } from 'API/apiRoutes';
+import { backendToken } from 'utils/getBackendToken';
 
 function SignUpForArtist() {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ function SignUpForArtist() {
         url: config.baseUrl + apiRoutes.userProfileMe,
         method: 'patch',
         headers: {
-          Authorization: 'TOKEN ' + localStorage.getItem('backendToken'),
+          Authorization: 'TOKEN ' + backendToken(),
         },
         data: formBodyData,
       });
