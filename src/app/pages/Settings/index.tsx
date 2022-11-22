@@ -26,8 +26,6 @@ import OverlayLoader from 'app/components/OverlayLoader';
 import { isEmpty } from 'utils/utility';
 import { EMAIL_REGEX, NAME_REGEX, URL_REGEX } from 'utils/constant';
 
-const token = localStorage.getItem('backendToken');
-
 // const artistStatus = (status: string) => {
 //   switch (status) {
 //     case 'approved':x
@@ -98,7 +96,7 @@ const Settings = () => {
           error: 'Could not update',
         });
 
-        const getProfileResult = await getBackendProfile(token);
+        const getProfileResult = await getBackendProfile();
 
         const profile = await getProfile({
           variables: {
@@ -232,7 +230,7 @@ const Settings = () => {
   };
   const checkRequestStatus = async () => {
     try {
-      const getProfileResult = await getBackendProfile(token);
+      const getProfileResult = await getBackendProfile();
 
       const profile = await getProfile({
         variables: {

@@ -23,6 +23,7 @@ import { useSignTypedData } from 'wagmi';
 import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
 import OverlayLoader from '../OverlayLoader';
 import { apiRoutes } from 'API/apiRoutes';
+import { backendToken } from 'utils/getBackendToken';
 
 function ProfileImage() {
   const {
@@ -100,7 +101,7 @@ function ProfileImage() {
         method: 'post',
         url: config.baseUrl + apiRoutes.uploadMedia,
         headers: {
-          Authorization: 'TOKEN ' + localStorage.getItem('backendToken'),
+          Authorization: 'TOKEN ' + backendToken(),
         },
         data: formBodyData,
       });

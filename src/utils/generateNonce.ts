@@ -3,6 +3,7 @@ import axios from 'axios';
 import forge from 'node-forge';
 import toast from 'react-hot-toast';
 import config from './config';
+import { backendToken } from './getBackendToken';
 
 const generateNonce = async (userName: string, walletAddress: string, profileId: string) => {
   try {
@@ -110,13 +111,13 @@ export const userProfileLens = async (id: string | undefined) => {
 //     return error;
 //   }
 // };
-export const getBackendProfile = async (token: string | null) => {
+export const getBackendProfile = async () => {
   try {
     const { data } = await axios({
       method: 'get',
       url: config.baseUrl + apiRoutes.userProfileMe,
       headers: {
-        Authorization: `TOKEN ${token}`,
+        Authorization: `TOKEN ${backendToken()}`,
       },
     });
     return data;

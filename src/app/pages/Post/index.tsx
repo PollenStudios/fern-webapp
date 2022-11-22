@@ -33,6 +33,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import OverlayLoader from 'app/components/OverlayLoader';
 import { apiRoutes } from 'API/apiRoutes';
+import { backendToken } from 'utils/getBackendToken';
 
 function Post() {
   const navigate = useNavigate();
@@ -154,7 +155,7 @@ function Post() {
         method: 'post',
         url: config.baseUrl + apiRoutes.uploadMedia,
         headers: {
-          Authorization: 'TOKEN  ' + localStorage.getItem('backendToken'),
+          Authorization: 'TOKEN  ' + backendToken(),
         },
         data: formBodyData,
       });
@@ -178,7 +179,6 @@ function Post() {
         return 0;
       }
       setIsLoading(true);
-      // console.log('currentProfile', currentProfile, userSignNonce);
 
       const dataObject = {
         version: '2.0.0',
@@ -194,7 +194,7 @@ function Post() {
         mainContentFocus: getMainContentFocus(),
         contentWarning: null, // TODO
         attributes,
-        media: [{ item: attachment, type: 'image/png', altTag: '' }],
+        media: [{ item: attachment, type: avatar.type, altTag: avatar.name }],
         locale: getUserLocale(),
         createdOn: new Date(),
         appId: config.appNameForLensApi,

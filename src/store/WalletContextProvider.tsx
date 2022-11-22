@@ -53,8 +53,7 @@ const WalletProvider = ({ children }: any) => {
 
   const verifyBackendGeneratedToken = async (token: string, profilesData: any) => {
     if (token) {
-      const token = localStorage.getItem('backendToken');
-      const getProfileResult = await getBackendProfile(token);
+      const getProfileResult = await getBackendProfile();
       dispatchCurrentProfile({
         type: 'success',
         payload: {
