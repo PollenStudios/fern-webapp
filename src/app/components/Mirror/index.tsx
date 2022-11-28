@@ -80,6 +80,7 @@ function Mirror({ publicationId, mirrorCounts }: any) {
   return (
     <div className="flex justify-center items-center gap-1">
       <div
+        title="add to ArtBoard"
         onClick={CreateMirror}
         className="flex justify-center items-center  w-8 h-8 rounded-full hover:bg-gray-800 cursor-pointer space-x-1"
       >
