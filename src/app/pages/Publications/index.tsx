@@ -45,19 +45,18 @@ function Publication({ query }: any) {
       </div>
     );
   }
+
+  if (publications?.length <= 0) {
+    return <div className="w-full h-[60vh] flex justify-center items-center heading-4">No Art found</div>;
+  }
+
   return (
-    <div>
-      {publications?.length > 0 ? (
-        <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 mt-10">
-          {publications?.map((post: any, index: number) => (
-            <div className="col-span-4" key={index}>
-              <ArtPreviewCard art={post} />
-            </div>
-          ))}
+    <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 mt-10">
+      {publications?.map((post: any, index: number) => (
+        <div className="col-span-4" key={index}>
+          <ArtPreviewCard art={post} />
         </div>
-      ) : (
-        <div className="w-full h-[60vh] flex justify-center items-center heading-4">No Art found</div>
-      )}
+      ))}
     </div>
   );
 }
