@@ -1,15 +1,15 @@
-import noArtBoards from 'Assets/Images/noArtBoards.png';
 import ProfileLogo from 'Assets/Images/defaultLogo.png';
-import ArtPreviewCard from 'app/components/ArtPreviewCard';
 import getIPFSLink from 'utils/getIPFSLink';
 import Instagram from 'Assets/Icons/instagram.svg';
 import Twitter from 'Assets/Icons/twitter.svg';
 import { Button } from 'app/components/atoms/Buttons';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { PageRoutes } from 'utils/config';
 import { WalletContext } from 'store/WalletContextProvider';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import ArtBoardPosts from './UserArtBoards';
+import Publications from './UserPublication';
 
 function View({ userProfile, isArtist, data }: any) {
   const { id } = useParams();
@@ -17,6 +17,8 @@ function View({ userProfile, isArtist, data }: any) {
     isLoggedInState: { isLoggedIn },
     currentProfileState: { currentProfile },
   }: any = useContext(WalletContext);
+
+  const [selectedTab, setSelectedTab] = useState('posts');
 
   const userProfileAttributes = {
     emailValue: userProfile?.attributes.filter((attribute: any) => attribute.key === 'email'),
@@ -119,45 +121,26 @@ function View({ userProfile, isArtist, data }: any) {
             </div>
           </div>
 
-          {/* TODO: fix tab View */}
           <div className="col-span-4 pt-10 md:pt-auto md:pl-36">
-            {/* <ul className="flex space-x-8 border-b border-black">
-            {tabsData.map(({ tabName, id }) => (
-              <TabsView selectedTabName={selectedTabName} key={id}>
-                <li
-                  onClick={() => setSelectedTabName(tabName)}
-                  className={`cursor-pointer heading-5 sm:heading-4 border-primary ${selectedTabsFn(selectedTabName === tabName)}`}
-                >
-                  {tabName}
-                </li>
-              </TabsView>
-            ))}
-          </ul> */}
-            <h6 className="heading-4 border-b border-black">All Posts</h6>
+            <div className="flex gap-4 border-b">
+              <p
+                className={`heading-4 cursor-pointer ${selectedTab === 'posts' ? 'border-primary border-b-4' : ''}`}
+                onClick={() => setSelectedTab('posts')}
+              >
+                All Posts
+              </p>
+              <p
+                className={`heading-4 cursor-pointer ${selectedTab === 'artBoards' ? 'border-primary border-b-4' : ''}`}
+                onClick={() => setSelectedTab('artBoards')}
+              >
+                Art Boards
+              </p>
+            </div>
 
-            {data?.publications.items && data?.publications.items.length > 0 ? (
-              <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 my-2">
-                {data?.publications.items.map((post: any, i: number) => (
-                  <div className="col-span-5 sm:col-span-4 md:col-span-6" key={i}>
-                    <ArtPreviewCard art={post} />
-                  </div>
-                ))}
-              </div>
+            {selectedTab === 'posts' ? (
+              <Publications currentProfile={currentProfile} />
             ) : (
-              <div className="flex flex-col items-center mt-10">
-                <img src={noArtBoards} alt={'noArtBoard'} className="object-cover h-44 w-44 rounded-full mb-4" />
-                <h2 className="heading-4">
-                  {id === currentProfile?.id
-                    ? 'You don’t have any Art Boards yet'
-                    : 'This user doesn’t have any Art Boards yet'}
-                </h2>
-                <h6 className="paragraph-3">
-                  {id === currentProfile?.id && 'Get started by browsing art to curate your board.'}
-                </h6>
-                <Link to={PageRoutes.DISCOVERY} className="mt-5">
-                  <Button type="button" variant="primary" name="Discover Art" />
-                </Link>
-              </div>
+              <ArtBoardPosts currentProfile={currentProfile} />
             )}
           </div>
         </div>

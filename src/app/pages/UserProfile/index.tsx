@@ -10,26 +10,11 @@ import View from './view';
 function UserProfile() {
   const { id } = useParams();
   const [userProfile, setUserProfile] = useState<any>();
-  const [userPosts, setUserPosts] = useState<any>();
   const [isArtist, setIsArtist] = useState<boolean>(false);
 
   // Variables
-  const request = {
-    publicationTypes: [PublicationTypes.Post],
-    profileId: id,
-    limit: 10,
-    sources: [config.appNameForLensApi],
-    metadata: { mainContentFocus: [PublicationMainFocus.Image] },
-  };
   const reactionRequest = { profileId: id };
-  const profileId = id;
 
-  const [getPosts, { data }] = useLazyQuery(ProfileFeedDocument, {
-    onCompleted: async () => {
-      // setUserProfile(data?.publications?.items[0]?.profile);
-      setUserPosts(data?.publications.items);
-    },
-  });
   const [getProfile, { data: userProfileResult }] = useLazyQuery(ProfileDocument, {
     onCompleted: async () => {
       setUserProfile(userProfileResult?.profile);
@@ -42,15 +27,14 @@ function UserProfile() {
   };
 
   useEffect(() => {
-    getPosts({ variables: { request, reactionRequest, profileId } });
     getProfile({ variables: { request: reactionRequest } });
-  }, [data, userProfileResult, id]);
+  }, [userProfileResult, id]);
 
   useEffect(() => {
     userProfileStatus(id);
   }, [id]);
 
-  return <View userProfile={userProfile} isArtist={isArtist} data={data} />;
+  return <View userProfile={userProfile} isArtist={isArtist} />;
 }
 
 export default UserProfile;
