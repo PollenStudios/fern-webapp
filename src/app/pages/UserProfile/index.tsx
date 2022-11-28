@@ -5,7 +5,7 @@ import { useLazyQuery } from '@apollo/client';
 import { ProfileDocument } from 'graphql/generated/types';
 import { userProfileLens } from 'utils/generateNonce';
 import View from './view';
-import UserProfileSidebar from './userprofileSidebar';
+import UserProfileSidebar from './userProfileSidebar';
 
 function UserProfile() {
   const { id: profileId } = useParams();
