@@ -18,12 +18,12 @@ const ArtPreviewCard = ({ art }: any) => {
         <div className=" flex justify-between">
           <h6 className="paragraph-1 h-10 w-52 truncate text-white pt-1.5 capitalize">{art.metadata.content}</h6>
           <div className="flex space-x-1 text-gray-300 ">
-            {art?.canMirror?.result && (
+            {
               <Mirror
                 publicationId={art?.id}
                 mirrorCounts={art?.mirrorOf?.stats?.totalAmountOfMirrors || art.stats?.totalAmountOfMirrors}
               />
-            )}
+            }
           </div>
         </div>
         <Link to={PageRoutes.ART_PREVIEW.split(':')[0] + art?.id}>
