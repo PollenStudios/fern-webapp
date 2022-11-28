@@ -10,15 +10,12 @@ import {
 import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
 import { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 import { WalletContext } from 'store/WalletContextProvider';
-import { PageRoutes } from 'utils/config';
 import getSignature from 'utils/getSignature';
 import { useSignTypedData } from 'wagmi';
 import { Loader } from '../atoms/Loader';
 
 function Mirror({ publicationId, mirrorCounts }: any) {
-  const navigate = useNavigate();
   const {
     userSigNonceState: {
       userSigNonce: { userSignNonce },
@@ -34,40 +31,42 @@ function Mirror({ publicationId, mirrorCounts }: any) {
       }
     },
   });
+  const [broadcast] = useMutation(BroadcastDocument);
+  const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData();
+  const [CreateMirrorTypedData] = useMutation<Mutation>(CreateMirrorTypedDataDocument);
 
-  const createViaDispatcher = async (request: CreateMirrorRequest) => {
-    const { data } = await createMirrorViaDispatcher({
-      variables: { request },
+  const handleCreateMirror = async (request: CreateMirrorRequest) => {
+    const result = await CreateMirrorTypedData({
+      variables: {
+        options: { overrideSigNonce: userSignNonce },
+        request,
+      },
     });
 
-    if (data?.createMirrorViaDispatcher?.__typename === 'RelayError') {
-      const result = await CreateMirrorTypedData({
-        variables: {
-          // options: { overrideSigNonce: userSignNonce },
-          request,
+    const typedData = result.data?.createMirrorTypedData.typedData;
+
+    const signatureTyped = getSignature(typedData);
+    const signature = await signTypedDataAsync(signatureTyped);
+    const broadcastResult = await broadcast({
+      variables: {
+        request: {
+          id: result?.data?.createMirrorTypedData.id,
+          signature: signature,
         },
+      },
+    });
+
+    if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
+      const txId = broadcastResult.data?.broadcast?.txId!;
+
+      const res = pollUntilIndexed({ txId });
+      toast.promise(res, {
+        loading: 'Indexing...',
+        success: 'Post has been mirrored',
+        error: 'Could not mirrored',
       });
-
-      const typedData = result.data?.createPostTypedData.typedData;
-
-      const signatureTyped = getSignature(typedData);
-      const signature = await signTypedDataAsync(signatureTyped);
-      const broadcastResult = await broadcast({
-        variables: {
-          request: {
-            id: result?.data?.createPostTypedData.id,
-            signature: signature,
-          },
-        },
-      });
-
-      if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
-        const txId = broadcastResult.data?.broadcast?.txId!;
-
-        await pollUntilIndexed({ txId });
-        // console.log('indexerResult', indexerResult);
-      }
-
+      await res;
+      // navigate(PageRoutes.DISCOVERY);
       setIsLoading(false);
       if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
         console.error('create profile metadata via broadcast: failed', broadcastResult);
@@ -75,12 +74,18 @@ function Mirror({ publicationId, mirrorCounts }: any) {
     }
   };
 
-  const [broadcast] = useMutation(BroadcastDocument);
-  const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData();
-  const [CreateMirrorTypedData] = useMutation<Mutation>(CreateMirrorTypedDataDocument);
+  const createViaDispatcher = async (request: CreateMirrorRequest) => {
+    const { data } = await createMirrorViaDispatcher({
+      variables: { request },
+    });
+
+    if (data?.createMirrorViaDispatcher?.__typename === 'RelayError') {
+      handleCreateMirror(request);
+    }
+  };
 
   const CreateMirror = async () => {
-    if (!currentProfile) {
+    if (currentProfile.handle.length <= 0) {
       return toast.error('Please sign in your wallet.');
     }
     const request = {
@@ -94,45 +99,7 @@ function Mirror({ publicationId, mirrorCounts }: any) {
     if (currentProfile?.dispatcher?.canUseRelay) {
       createViaDispatcher(request);
     } else {
-      const result = await CreateMirrorTypedData({
-        variables: {
-          options: { overrideSigNonce: userSignNonce },
-          request,
-        },
-      });
-
-      const typedData = result.data?.createMirrorTypedData.typedData;
-
-      const signatureTyped = getSignature(typedData);
-      const signature = await signTypedDataAsync(signatureTyped);
-      const broadcastResult = await broadcast({
-        variables: {
-          request: {
-            id: result?.data?.createMirrorTypedData.id,
-            signature: signature,
-          },
-        },
-      });
-
-      if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
-        const txId = broadcastResult.data?.broadcast?.txId!;
-        const res = pollUntilIndexed({ txId });
-
-        toast.promise(res, {
-          loading: 'Indexing...',
-          success: 'Post has been mirrored',
-          error: 'Could not mirrored',
-        });
-        await res;
-        navigate(PageRoutes.DISCOVERY);
-
-        setIsLoading(false);
-      }
-
-      if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
-        setIsLoading(false);
-        console.error('create profile metadata via broadcast: failed', broadcastResult);
-      } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
+      handleCreateMirror(request);
     }
   };
 

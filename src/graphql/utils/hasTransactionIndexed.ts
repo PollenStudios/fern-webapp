@@ -37,6 +37,8 @@ export const pollUntilIndexed = async (input: { txHash: string } | { txId: strin
         await new Promise(resolve => setTimeout(resolve, 1500));
       } else {
         // it got reverted and failed!
+        toast.error('Reverted');
+        console.log({ response });
         throw response;
       }
     }
