@@ -8,19 +8,18 @@ import config, { PageRoutes } from 'utils/config';
 import noArtBoards from 'Assets/Images/noArtBoards.png';
 
 function ArtBoardPosts({ currentProfile }: any) {
-  const { id } = useParams();
+  const { id: profileId } = useParams();
   const [ArtBoards, setArtBoards] = useState<any>();
 
   //variables
   const request = {
     publicationTypes: [PublicationTypes.Mirror],
-    profileId: id,
+    profileId,
     limit: 10,
     sources: [config.appNameForLensApi],
     metadata: { mainContentFocus: [PublicationMainFocus.Image] },
   };
-  const reactionRequest = { profileId: id };
-  const profileId = id;
+  const reactionRequest = { profileId };
 
   const [getArtBoards, { data }] = useLazyQuery(ProfileFeedDocument, {
     onCompleted: async () => {
@@ -30,7 +29,7 @@ function ArtBoardPosts({ currentProfile }: any) {
 
   useEffect(() => {
     getArtBoards({ variables: { request, reactionRequest, profileId } });
-  }, [data, id]);
+  }, [data, profileId]);
 
   return (
     <>
@@ -43,23 +42,29 @@ function ArtBoardPosts({ currentProfile }: any) {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center mt-10">
-          <img src={noArtBoards} alt={'noArtBoard'} className="object-cover h-44 w-44 rounded-full mb-4" />
-          <h2 className="heading-4">
-            {id === currentProfile?.id
-              ? 'You don’t have any Art Boards yet'
-              : 'This user doesn’t have any Art Boards yet'}
-          </h2>
-          <h6 className="paragraph-3">
-            {id === currentProfile?.id && 'Get started by browsing art to curate your board.'}
-          </h6>
-          <Link to={PageRoutes.DISCOVERY} className="mt-5">
-            <Button type="button" variant="primary" name="Discover Art" />
-          </Link>
-        </div>
+        <EmptyArtBoard profileId={profileId} currentProfile={currentProfile} />
       )}
     </>
   );
 }
 
 export default ArtBoardPosts;
+
+export const EmptyArtBoard = ({ profileId, currentProfile }: any) => {
+  return (
+    <div className="flex flex-col items-center mt-10">
+      <img src={noArtBoards} alt={'noArtBoard'} className="object-cover h-44 w-44 rounded-full mb-4" />
+      <h2 className="heading-4">
+        {profileId === currentProfile?.id
+          ? 'You don’t have any Art Boards yet'
+          : 'This user doesn’t have any Art Boards yet'}
+      </h2>
+      <h6 className="paragraph-3">
+        {profileId === currentProfile?.id && 'Get started by browsing art to curate your board.'}
+      </h6>
+      <Link to={PageRoutes.DISCOVERY} className="mt-5">
+        <Button type="button" variant="primary" name="Discover Art" />
+      </Link>
+    </div>
+  );
+};

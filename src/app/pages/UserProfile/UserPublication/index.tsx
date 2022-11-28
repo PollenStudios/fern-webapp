@@ -8,19 +8,18 @@ import config, { PageRoutes } from 'utils/config';
 import noArtBoards from 'Assets/Images/noArtBoards.png';
 
 function Publications({ currentProfile }: any) {
-  const { id } = useParams();
+  const { id: profileId } = useParams();
   const [userPosts, setUserPosts] = useState<any>();
 
   //variables
   const request = {
     publicationTypes: [PublicationTypes.Post],
-    profileId: id,
+    profileId,
     limit: 10,
     sources: [config.appNameForLensApi],
     metadata: { mainContentFocus: [PublicationMainFocus.Image] },
   };
-  const reactionRequest = { profileId: id };
-  const profileId = id;
+  const reactionRequest = { profileId };
 
   const [getPosts, { data }] = useLazyQuery(ProfileFeedDocument, {
     onCompleted: async () => {
@@ -30,7 +29,7 @@ function Publications({ currentProfile }: any) {
 
   useEffect(() => {
     getPosts({ variables: { request, reactionRequest, profileId } });
-  }, [data, id]);
+  }, [data, profileId]);
 
   return (
     <>
@@ -43,19 +42,25 @@ function Publications({ currentProfile }: any) {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center mt-10">
-          <img src={noArtBoards} alt={'noArtBoard'} className="object-cover h-44 w-44 rounded-full mb-4" />
-          <h2 className="heading-4">
-            {id === currentProfile?.id ? 'You don’t have any post yet' : 'This user doesn’t have any post yet'}
-          </h2>
-
-          <Link to={PageRoutes.DISCOVERY} className="mt-5">
-            <Button type="button" variant="primary" name="Discover Art" />
-          </Link>
-        </div>
+        <EmptyArtBoardForPublication profileId={profileId} currentProfile={currentProfile} />
       )}
     </>
   );
 }
 
 export default Publications;
+
+export const EmptyArtBoardForPublication = ({ profileId, currentProfile }: any) => {
+  return (
+    <div className="flex flex-col items-center mt-10">
+      <img src={noArtBoards} alt={'noArtBoard'} className="object-cover h-44 w-44 rounded-full mb-4" />
+      <h2 className="heading-4">
+        {profileId === currentProfile?.id ? 'You don’t have any post yet' : 'This user doesn’t have any post yet'}
+      </h2>
+
+      <Link to={PageRoutes.DISCOVERY} className="mt-5">
+        <Button type="button" variant="primary" name="Discover Art" />
+      </Link>
+    </div>
+  );
+};
