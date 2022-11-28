@@ -30,6 +30,7 @@ import PublicRoute from './components/PublicRoute';
 import Thankyou from './pages/Thankyou';
 import PrivateRoute from './components/PrivateRoute';
 import ErrorPage from './pages/ErrorPage';
+import Search from './pages/Search';
 
 function App() {
   return (
@@ -80,6 +81,7 @@ function App() {
                   />
                   <Route path={PageRoutes.PRIVACY_POLICY} element={<PrivacyPolicy />} />
                   <Route path={PageRoutes.THANKYOU} element={<Thankyou />} />
+                  <Route path={PageRoutes.SEARCH} element={<Search />} />
 
                   <Route path="/*" element={<NotFoundPage />} />
                   <Route path={PageRoutes.ERROR_PAGE} element={<ErrorPage />} />

@@ -49,6 +49,7 @@ export const PageRoutes = {
   THANKYOU: '/thankyou',
   ENABLE_DISPATCHER: '/enable-dispatcher',
   ERROR_PAGE: '/something-went-wrong',
+  SEARCH: '/search',
 };
 
 export const DEFAULT_CHAIN_IDS = ['0x13881', 80001, '80001'];

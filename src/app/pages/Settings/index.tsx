@@ -25,6 +25,7 @@ import { getBackendProfile } from 'utils/generateNonce';
 import OverlayLoader from 'app/components/OverlayLoader';
 import { isEmpty } from 'utils/utility';
 import { EMAIL_REGEX, NAME_REGEX, URL_REGEX } from 'utils/constant';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 // const artistStatus = (status: string) => {
 //   switch (status) {
@@ -93,9 +94,12 @@ const Settings = () => {
         toast.promise(indexerResult, {
           loading: 'Indexing...',
           success: 'Please refresh the page now, to see updated data',
+          // success: 'Profile updated',
           error: 'Could not update',
         });
 
+        const indexedResult = await indexerResult;
+        // if (indexedResult) {
         const getProfileResult = await getBackendProfile();
 
         const profile = await getProfile({
@@ -110,12 +114,16 @@ const Settings = () => {
           type: 'success',
           payload: { ...profile.data?.profile, artistApprovalStatus: getProfileResult?.artist_approval_status },
         });
+        // setIsLoading(false);
+        // window.location.reload();
+        // }
       }
 
       if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
         console.error('create profile metadata via broadcast: failed', broadcastResult);
       } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
       setIsLoading(false);
+      // window.location.reload();
     } catch ({ message }) {
       toast.error(`${message}`);
       setIsLoading(false);
@@ -162,7 +170,11 @@ const Settings = () => {
     }
   };
 
-  const onSubmit = async (formData: any) => {
+  const getUrlValue = (value: string | undefined) => {
+    return value?.includes('http://') || value?.includes('https://') ? value?.split('//')[1] : value;
+  };
+
+  const updateUserProfileData = async (formData: any) => {
     try {
       setIsLoading(true);
       const dataObject = {
@@ -172,12 +184,12 @@ const Settings = () => {
         attributes: [
           {
             key: 'website',
-            value: formData.website,
+            value: getUrlValue(formData.website),
             traitType: 'string',
           },
           {
             key: 'twitter',
-            value: formData.twitter,
+            value: getUrlValue(formData.twitter),
             traitType: 'string',
           },
           {
@@ -187,7 +199,7 @@ const Settings = () => {
           },
           {
             key: 'instagram',
-            value: formData.instagram,
+            value: getUrlValue(formData.instagram),
             traitType: 'string',
           },
         ],
@@ -261,168 +273,174 @@ const Settings = () => {
   }
 
   return (
-    <div className="main-container mb-10 mt-24">
-      {isLoading && <OverlayLoader />}
-      <p className="heading-4 mb-6 md:mb-2">Settings</p>
-      <div className="flex justify-between">
-        <p className="heading-5 border-b-4 pb-2 border-primary flex items-end">Edit Profile</p>
+    <>
+      <HelmetProvider>
+        <Helmet>
+          <title>Settings - F3rn | Fine Art Discovery and Curation</title>
+        </Helmet>
+      </HelmetProvider>
+      <div className="main-container mb-10 mt-24">
+        {isLoading && <OverlayLoader />}
+        <p className="heading-4 mb-6 md:mb-2">Settings</p>
+        <div className="flex justify-between">
+          <p className="heading-5 border-b-4 pb-2 border-primary flex items-end">Edit Profile</p>
 
-        <div className="mb-2 sm:mb-4 flex justify-end items-end">
-          {currentProfile?.artistApprovalStatus === null ? (
-            <Button onClick={SignUpForArtist} variant="outline" name="Sign up for Artist" type="button" />
-          ) : (
-            currentProfile?.artistApprovalStatus === 'pending' && (
-              <Button onClick={checkRequestStatus} variant="outline" name="Check Request Status" type="button" />
-            )
-          )}
-        </div>
-      </div>
-      <div className="flex flex-col md:grid md:grid-cols-6 pt-10 border-t border-primary">
-        <div className="col-span-2">
-          {/* profile Image Component */}
-          <ProfileImage />
-
-          <div className="flex justify-center flex-col">
-            <p className="heading-5 text-center py-5">
-              {currentProfile?.ownedBy
-                ? currentProfile?.ownedBy?.slice(0, 9) + '...' + currentProfile?.ownedBy?.slice(-4)
-                : ''}
-            </p>
-            {/* {currentProfile?.artistApprovalStatus === 'approved' && (
-              <span className="heading-6 pb-3 text-blue-900 text-center">Artist </span>
-            )} */}
+          <div className="mb-2 sm:mb-4 flex justify-end items-end">
+            {currentProfile?.artistApprovalStatus === null ? (
+              <Button onClick={SignUpForArtist} variant="outline" name="Sign up for Artist" type="button" />
+            ) : (
+              currentProfile?.artistApprovalStatus === 'pending' && (
+                <Button onClick={checkRequestStatus} variant="outline" name="Check Request Status" type="button" />
+              )
+            )}
           </div>
         </div>
-        <div className="col-span-4 pt-10 md:pt-0">
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-            <div className="flex justify-between items-center pb-2 border-b border-primary">
-              <p className="heading-5 ">Personal details</p>
-              {currentProfile?.artistApprovalStatus === 'approved' && (
-                <Button
-                  disabled
-                  additionalClasses="heading-6 pb-3 text-white text-center"
-                  name="Artist"
-                  type="button"
-                  variant="outline"
-                />
-              )}
+        <div className="flex flex-col md:grid md:grid-cols-6 pt-10 border-t border-primary">
+          <div className="col-span-2">
+            {/* profile Image Component */}
+            <ProfileImage />
+
+            <div className="flex justify-center flex-col">
+              <p className="heading-5 text-center py-5">
+                {currentProfile?.ownedBy
+                  ? currentProfile?.ownedBy?.slice(0, 9) + '...' + currentProfile?.ownedBy?.slice(-4)
+                  : ''}
+              </p>
+              {/* {currentProfile?.artistApprovalStatus === 'approved' && (
+              <span className="heading-6 pb-3 text-blue-900 text-center">Artist </span>
+            )} */}
             </div>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <Input
-                  type="text"
-                  name="firstName"
-                  label="Name"
-                  placeholder="Enter your name"
-                  register={register}
-                  required
-                  pattern={NAME_REGEX}
-                />
-                {errors.firstName && errors.firstName.type === 'pattern' && (
-                  <p className={errorMessageClassName}>Enter your name correctly</p>
-                )}
-                {errors.firstName && errors.firstName.type === 'required' && (
-                  <p className={errorMessageClassName}>Enter your name</p>
+          </div>
+          <div className="col-span-4 pt-10 md:pt-0">
+            <form onSubmit={handleSubmit(updateUserProfileData)} className="flex flex-col gap-4">
+              <div className="flex justify-between items-center pb-2 border-b border-primary">
+                <p className="heading-5 ">Personal details</p>
+                {currentProfile?.artistApprovalStatus === 'approved' && (
+                  <Button
+                    disabled
+                    additionalClasses="heading-6 pb-3 text-white text-center"
+                    name="Artist"
+                    type="button"
+                    variant="outline"
+                  />
                 )}
               </div>
-              <div>
-                <Input
-                  type="text"
-                  name="userName"
-                  label="User name"
-                  placeholder="Enter your user name"
-                  register={register}
-                  disabled
-                  required
-                />
-                {/* {errors.userName && errors.userName.type === 'pattern' && (
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Input
+                    type="text"
+                    name="firstName"
+                    label="Name"
+                    placeholder="Enter your name"
+                    register={register}
+                    required
+                    pattern={NAME_REGEX}
+                  />
+                  {errors.firstName && errors.firstName.type === 'pattern' && (
+                    <p className={errorMessageClassName}>Enter your name correctly</p>
+                  )}
+                  {errors.firstName && errors.firstName.type === 'required' && (
+                    <p className={errorMessageClassName}>Enter your name</p>
+                  )}
+                </div>
+                <div>
+                  <Input
+                    type="text"
+                    name="userName"
+                    label="User name"
+                    placeholder="Enter your user name"
+                    register={register}
+                    disabled
+                    required
+                  />
+                  {/* {errors.userName && errors.userName.type === 'pattern' && (
                   <p className={errorMessageClassName}>Enter your user name</p>
                 )} */}
+                </div>
               </div>
-            </div>
-            <div className="grid md:grid-cols-2 gap-2 md:gap-4">
-              <div>
-                <Input
-                  type="email"
-                  name="email"
-                  label="Email"
-                  placeholder="Enter your email "
-                  register={register}
-                  required
-                  pattern={EMAIL_REGEX}
-                />
-                {errors.email && errors.email.type === 'pattern' && (
-                  <p className={errorMessageClassName}>Enter your correct email id</p>
-                )}
-                {errors.email && errors.email.type === 'required' && (
-                  <p className={errorMessageClassName}>Enter your email id</p>
-                )}
-              </div>
-              {/* <p
+              <div className="grid md:grid-cols-2 gap-2 md:gap-4">
+                <div>
+                  <Input
+                    type="email"
+                    name="email"
+                    label="Email"
+                    placeholder="Enter your email "
+                    register={register}
+                    required
+                    pattern={EMAIL_REGEX}
+                  />
+                  {errors.email && errors.email.type === 'pattern' && (
+                    <p className={errorMessageClassName}>Enter your correct email id</p>
+                  )}
+                  {errors.email && errors.email.type === 'required' && (
+                    <p className={errorMessageClassName}>Enter your email id</p>
+                  )}
+                </div>
+                {/* <p
               className='paragraph-2 md:paragraph-1 cursor-pointer w-28 text-tertiary flex items-center md:mt-6'
               onClick={() => console.log('Verify Email')}
             >
               Verify email
             </p> */}
-            </div>
-            <TextArea
-              type="text"
-              name="bio"
-              label="Bio"
-              placeholder="Explain about yourself"
-              register={register}
-              rows={4}
-            />
-            <p className="heading-5 pb-2 pt-8 border-b border-primary">Social Media</p>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <Input
-                  type="text"
-                  name="website"
-                  label="Website"
-                  placeholder="www.f3rn.com"
-                  register={register}
-                  pattern={URL_REGEX}
-                  prefix="https"
-                />
-                {errors.website && errors.website.type === 'pattern' && (
-                  <p className={errorMessageClassName}>Enter your valid website URL</p>
-                )}
               </div>
-              <div>
-                <Input
-                  type="text"
-                  name="instagram"
-                  label="Instagram"
-                  prefix="https"
-                  placeholder="www.instagram.com/f3rn/"
-                  pattern={URL_REGEX}
-                  register={register}
-                  required
-                />
-                {errors.instagram && errors.instagram.type === 'pattern' && (
-                  <p className={errorMessageClassName}>Enter your valid Instagram profile URL</p>
-                )}
-                {errors.instagram && errors.instagram.type === 'required' && (
-                  <p className={errorMessageClassName}>Enter your Instagram profile URL</p>
-                )}
-              </div>
-            </div>
-            <div className="grid md:grid-cols-2 gap-4">
-              <Input
+              <TextArea
                 type="text"
-                name="twitter"
-                label="Twitter"
-                prefix="https"
-                placeholder="www.twitter.com/f3rnapp/"
+                name="bio"
+                label="Bio"
+                placeholder="Explain about yourself"
                 register={register}
-                pattern={URL_REGEX}
+                rows={4}
               />
-            </div>
-            {errors.instagram && errors.instagram.type === 'pattern' && (
-              <p className={errorMessageClassName}>Enter your valid Twitter profile URL</p>
-            )}
-            {/* <div className='grid md:grid-cols-2 gap-4'>
+              <p className="heading-5 pb-2 pt-8 border-b border-primary">Social Media</p>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Input
+                    type="text"
+                    name="website"
+                    label="Website"
+                    placeholder="www.f3rn.com"
+                    register={register}
+                    pattern={URL_REGEX}
+                    prefix="https"
+                  />
+                  {errors.website && errors.website.type === 'pattern' && (
+                    <p className={errorMessageClassName}>Enter your valid website URL</p>
+                  )}
+                </div>
+                <div>
+                  <Input
+                    type="text"
+                    name="instagram"
+                    label="Instagram"
+                    prefix="https"
+                    placeholder="www.instagram.com/f3rn/"
+                    pattern={URL_REGEX}
+                    register={register}
+                    required
+                  />
+                  {errors.instagram && errors.instagram.type === 'pattern' && (
+                    <p className={errorMessageClassName}>Enter your valid Instagram profile URL</p>
+                  )}
+                  {errors.instagram && errors.instagram.type === 'required' && (
+                    <p className={errorMessageClassName}>Enter your Instagram profile URL</p>
+                  )}
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <Input
+                  type="text"
+                  name="twitter"
+                  label="Twitter"
+                  prefix="https"
+                  placeholder="www.twitter.com/f3rnapp/"
+                  register={register}
+                  pattern={URL_REGEX}
+                />
+              </div>
+              {errors.instagram && errors.instagram.type === 'pattern' && (
+                <p className={errorMessageClassName}>Enter your valid Twitter profile URL</p>
+              )}
+              {/* <div className='grid md:grid-cols-2 gap-4'>
             <MultiSelect
               selectedItems={selectedItems}
               setSelectedItems={setSelectedItems}
@@ -434,25 +452,26 @@ const Settings = () => {
               setMultiSelectError={setMultiSelectError}
             />
           </div> */}
-            {/* Enable Dispatcher Component */}
-            <p className="heading-5 pb-2 pt-8 border-b border-primary">Dispatcher</p>
-            <div className="flex">
-              <EnableDispatcher />
-            </div>
+              {/* Enable Dispatcher Component */}
+              <p className="heading-5 pb-2 pt-8 border-b border-primary">Dispatcher</p>
+              <div className="flex">
+                <EnableDispatcher />
+              </div>
 
-            <div className="mt-4">
-              <Button
-                variant="primary"
-                disabled={isLoading || !isDirty}
-                additionalClasses={isLoading || !isDirty ? 'cursor-not-allowed' : ''}
-                name={isLoading ? 'Saving...' : 'Save'}
-                type="submit"
-              />
-            </div>
-          </form>
+              <div className="mt-4">
+                <Button
+                  variant="primary"
+                  disabled={isLoading || !isDirty}
+                  additionalClasses={isLoading || !isDirty ? 'cursor-not-allowed' : ''}
+                  name={isLoading ? 'Saving...' : 'Save'}
+                  type="submit"
+                />
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

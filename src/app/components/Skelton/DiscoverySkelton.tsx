@@ -3,7 +3,6 @@ import React from 'react';
 function DiscoverySkelton() {
   return (
     <div className="main-container w-full min-h-[76vh] mt-28 mb-12">
-      <p className="border-b my-10 pb-1 heading-4">Trending Arts</p>
       <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 mt-20">
         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(index => (
           <div className="col-span-4" key={index}>

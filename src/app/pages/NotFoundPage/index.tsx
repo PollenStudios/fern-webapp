@@ -1,9 +1,15 @@
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { PageRoutes } from 'utils/config';
 
 export default function NotFoundPage() {
   return (
     <>
+      <HelmetProvider>
+        <Helmet>
+          <title>404 Not Found - F3rn | Fine Art Discovery and Curation</title>
+        </Helmet>
+      </HelmetProvider>
       <div className="main-container h-screen flex md:flex-col bg-white pt-20 pb-12">
         <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col justify-center px-4 sm:px-6 lg:px-8">
           <div className="py-16">

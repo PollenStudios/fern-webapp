@@ -1,4 +1,5 @@
 import config from './config';
+// /^(?:(ftp|http|https):\/\/)?(?:[\w-]+\.)+[a-z]{2,24}$/;
 
 //Regex
 export const URL_REGEX =

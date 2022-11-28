@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { WalletContext } from 'store/WalletContextProvider';
 import { v4 as uuidv4 } from 'uuid';
 import { Buffer } from 'buffer';
@@ -8,32 +8,30 @@ import {
   CreatePostTypedDataDocument,
   CreatePostViaDispatcherDocument,
   CreatePublicPostRequest,
-  HasTxHashBeenIndexedDocument,
-  HasTxHashBeenIndexedRequest,
   Mutation,
   PublicationMainFocus,
 } from 'graphql/generated/types';
 import getSignature from 'utils/getSignature';
-import { Input, TextArea } from 'app/components/atoms/FormElements';
+import { Input, MultiSelect, TextArea } from 'app/components/atoms/FormElements';
 import { useForm } from 'react-hook-form';
 import trimify from 'utils/trimify';
 import { Button } from 'app/components/atoms/Buttons';
 import { Web3Storage } from 'web3.storage';
-import config from 'utils/config';
+import config, { PageRoutes } from 'utils/config';
 import toast from 'react-hot-toast';
 import getUserLocale from 'utils/getUserLocale';
 import axios from 'axios';
 import { useSignTypedData } from 'wagmi';
-import Client from 'utils/apolloClient';
 import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
 import { Loader } from 'app/components/atoms/Loader';
 import { ImagePreviewer } from 'app/components/atoms/UploadFiles';
-import ArtPreview from 'Assets/Images/artPreview.png';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import OverlayLoader from 'app/components/OverlayLoader';
 import { apiRoutes } from 'API/apiRoutes';
+import { getArtCategories } from 'utils/generateNonce';
 import { backendToken } from 'utils/getBackendToken';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 function Post() {
   const navigate = useNavigate();
@@ -48,11 +46,23 @@ function Post() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [tagsDropDownOptions, setTagsDropDownOptions] = useState<Array<string>>([]);
+  const [selectedArtCategory, setSelectedArtCategory] = useState<Array<string>>([]);
+  const [multiSelectError, setMultiSelectError] = useState<boolean>(false);
 
   const [attachment, setAttachment] = useState<any>();
   const [avatar, setAvatar] = useState<any>();
   const [imageLoading, setImageLoading] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const categories = async () => {
+    const data = await getArtCategories();
+    setTagsDropDownOptions(data);
+  };
+
+  useEffect(() => {
+    categories();
+  }, []);
 
   const [broadcast] = useMutation(BroadcastDocument);
 
@@ -77,6 +87,15 @@ function Post() {
     }
   }
 
+  const filteredSelectedArtCategoryAttributes = () => {
+    return selectedArtCategory.map(category => ({
+      traitType: 'type',
+      displayType: 'string',
+      key: 'artCategory',
+      value: category,
+    }));
+  };
+
   const getMainContentFocus = () => {
     if (attachment) {
       return PublicationMainFocus.Image;
@@ -91,6 +110,7 @@ function Post() {
       displayType: 'string',
       value: getMainContentFocus()?.toLowerCase(),
     },
+    ...filteredSelectedArtCategoryAttributes(),
   ];
 
   const [createPostTypedData] = useMutation<Mutation>(CreatePostTypedDataDocument);
@@ -146,10 +166,9 @@ function Post() {
   const handleUpload = async (value: any) => {
     setAvatar(value);
     setImageLoading(true);
-    console.log(value);
     try {
       const formBodyData = new FormData();
-      formBodyData.append('name', 'name');
+      formBodyData.append('name', currentProfile.name);
       formBodyData.append('file', value);
       const { data } = await axios({
         method: 'post',
@@ -161,9 +180,7 @@ function Post() {
       });
       if (data.file) {
         setAttachment(data.file);
-
         setImageLoading(false);
-        toast.success('Image successfully uploaded');
       }
       setImageLoading(false);
     } catch (error) {
@@ -189,7 +206,7 @@ function Post() {
         image: attachment,
         imageMimeType: 'image/svg+xml',
         name: `Post by @${currentProfile?.handle}`,
-        // tags: getTags(publicationContent),
+        tags: [...formData.title.split(' '), ...selectedArtCategory],
         // animation_url: getAnimationUrl(),
         mainContentFocus: getMainContentFocus(),
         contentWarning: null, // TODO
@@ -245,7 +262,7 @@ function Post() {
             error: 'Could not update',
           });
           await res;
-          navigate('/');
+          navigate(PageRoutes.DISCOVERY);
 
           setIsLoading(false);
         }
@@ -262,138 +279,85 @@ function Post() {
   };
 
   return (
-    <div className="md:main-container flex flex-col justify-center w-full md:w-[50vw] xl:w-[40vw] min-h-[72.5vh]  my-24">
-      {/* <div className="   "> */}
-      {isLoading && <OverlayLoader />}
-      <div className="flex flex-col px-10 gap-y-6 border">
-        <div className="border-b  py-2 flex items-center gap-x-2 cursor-pointer" onClick={() => navigate(-1)}>
-          <ArrowLeftIcon className="h-6 w-6" />
-          <p className="heading-5">Create new post</p>
-        </div>
+    <>
+      <HelmetProvider>
+        <Helmet>
+          <title>Create new post - F3rn | Fine Art Discovery and Curation</title>
+        </Helmet>
+      </HelmetProvider>
+      <div className="md:main-container flex flex-col justify-center w-full md:w-[50vw] xl:w-[40vw] min-h-[72.5vh]  my-24">
+        {isLoading && <OverlayLoader />}
+        <div className="flex flex-col px-10 gap-y-6 border">
+          <div className="border-b pt-7 pb-2 flex items-center gap-x-2 cursor-pointer" onClick={() => navigate(-1)}>
+            <ArrowLeftIcon className="h-6 w-6" />
+            <p className="heading-5">Create new post</p>
+          </div>
 
-        <div className="flex flex-col py-10">
-          <div>
-            <ImagePreviewer imagePreview={avatar && URL.createObjectURL(avatar)} />
-            <div className="flex flex-col mt-6">
-              <input
-                className="w-full  border-dotted"
-                type="file"
-                accept=".png, .jpg, .jpeg, .gif"
-                onChange={e => {
-                  e.target.files && handleUpload(e.target.files[0]);
-                }}
-              />
-              {imageLoading && (
-                <div className="pt-2 flex items-center gap-4">
-                  <p className="">Uploading</p>
-                  <Loader />
-                </div>
-              )}
-            </div>
-          </div>
-          <form onSubmit={handleSubmit(CreatePost)} className="">
-            <div className="mt-6 space-y-5">
-              <div>
-                <Input type="text" name="title" label="Title *" placeholder="Title" register={register} required />
-                {errors.title && errors.title.type === 'required' && (
-                  <p className="text-red-600 pt-2">Please enter your title</p>
-                )}
-              </div>
-              <div>
-                <TextArea
-                  type="text"
-                  name="description"
-                  label="Description *"
-                  placeholder="Description"
-                  rows={6}
-                  register={register}
-                  required
+          <div className="flex flex-col pt-2 pb-10">
+            <div>
+              <ImagePreviewer imagePreview={avatar && URL.createObjectURL(avatar)} />
+              <div className="flex flex-col mt-6">
+                <input
+                  className="w-full  border-dotted"
+                  type="file"
+                  accept=".png, .jpg, .jpeg, .gif"
+                  onChange={e => {
+                    e.target.files && handleUpload(e.target.files[0]);
+                  }}
                 />
-                {errors.description && errors.description.type === 'required' && (
-                  <p className="text-red-600 pt-2">Please enter your description</p>
+                {imageLoading && (
+                  <div className="pt-2 flex items-center gap-4">
+                    <p className="">Uploading</p>
+                    <Loader />
+                  </div>
                 )}
               </div>
-              <Button
-                name={isLoading ? 'Posting...' : 'Post'}
-                variant="primary"
-                type={'submit'}
-                disabled={isLoading || imageLoading}
-                additionalClasses={isLoading || imageLoading ? 'cursor-not-allowed' : ''}
-              />
             </div>
-          </form>
+            <form onSubmit={handleSubmit(CreatePost)} className="">
+              <div className="mt-6 space-y-5">
+                <div>
+                  <Input type="text" name="title" label="Title" placeholder="Title" register={register} required />
+                  {errors.title && errors.title.type === 'required' && (
+                    <p className="text-red-600 pt-2">Please enter your title</p>
+                  )}
+                </div>
+                <div>
+                  <TextArea
+                    type="text"
+                    name="description"
+                    label="Description"
+                    placeholder="Description"
+                    rows={6}
+                    register={register}
+                    required
+                  />
+                  {errors.description && errors.description.type === 'required' && (
+                    <p className="text-red-600 pt-2">Please enter your description</p>
+                  )}
+                </div>
+                <MultiSelect
+                  label={'Tags'}
+                  name={'tags'}
+                  placeholder={'Add Tags'}
+                  selectedItems={selectedArtCategory}
+                  setSelectedItems={setSelectedArtCategory}
+                  options={tagsDropDownOptions}
+                  multiSelectError={multiSelectError}
+                  setMultiSelectError={setMultiSelectError}
+                />
+                <Button
+                  name={isLoading ? 'Posting...' : 'Post'}
+                  variant="primary"
+                  type={'submit'}
+                  disabled={isLoading || imageLoading}
+                  additionalClasses={isLoading || imageLoading ? 'cursor-not-allowed' : ''}
+                />
+              </div>
+            </form>
+          </div>
         </div>
-        {/* <div className="flex flex-col mt-2">
-          <input
-            className="w-60 border"
-            type="file"
-            accept=".png, .jpg, .jpeg, .gif"
-            onChange={e => {
-              e.target.files && handleUpload(e.target.files[0]);
-            }}
-          />
-          {imageLoading && (
-            <div className="pt-2 flex items-center gap-4">
-              <p className="">Uploading</p>
-              <Loader />
-            </div>
-          )}
-        </div> */}
-        {/* <div className="flex flex-col md:grid md:grid-cols-12 gap-4">
-          <div className="md:col-span-5">
-            <ImagePreviewer imagePreview={attachment} />
-            <div className="flex flex-col mt-6">
-              <input
-                className="w-full border"
-                type="file"
-                accept=".png, .jpg, .jpeg, .gif"
-                onChange={e => {
-                  e.target.files && handleUpload(e.target.files[0]);
-                }}
-              />
-              {imageLoading && (
-                <div className="pt-2 flex items-center gap-4">
-                  <p className="">Uploading</p>
-                  <Loader />
-                </div>
-              )}
-            </div>
-          </div>
-          <form onSubmit={handleSubmit(CreatePost)} className="col-span-7">
-            <div className="col-span-6 md:col-span-3 mt-6 space-y-5">
-              <div>
-                <Input type="text" name="title" label="Title" placeholder="Title" register={register} required />
-                {errors.title && errors.title.type === 'required' && (
-                  <p className="text-red-600 pt-2">Please enter your title</p>
-                )}
-              </div>
-              <div>
-                <TextArea
-                  type="text"
-                  name="description"
-                  label="Description"
-                  placeholder="Description"
-                  rows={6}
-                  register={register}
-                  required
-                />
-                {errors.description && errors.description.type === 'required' && (
-                  <p className="text-red-600 pt-2">Please enter your description</p>
-                )}
-              </div>
-              <Button
-                name={isLoading ? 'Posting...' : 'Post'}
-                variant="primary"
-                type={'submit'}
-                disabled={isLoading || imageLoading}
-                additionalClasses={isLoading || imageLoading ? 'cursor-not-allowed' : ''}
-              />
-            </div>
-          </form>
-        </div> */}
       </div>
-    </div>
-    // </div>
+    </>
   );
 }
 

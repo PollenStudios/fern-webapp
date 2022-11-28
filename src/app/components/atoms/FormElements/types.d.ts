@@ -24,3 +24,12 @@ export interface ISearch {
   multiSelectError?: boolean;
   setMultiSelectError?: any;
 }
+
+export interface LoginModalProps {
+  walletAddress: string;
+  heading: string | undefined;
+  paragraph?: string;
+  primaryButtonText: string;
+  secondaryButtonText: string;
+  websiteUrl?: string;
+}

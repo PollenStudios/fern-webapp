@@ -1,7 +1,12 @@
-import { Key, useState } from 'react';
+import { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal } from 'react';
 import { ChevronDownIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import DropDown from '../DropDown';
 import { IInput, ISearch } from './types';
+
+import { Fragment, useState } from 'react';
+import { Listbox, Transition } from '@headlessui/react';
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import { PublicationSortCriteria } from 'graphql/generated/types';
 
 const tailwindCssClass = {
   inputClass: 'paragraph-3 rounded-sm border-gray-20  border focus:border-gray-500 focus:ring-gray-100',
@@ -53,6 +58,7 @@ export const TextArea = ({ label, type, name, placeholder, register, required, p
     <div className="flex flex-col gap-2">
       <label htmlFor={name} className="heading-6 ">
         {label}
+        {required && <span className="pl-1 text-red-600">*</span>}
       </label>
       <textarea
         {...register(name, { required, pattern: { value: pattern } })}
@@ -86,7 +92,7 @@ export const MultiSelect = ({
 
   // adds new item to multiselect
   const addItemToMultiSelect = (item: string) => {
-    setSelectedItems(selectedItems?.concat(item));
+    selectedItems && selectedItems?.length < 4 && setSelectedItems(selectedItems?.concat(item));
     setIsDropdownOpen(false);
     setMultiSelectError(false);
   };
@@ -139,3 +145,65 @@ export const MultiSelect = ({
     </div>
   );
 };
+
+type Iprops = {
+  selected: { name: string; type: PublicationSortCriteria } | string;
+  setSelected: any;
+  options: Array<object | string>;
+};
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(' ');
+}
+
+export default function Select({ selected, setSelected, options }: Iprops) {
+  return (
+    <Listbox value={selected} onChange={setSelected}>
+      {({ open }) => (
+        <>
+          <div className="relative mt-1">
+            <Listbox.Button className="relative w-40 cursor-pointer rounded-full border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm  focus:outline-none sm:text-sm">
+              {/* @ts-ignore */}
+              <span className="block truncate">{selected?.name ?? selected}</span>
+              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                <ChevronDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+              </span>
+            </Listbox.Button>
+
+            <Transition
+              show={open}
+              as={Fragment}
+              leave="transition ease-in duration-100"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-40 overflow-hidden rounded-md bg-white py-1 text-base shadow-lg  focus:outline-none sm:text-sm">
+                {options?.map((option: object | string, id: number) => (
+                  <Listbox.Option
+                    key={id}
+                    className={({ active }) =>
+                      classNames(
+                        active ? 'text-primary bg-gray-200' : 'text-primary',
+                        'relative cursor-pointer select-none py-2 pl-3 pr-9',
+                      )
+                    }
+                    value={option}
+                  >
+                    {({ selected, active }) => (
+                      <>
+                        <span className={classNames(selected ? 'primary' : 'font-normal', 'block truncate')}>
+                          {/* @ts-ignore */}
+                          {option?.name || option}
+                        </span>
+                      </>
+                    )}
+                  </Listbox.Option>
+                ))}
+              </Listbox.Options>
+            </Transition>
+          </div>
+        </>
+      )}
+    </Listbox>
+  );
+}

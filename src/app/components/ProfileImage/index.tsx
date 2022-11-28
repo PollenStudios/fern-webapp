@@ -1,21 +1,12 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
 import axios from 'axios';
-import { ethers } from 'ethers';
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { WalletContext } from 'store/WalletContextProvider';
-import {
-  CreateSetProfileImageUriTypedDataDocument,
-  HasTxHashBeenIndexedDocument,
-  HasTxHashBeenIndexedRequest,
-  ProfileDocument,
-  Mutation,
-} from 'graphql/generated/types';
+import { CreateSetProfileImageUriTypedDataDocument, ProfileDocument, Mutation } from 'graphql/generated/types';
 import useBroadcast from 'hooks/useBroadcast';
-import getIPFSLink from 'utils/getIPFSLink';
 import getSignature from 'utils/getSignature';
 import { Button } from 'app/components/atoms/Buttons';
 import ProfileLogo from './assets/defaultLogo.png';
-import Client from 'utils/apolloClient';
 import { toast } from 'react-hot-toast';
 import config from 'utils/config';
 import { Loader } from '../atoms/Loader';
@@ -24,6 +15,7 @@ import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
 import OverlayLoader from '../OverlayLoader';
 import { apiRoutes } from 'API/apiRoutes';
 import { backendToken } from 'utils/getBackendToken';
+import Modal from '../Modal/index';
 
 function ProfileImage() {
   const {
@@ -41,6 +33,7 @@ function ProfileImage() {
   const [image, setImage] = useState<any>();
   const [avatar, setAvatar] = useState<any>();
   const [imageLoading, setImageLoading] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   const { broadcast, loading: broadcastLoading } = useBroadcast({
     onCompleted: data => {
@@ -95,7 +88,7 @@ function ProfileImage() {
     setImageLoading(true);
     try {
       const formBodyData = new FormData();
-      formBodyData.append('name', 'name');
+      formBodyData.append('name', currentProfile.name);
       formBodyData.append('file', value);
       const { data } = await axios({
         method: 'post',
@@ -106,10 +99,8 @@ function ProfileImage() {
         data: formBodyData,
       });
       if (data.file) {
-        console.log('data.file', data.file);
         setImage(data.file);
         setImageLoading(false);
-        toast.success('Successfully Uploaded');
       }
     } catch (error) {
       setImageLoading(false);

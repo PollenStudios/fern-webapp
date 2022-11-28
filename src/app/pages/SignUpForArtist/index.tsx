@@ -37,7 +37,7 @@ function SignUpForArtist() {
       // );
       setValue(
         'instaHandle',
-        currentProfile?.attributes?.filter((attribute: any) => attribute?.key === 'instagram')[0]?.value,
+        'https://' + currentProfile?.attributes?.filter((attribute: any) => attribute?.key === 'instagram')[0]?.value,
       );
     }
   }, [currentProfile, account]);
@@ -121,7 +121,7 @@ function SignUpForArtist() {
             required
           /> */}
           <Input
-            label="Instagram handle"
+            label="Instagram"
             type="url"
             name="instaHandle"
             disabled

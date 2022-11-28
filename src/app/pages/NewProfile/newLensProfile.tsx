@@ -77,8 +77,8 @@ function NewLensProfile({
           {isHandleExist && <p className={errorMessageClassName}>Handle already taken try something else</p>}
         </div>
         <ul>
-          <li>1. Handle limit is 30 characters.</li>
-          <li>2. You can add lowercase alphabets, _ and numbers.</li>
+          <li className="paragraph-2">1. Handle limit is 30 characters.</li>
+          <li className="paragraph-2">2. You can add lowercase alphabets, _ and numbers.</li>
         </ul>
       </div>
       <div className="mt-10">

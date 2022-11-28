@@ -27,5 +27,5 @@ Install awscli first and run aws configure command with the correct key and secr
 ## S3 bucket link
 
 ```
-
+http://fern-prod.s3-website-us-east-1.amazonaws.com
 ```

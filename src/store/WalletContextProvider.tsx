@@ -4,7 +4,7 @@ import { AuthenticateDocument, ChallengeDocument, UserProfilesDocument } from 'g
 import { ethers } from 'ethers';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { signMessage } from 'graphql/utils/signMessage';
+import { setAuthTokenInLocalStorage, signMessage } from 'graphql/utils/signMessage';
 
 import {
   initialStateAccount,
@@ -25,7 +25,6 @@ import clearStorage from 'utils/clearStorage';
 
 import config, { DEFAULT_CHAIN_IDS, PageRoutes } from 'utils/config';
 import { useSwitchNetwork } from 'wagmi';
-import Client from 'utils/apolloClient';
 
 export const WalletContext = createContext({});
 
@@ -33,7 +32,7 @@ const WalletProvider = ({ children }: any) => {
   const navigate = useNavigate();
   const { switchNetwork } = useSwitchNetwork();
 
-  var account = ''; //, setAccount] = useState('');
+  // const [account, setAccount] = useState('');
   const [loadChallenge] = useLazyQuery(ChallengeDocument, {
     fetchPolicy: 'no-cache',
   });
@@ -41,6 +40,7 @@ const WalletProvider = ({ children }: any) => {
   const [getProfiles] = useLazyQuery(UserProfilesDocument);
 
   const [isLoading, setIsLoading] = useState(false);
+
   const [walletBalanceState, dispatchWalletBalance] = useReducer(reducerWalletBalance, initialStateWalletBalance);
 
   const [accountState, dispatchAccount] = useReducer(reducerAccount, initialStateAccount);
@@ -51,7 +51,7 @@ const WalletProvider = ({ children }: any) => {
 
   const walletProvider = useRef(window.ethereum);
 
-  const verifyBackendGeneratedToken = async (token: string, profilesData: any) => {
+  const verifyBackendGeneratedToken = async (token: string, profilesData: any, closeModal: any) => {
     if (token) {
       const getProfileResult = await getBackendProfile();
       dispatchCurrentProfile({
@@ -67,21 +67,30 @@ const WalletProvider = ({ children }: any) => {
         type: 'success',
         payload: { userSignNonce: profilesData?.userSigNonces?.lensHubOnChainSigNonce },
       });
+      closeModal();
     }
   };
 
-  const connectToBrowserWallets = async () => {
+  const connectToBrowserWallets = async (infoModal: any, closeModal: any) => {
     //user is connected but not have a profile
     if (localStorage.getItem('accessToken') && hasProfileState.hasProfile === false) {
+      closeModal();
       return navigate(PageRoutes.SIGN_UP);
     }
     setIsLoading(true);
 
-    if (window.ethereum === 'undefined') {
-      toast.error('Please Install Metamask');
-      return false;
-    }
     try {
+      if (window.ethereum === undefined) {
+        infoModal({
+          heading: "You don't have Metamask",
+          paragraph: 'Please install Metamask',
+          primaryButtonText: 'Install Metamask',
+          websiteUrl: 'https://metamask.io/download/',
+        });
+
+        throw new Error('Metamask is not installed');
+      }
+
       dispatchAccount({ type: 'loading' });
       const accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
@@ -94,11 +103,14 @@ const WalletProvider = ({ children }: any) => {
 
       walletProvider.current = window.ethereum;
       dispatchAccount({ type: 'success', payload: accounts[0] });
-      account = accounts[0];
+
       fetchWalletBalance(accounts[0]);
-      validateChain(accounts[0]);
+
+      await validateChain(accounts[0], closeModal, infoModal);
+
+      await handleSign(accounts[0], closeModal, infoModal);
     } catch (error: any) {
-      toast.error(error.message);
+      // toast.error(error.message);
       dispatchAccount({ type: 'error', payload: error });
     } finally {
       setIsLoading(false);
@@ -106,11 +118,11 @@ const WalletProvider = ({ children }: any) => {
   };
 
   // get wallet balance
-  const fetchWalletBalance = async (account: string) => {
+  const fetchWalletBalance = async (address: string) => {
     try {
       dispatchWalletBalance({ type: 'loading' });
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const balance = await provider.getBalance(account);
+      const balance = await provider.getBalance(address);
       const balanceInEth = ethers.utils.formatEther(balance);
       dispatchWalletBalance({ type: 'success', payload: balanceInEth });
     } catch (error) {
@@ -120,43 +132,45 @@ const WalletProvider = ({ children }: any) => {
   };
 
   //signMessage
-  const handleSign = async (address: string) => {
+  const handleSign = async (address: string, closeModal: any, infoModal: any) => {
+    dispatchHasProfile({ type: 'loading' });
+    dispatchCurrentProfile({ type: 'loading' });
+    dispatchUserSigNonce({ type: 'loading' });
+    dispatchIsLoggedIn({ type: 'loading' });
+
     try {
-      // Get challenge
-      dispatchHasProfile({ type: 'loading' });
-      dispatchCurrentProfile({ type: 'loading' });
-      dispatchUserSigNonce({ type: 'loading' });
-      dispatchIsLoggedIn({ type: 'loading' });
+      // Fetch challenge from lens
       const challenge = await loadChallenge({
         variables: { request: { address } },
       });
-      if (!challenge?.data?.challenge?.text) {
-        return toast.error('Signature message is not valid');
-      }
-      try {
-        // Get signature
-        const signature = await signMessage(challenge?.data?.challenge?.text);
 
-        // Auth user and set cookies
-        const auth = await authenticate({
-          variables: { request: { address, signature } },
+      // If user is not able to get the challenge from Lens api
+      if (!challenge?.data?.challenge?.text) {
+        infoModal({
+          heading: 'Signature message is not valid',
+          paragraph: 'Signature message is not valid',
+          buttonText: 'Retry again',
         });
-        toast.success('Connected');
-        localStorage.setItem('accessToken', auth.data?.authenticate.accessToken);
-        localStorage.setItem('refreshToken', auth.data?.authenticate.refreshToken);
-      } catch (error) {
-        dispatchHasProfile({ type: 'error', payload: error });
-        dispatchCurrentProfile({ type: 'error', payload: error });
-        dispatchUserSigNonce({ type: 'error', payload: error });
-        dispatchIsLoggedIn({ type: 'error', payload: error });
-        return;
+        throw new Error('Lens login is not completed');
       }
+
+      // Sign User wallet message
+      const signature = await signMessage(challenge?.data?.challenge?.text);
+
+      // Auth user from lens api
+      const auth = await authenticate({
+        variables: { request: { address, signature } },
+      });
+
+      await setAuthTokenInLocalStorage(auth.data?.authenticate.accessToken, auth.data?.authenticate.refreshToken);
+      toast.success('Connected');
 
       const { data: profilesData } = await getProfiles({
         variables: { ownedBy: address },
       });
 
       if (profilesData?.profiles?.items?.length === 0) {
+        // TODO: Refactor
         dispatchHasProfile({ type: 'success', payload: false });
         dispatchIsLoggedIn({ type: 'success', payload: false });
         dispatchCurrentProfile({
@@ -173,46 +187,56 @@ const WalletProvider = ({ children }: any) => {
           icon: '⏲',
         });
         navigate(PageRoutes.SIGN_UP);
+        closeModal();
       } else {
         const profiles: any = profilesData?.profiles?.items;
-        const generateNonceResult = await generateNonce(profiles[0].handle, account, profiles[0].id);
+        const generateNonceResult = await generateNonce(profiles[0].handle, address, profiles[0].id);
 
-        //if backend does not have this profile but lens have then we will create it on backend
-        //if generateNonce api response i user does not exist error,then it will return us true boolean
+        /* 
+        If user doesn't exists on the backend but have a profile on the lens backend, 
+        then we will create a new user profile on our backend
+        */
 
         if (generateNonceResult === true) {
           const formBodyData = new FormData();
           formBodyData.append('username', profiles[0].handle);
-          formBodyData.append('wallet_address', account);
+          formBodyData.append('wallet_address', address);
           formBodyData.append('lens_profile', profiles[0].id);
 
           const createUserResult = await createUser(formBodyData);
           //now if user is created on backend then generate it nonce and token and make him/her login
           if (createUserResult) {
-            const generateNonceResult = await generateNonce(profiles[0].handle, account, profiles[0].id);
-            verifyBackendGeneratedToken(generateNonceResult?.token, profilesData);
+            const generateNonceResult = await generateNonce(profiles[0].handle, address, profiles[0].id);
+            verifyBackendGeneratedToken(generateNonceResult?.token, profilesData, closeModal);
           }
         }
-        generateNonceResult?.token && verifyBackendGeneratedToken(generateNonceResult?.token, profilesData);
+        generateNonceResult?.token && verifyBackendGeneratedToken(generateNonceResult?.token, profilesData, closeModal);
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatchHasProfile({ type: 'error', payload: error });
       dispatchCurrentProfile({ type: 'error', payload: error });
       dispatchUserSigNonce({ type: 'error', payload: error });
       dispatchIsLoggedIn({ type: 'error', payload: error });
-      navigate(PageRoutes.ERROR_PAGE);
+      // closeModal();
+      // navigate(PageRoutes.ERROR_PAGE);
     }
   };
 
-  const validateChain = async (account: string) => {
+  const validateChain = async (address: string, closeModal: any, infoModal: any) => {
     const fetchChainId = walletProvider.current.chainId;
     if (!DEFAULT_CHAIN_IDS.includes(fetchChainId)) {
       if (switchNetwork) {
-        switchNetwork(config.chainId);
-        toast.error('Please change your network wallet!');
+        infoModal({
+          heading: 'Switch your Network',
+          paragraph: 'Please switch your network chain',
+          primaryButtonText: 'Switch Network',
+          onClick: switchNetwork(config.chainId),
+        });
+
+        throw new Error('Chain network is not correct');
       }
     } else {
-      handleSign(account);
+      return true;
     }
   };
 
@@ -224,16 +248,16 @@ const WalletProvider = ({ children }: any) => {
   };
 
   useEffect(() => {
-    walletProvider.current.on('accountsChanged', () => {
+    walletProvider?.current?.on('accountsChanged', () => {
       logout();
     });
-  }, [walletProvider.current.selectedAddress]);
+  }, [walletProvider?.current?.selectedAddress]);
 
   useEffect(() => {
-    walletProvider.current.on('chainChanged', () => {
+    walletProvider?.current?.on('chainChanged', () => {
       logout();
     });
-  }, [walletProvider.current.chainId]);
+  }, [walletProvider?.current?.chainId]);
 
   return (
     <>
@@ -254,6 +278,8 @@ const WalletProvider = ({ children }: any) => {
           isLoggedInState,
           dispatchIsLoggedIn,
           connectToBrowserWallets,
+          validateChain,
+          handleSign,
         }}
       >
         {children}
