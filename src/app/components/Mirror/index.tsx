@@ -1,14 +1,21 @@
 import { useMutation } from '@apollo/client';
 import { ArrowsRightLeftIcon } from '@heroicons/react/24/solid';
-import { BroadcastDocument, CreateMirrorTypedDataDocument, Mutation } from 'graphql/generated/types';
+import {
+  BroadcastDocument,
+  CreateMirrorRequest,
+  CreateMirrorTypedDataDocument,
+  CreateMirrorViaDispatcherDocument,
+  Mutation,
+} from 'graphql/generated/types';
 import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { WalletContext } from 'store/WalletContextProvider';
 import { PageRoutes } from 'utils/config';
 import getSignature from 'utils/getSignature';
 import { useSignTypedData } from 'wagmi';
+import { Loader } from '../atoms/Loader';
 
 function Mirror({ publicationId, mirrorCounts }: any) {
   const navigate = useNavigate();
@@ -20,21 +27,73 @@ function Mirror({ publicationId, mirrorCounts }: any) {
   }: any = useContext(WalletContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const [createMirrorViaDispatcher] = useMutation(CreateMirrorViaDispatcherDocument, {
+    onCompleted: data => {
+      if (data.createMirrorViaDispatcher.__typename === 'RelayerResult') {
+        console.log('txId', { txId: data.createMirrorViaDispatcher });
+      }
+    },
+  });
+
+  const createViaDispatcher = async (request: CreateMirrorRequest) => {
+    const { data } = await createMirrorViaDispatcher({
+      variables: { request },
+    });
+
+    if (data?.createMirrorViaDispatcher?.__typename === 'RelayError') {
+      const result = await CreateMirrorTypedData({
+        variables: {
+          // options: { overrideSigNonce: userSignNonce },
+          request,
+        },
+      });
+
+      const typedData = result.data?.createPostTypedData.typedData;
+
+      const signatureTyped = getSignature(typedData);
+      const signature = await signTypedDataAsync(signatureTyped);
+      const broadcastResult = await broadcast({
+        variables: {
+          request: {
+            id: result?.data?.createPostTypedData.id,
+            signature: signature,
+          },
+        },
+      });
+
+      if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
+        const txId = broadcastResult.data?.broadcast?.txId!;
+
+        await pollUntilIndexed({ txId });
+        // console.log('indexerResult', indexerResult);
+      }
+
+      setIsLoading(false);
+      if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
+        console.error('create profile metadata via broadcast: failed', broadcastResult);
+      } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
+    }
+  };
+
   const [broadcast] = useMutation(BroadcastDocument);
   const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData();
   const [CreateMirrorTypedData] = useMutation<Mutation>(CreateMirrorTypedDataDocument);
 
   const CreateMirror = async () => {
+    if (!currentProfile) {
+      return toast.error('Please sign in your wallet.');
+    }
+    const request = {
+      profileId: currentProfile?.id,
+      publicationId: publicationId,
+      referenceModule: {
+        followerOnlyReferenceModule: false,
+      },
+    };
+
     if (currentProfile?.dispatcher?.canUseRelay) {
-      // createViaDispatcher(request);
+      createViaDispatcher(request);
     } else {
-      const request = {
-        profileId: currentProfile?.id,
-        publicationId: publicationId,
-        referenceModule: {
-          followerOnlyReferenceModule: false,
-        },
-      };
       const result = await CreateMirrorTypedData({
         variables: {
           options: { overrideSigNonce: userSignNonce },
@@ -79,13 +138,19 @@ function Mirror({ publicationId, mirrorCounts }: any) {
 
   return (
     <div className="flex justify-center items-center gap-1">
-      <div
-        title="add to ArtBoard"
-        onClick={CreateMirror}
-        className="flex justify-center items-center  w-8 h-8 rounded-full hover:bg-gray-800 cursor-pointer space-x-1"
-      >
-        <ArrowsRightLeftIcon className="w-5  text-white" />
-      </div>
+      {isLoading ? (
+        <div className="flex justify-center items-center  w-8 h-8">
+          <Loader />
+        </div>
+      ) : (
+        <div
+          title="add to ArtBoard"
+          onClick={CreateMirror}
+          className="flex justify-center items-center  w-8 h-8 rounded-full hover:bg-gray-800 cursor-pointer space-x-1"
+        >
+          <ArrowsRightLeftIcon className="w-5  text-white" />
+        </div>
+      )}
       <div>{mirrorCounts}</div>
     </div>
   );

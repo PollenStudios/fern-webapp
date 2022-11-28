@@ -99,7 +99,7 @@ const PersistState = ({ children }: any) => {
           payload: '',
         });
         dispatchIsLoggedIn({ type: 'success', payload: false });
-        toast.error('No profile found');
+        // toast.error('No profile found');
       }
     } catch (error) {
       dispatchHasProfile({ type: 'error', payload: error });
