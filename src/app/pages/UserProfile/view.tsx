@@ -18,14 +18,14 @@ function View({ isArtist }: any) {
             className={`heading-4 cursor-pointer ${selectedTab === 'posts' ? 'border-primary border-b-4' : ''}`}
             onClick={() => setSelectedTab('posts')}
           >
-            Art Works
+            Art Work
           </p>
         )}
         <p
           className={`heading-4 cursor-pointer ${selectedTab === 'artBoards' ? 'border-primary border-b-4' : ''}`}
           onClick={() => setSelectedTab('artBoards')}
         >
-          Art Boards
+          Art Board
         </p>
       </div>
 

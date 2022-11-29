@@ -14,19 +14,23 @@ import { WalletContext } from 'store/WalletContextProvider';
 import getSignature from 'utils/getSignature';
 import { useSignTypedData } from 'wagmi';
 import { Loader } from '../atoms/Loader';
+import { LoginModal } from '../Modal/LoginModal';
 
-function Mirror({ publicationId, mirrorCounts }: any) {
+function Mirror({ publicationId, mirrorCounts, primary }: any) {
   const {
     userSigNonceState: {
       userSigNonce: { userSignNonce },
     },
+    isLoggedInState: { isLoggedIn },
     currentProfileState: { currentProfile },
   }: any = useContext(WalletContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [ifUserNotLoggedInShowModal, setIfUserNotLoggedInShowModal] = useState<boolean>(false);
 
   const [createMirrorViaDispatcher] = useMutation(CreateMirrorViaDispatcherDocument, {
     onCompleted: data => {
       if (data.createMirrorViaDispatcher.__typename === 'RelayerResult') {
+        setIsLoading(false);
         console.log('txId', { txId: data.createMirrorViaDispatcher });
       }
     },
@@ -36,41 +40,46 @@ function Mirror({ publicationId, mirrorCounts }: any) {
   const [CreateMirrorTypedData] = useMutation<Mutation>(CreateMirrorTypedDataDocument);
 
   const handleCreateMirror = async (request: CreateMirrorRequest) => {
-    const result = await CreateMirrorTypedData({
-      variables: {
-        options: { overrideSigNonce: userSignNonce },
-        request,
-      },
-    });
-
-    const typedData = result.data?.createMirrorTypedData.typedData;
-
-    const signatureTyped = getSignature(typedData);
-    const signature = await signTypedDataAsync(signatureTyped);
-    const broadcastResult = await broadcast({
-      variables: {
-        request: {
-          id: result?.data?.createMirrorTypedData.id,
-          signature: signature,
+    try {
+      const result = await CreateMirrorTypedData({
+        variables: {
+          options: { overrideSigNonce: userSignNonce },
+          request,
         },
-      },
-    });
-
-    if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
-      const txId = broadcastResult.data?.broadcast?.txId!;
-
-      const res = pollUntilIndexed({ txId });
-      toast.promise(res, {
-        loading: 'Indexing...',
-        success: 'Post has been mirrored',
-        error: 'Could not mirrored',
       });
-      await res;
-      // navigate(PageRoutes.DISCOVERY);
+
+      const typedData = result.data?.createMirrorTypedData.typedData;
+
+      const signatureTyped = getSignature(typedData);
+      const signature = await signTypedDataAsync(signatureTyped);
+      const broadcastResult = await broadcast({
+        variables: {
+          request: {
+            id: result?.data?.createMirrorTypedData.id,
+            signature: signature,
+          },
+        },
+      });
+
+      if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
+        const txId = broadcastResult.data?.broadcast?.txId!;
+
+        const res = pollUntilIndexed({ txId });
+        toast.promise(res, {
+          loading: 'Indexing...',
+          success: 'Post has been mirrored',
+          error: 'Could not mirrored',
+        });
+        await res;
+        // navigate(PageRoutes.DISCOVERY);
+        if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
+          console.error('create profile metadata via broadcast: failed', broadcastResult);
+        } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
       setIsLoading(false);
-      if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
-        console.error('create profile metadata via broadcast: failed', broadcastResult);
-      } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
     }
   };
 
@@ -84,10 +93,11 @@ function Mirror({ publicationId, mirrorCounts }: any) {
     }
   };
 
-  const CreateMirror = async () => {
-    if (currentProfile.handle.length <= 0) {
-      return toast.error('Please sign in your wallet.');
+  const CreateMirroredPost = async () => {
+    if (!isLoggedIn) {
+      return setIfUserNotLoggedInShowModal(true);
     }
+    setIsLoading(true);
     const request = {
       profileId: currentProfile?.id,
       publicationId: publicationId,
@@ -104,22 +114,27 @@ function Mirror({ publicationId, mirrorCounts }: any) {
   };
 
   return (
-    <div className="flex justify-center items-center gap-1">
-      {isLoading ? (
-        <div className="flex justify-center items-center  w-8 h-8">
-          <Loader />
-        </div>
-      ) : (
-        <div
-          title="add to ArtBoard"
-          onClick={CreateMirror}
-          className="flex justify-center items-center  w-8 h-8 rounded-full hover:bg-gray-800 cursor-pointer space-x-1"
-        >
-          <ArrowsRightLeftIcon className="w-5  text-white" />
-        </div>
-      )}
-      <div>{mirrorCounts}</div>
-    </div>
+    <>
+      <LoginModal openModal={ifUserNotLoggedInShowModal} setIsLoading={setIfUserNotLoggedInShowModal} />
+      <div className="flex items-center gap-1">
+        {isLoading ? (
+          <div className="flex justify-center items-center  w-8 h-8">
+            <Loader />
+          </div>
+        ) : (
+          <div
+            title="add to ArtBoard"
+            onClick={CreateMirroredPost}
+            className={`flex justify-center items-center  w-8 h-8 rounded-full cursor-pointer space-x-1 ${
+              primary ? 'hover:bg-gray-200' : 'hover:bg-gray-800'
+            }`}
+          >
+            <ArrowsRightLeftIcon className={`w-5 ${primary ? 'text-primary' : 'text-white '}`} />
+          </div>
+        )}
+        <div className={`w-5 ${primary ? 'text-primary' : 'text-white '}`}>{mirrorCounts}</div>
+      </div>
+    </>
   );
 }
 

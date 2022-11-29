@@ -9,9 +9,10 @@ import getIPFSLink from 'utils/getIPFSLink';
 import { PageRoutes } from 'utils/config';
 import ArtPreviewSkelton from 'app/components/Skelton/ArtPreviewSkelton';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import Mirror from 'app/components/Mirror';
 
 const ArtPreviewScreen = () => {
-  const { id } = useParams();
+  const { id: publicationId } = useParams();
   const navigate = useNavigate();
 
   const {
@@ -20,11 +21,11 @@ const ArtPreviewScreen = () => {
 
   const { data, loading, error } = useQuery(PublicationDocument, {
     variables: {
-      request: { publicationId: id },
+      request: { publicationId },
       reactionRequest: currentProfile ? { profileId: currentProfile?.id } : null,
       profileId: currentProfile?.id ?? null,
     },
-    skip: !id,
+    skip: !publicationId,
   });
 
   const searchQuery = (query: string | null | undefined) => {
@@ -87,43 +88,52 @@ const ArtPreviewScreen = () => {
                     <Button name="Follow" type="button" variant="outline" />
                   </div> */}
                   </div>
-                  <div className="px-6">
-                    <div className="flex items-center text-gray-40 gap-2 pt-5 md:pt-8 ">
-                      <p>
-                        {data &&
-                          new Date(data.publication?.createdAt).toLocaleString('en-in', {
-                            timeStyle: 'short',
-                          })}
-                      </p>
-                      <p>-</p>
-                      <p>
-                        {data &&
-                          new Date(data.publication?.createdAt).toLocaleString('en-in', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric',
-                          })}
+                  <div className="px-6 flex flex-col justify-around">
+                    <div>
+                      <div className="flex items-center text-gray-40 gap-2 pt-5 md:pt-8 ">
+                        <p>
+                          {data &&
+                            new Date(data.publication?.createdAt).toLocaleString('en-in', {
+                              timeStyle: 'short',
+                            })}
+                        </p>
+                        <p>-</p>
+                        <p>
+                          {data &&
+                            new Date(data.publication?.createdAt).toLocaleString('en-in', {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric',
+                            })}
+                        </p>
+                      </div>
+                      <h1 className="heading-4 border-b capitalize">{data?.publication?.metadata.content}</h1>
+                      <p className=" paragraph-1 lg:w-full break-words pt-5 text-gray-500 overflow-auto max-h-96">
+                        {data?.publication?.metadata.description.length > 0
+                          ? data?.publication?.metadata.description
+                          : 'No description available'}
                       </p>
                     </div>
-                    <h1 className="heading-4 border-b capitalize">{data?.publication?.metadata.content}</h1>
-                    <p className=" paragraph-1 lg:w-full break-words pt-5 text-gray-500 overflow-auto max-h-96">
-                      {data?.publication?.metadata.description.length > 0
-                        ? data?.publication?.metadata.description
-                        : 'No description available'}
-                    </p>
 
-                    <div className="flex gap-2 mt-2">
-                      {data?.publication?.metadata.attributes
-                        ?.filter(item => item.value !== ('image' || 'text_only'))
-                        .map(item => (
-                          <p
-                            className="bg-gray-10 px-2 rounded-full cursor-pointer heading-6"
-                            onClick={() => searchQuery(item.value)}
-                            key={item.value}
-                          >
-                            #{item.value}
-                          </p>
-                        ))}
+                    <div className="w-full h-20 mt-72 flex flex-col gap-2  border-t">
+                      <div className="flex gap-2 mt-2">
+                        {data?.publication?.metadata.attributes
+                          ?.filter(item => item.value !== ('image' || 'text_only'))
+                          .map(item => (
+                            <p
+                              className="bg-gray-10 px-2 rounded-full cursor-pointer heading-6"
+                              onClick={() => searchQuery(item.value)}
+                              key={item.value}
+                            >
+                              #{item.value}
+                            </p>
+                          ))}
+                      </div>
+                      <Mirror
+                        publicationId={publicationId}
+                        mirrorCounts={data?.publication?.stats?.totalAmountOfMirrors}
+                        primary
+                      />
                     </div>
                   </div>
                 </div>

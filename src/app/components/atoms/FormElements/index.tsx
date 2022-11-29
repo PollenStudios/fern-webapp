@@ -147,24 +147,30 @@ export const MultiSelect = ({
 };
 
 type Iprops = {
-  selected: { name: string; type: PublicationSortCriteria } | string;
+  selected: string;
   setSelected: any;
   options: Array<object | string>;
+  setSortPosts: (item: boolean) => void;
 };
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Select({ selected, setSelected, options }: Iprops) {
+export default function Select({ selected, setSelected, options, setSortPosts }: Iprops) {
   return (
-    <Listbox value={selected} onChange={setSelected}>
+    <Listbox
+      value={selected}
+      onChange={art => {
+        setSelected(art);
+        setSortPosts(false);
+      }}
+    >
       {({ open }) => (
         <>
           <div className="relative mt-1">
             <Listbox.Button className="relative w-40 cursor-pointer rounded-full border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm  focus:outline-none sm:text-sm">
-              {/* @ts-ignore */}
-              <span className="block truncate">{selected?.name ?? selected}</span>
+              <span className="block truncate">{selected}</span>
               <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 <ChevronDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
               </span>
@@ -177,7 +183,7 @@ export default function Select({ selected, setSelected, options }: Iprops) {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-40 overflow-hidden rounded-md bg-white py-1 text-base shadow-lg  focus:outline-none sm:text-sm">
+              <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-40 overflow-scroll rounded-md bg-white py-1 text-base shadow-lg  focus:outline-none sm:text-sm">
                 {options?.map((option: object | string, id: number) => (
                   <Listbox.Option
                     key={id}
@@ -192,8 +198,10 @@ export default function Select({ selected, setSelected, options }: Iprops) {
                     {({ selected, active }) => (
                       <>
                         <span className={classNames(selected ? 'primary' : 'font-normal', 'block truncate')}>
+                          {/* TODO: ts-error Type 'string | object' is not assignable to type 'ReactNode'.
+                            Type 'object' is not assignable to type 'ReactNode' */}
                           {/* @ts-ignore */}
-                          {option?.name || option}
+                          {option}
                         </span>
                       </>
                     )}

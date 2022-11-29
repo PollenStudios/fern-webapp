@@ -70,7 +70,7 @@ const PersistState = ({ children }: any) => {
           type: 'success',
           payload: '',
         });
-        navigate(PageRoutes.SIGN_UP);
+        // navigate(PageRoutes.SIGN_UP);
       } else if (token && token !== 'undefined') {
         dispatchHasProfile({ type: 'success', payload: true });
         dispatchIsLoggedIn({ type: 'success', payload: true });

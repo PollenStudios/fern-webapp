@@ -1,7 +1,7 @@
 import ArtPreviewCard from 'app/components/ArtPreviewCard';
 import { Loader } from 'app/components/atoms/Loader';
 import { CustomFiltersTypes, SearchRequestTypes, useSearchPublicationsQuery } from 'graphql/generated/types';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { WalletContext } from 'store/WalletContextProvider';
 import config from 'utils/config';
 
@@ -15,7 +15,7 @@ function Publication({ query }: any) {
     query,
     type: SearchRequestTypes.Publication,
     customFilters: [CustomFiltersTypes.Gardeners],
-    limit: 10,
+    limit: 20,
     sources: [config.appNameForLensApi],
   };
   const reactionRequest = currentProfile ? { profileId: currentProfile?.id } : null;

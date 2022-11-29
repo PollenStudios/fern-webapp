@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -13,9 +13,8 @@ import ProfileDropdown from '../ProfileDropdown';
 import { PageRoutes } from 'utils/config';
 
 import F3RN from 'Assets/Images/fernLogo.svg';
-import Modal from '../Modal';
 import { Loader } from '../atoms/Loader';
-import { LoginModalProps } from '../atoms/FormElements/types';
+import { LoginModal } from '../Modal/LoginModal';
 
 export default function Navbar(): any {
   const {
@@ -163,57 +162,3 @@ export default function Navbar(): any {
     </>
   );
 }
-
-const LoginModal = ({ openModal, setIsLoading }: any) => {
-  const [isModalOpen, setIsModalOpen] = useState(openModal);
-  const [modalData, setModalData] = useState<LoginModalProps>();
-
-  const { connectToBrowserWallets }: any = useContext(WalletContext);
-
-  const connectWallet = async () => {
-    await connectToBrowserWallets(infoModal, closeModal);
-  };
-
-  useEffect(() => {
-    setIsModalOpen(openModal);
-  }, [openModal]);
-
-  const closeModal = () => setIsLoading(false);
-
-  const infoModal = (args: LoginModalProps) => setModalData(args);
-
-  return (
-    <Modal open={isModalOpen} setOpen={closeModal}>
-      <>
-        <div>
-          <div className="flex justify-between items-center border-b">
-            <p className="heading-6">Login</p>
-            <XMarkIcon className="w-8 h-8  cursor-pointer" onClick={closeModal} />
-          </div>
-          <div className="mt-3 text-left sm:mt-5">
-            <p className="heading-5">{modalData ? modalData.heading : 'Login into Metamask'}</p>
-          </div>
-        </div>
-        <div className="mt-5 sm:mt-9 w-full flex justify-end gap-2 ">
-          {modalData && modalData.websiteUrl && <a href={modalData.websiteUrl}>Go to website</a>}
-          {modalData && modalData?.secondaryButtonText && (
-            <Button
-              type="button"
-              name={modalData?.secondaryButtonText || 'Cancel'}
-              variant="outline"
-              additionalClasses="text-red-800 border-red-800"
-              onClick={closeModal}
-            />
-          )}
-
-          <Button
-            type="button"
-            onClick={connectWallet}
-            name={modalData ? modalData?.primaryButtonText : 'Login'}
-            variant="primary"
-          />
-        </div>
-      </>
-    </Modal>
-  );
-};

@@ -37,7 +37,7 @@ const config = {
 };
 export const PageRoutes = {
   HOMEPAGE: '/',
-  DISCOVERY: '/explore',
+  DISCOVERY: '/discover',
   USER_PROFILE: '/user/:id',
   SETTINGS: '/settings',
   ART_PREVIEW: '/art/:id',
