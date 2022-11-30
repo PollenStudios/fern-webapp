@@ -22,7 +22,7 @@ export const Input = ({
   required,
   pattern,
   disabled,
-  onChange, //we are using onChange for handle validation on sign up page,if user type handle name which exist on lens, so we will show error of same handle exist and when user change it so onchange we setishandlestate false;
+  onChange, //we are using onChange for handle validation on sign up page,if user type handle name which exist on lens, so we will show error of same handle exist and when user change it so onchange we setIsHandleState false;
 }: IInput) => {
   return (
     <div className="flex flex-col gap-2">
@@ -82,6 +82,7 @@ export const MultiSelect = ({
   options,
   multiSelectError,
   setMultiSelectError,
+  required,
 }: ISearch) => {
   // state showing if isDropdownOpen is open or closed
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -107,6 +108,7 @@ export const MultiSelect = ({
       <div className="flex flex-col gap-2">
         <label htmlFor={name} className="label">
           {label}
+          {required && <span className="pl-1 text-red-600">*</span>}
         </label>
         <div
           className={`flex justify-between items-center py-2 px-2 cursor-pointer ${tailwindCssClass.inputClass}`}

@@ -123,15 +123,11 @@ function Post() {
     },
   });
 
-  const createViaDispatcher = async (request: CreatePublicPostRequest) => {
-    const { data } = await createPostViaDispatcher({
-      variables: { request },
-    });
-
-    if (data?.createPostViaDispatcher?.__typename === 'RelayError') {
+  const handleCreatePost = async (request: CreatePublicPostRequest) => {
+    try {
       const result = await createPostTypedData({
         variables: {
-          // options: { overrideSigNonce: userSignNonce },
+          options: { overrideSigNonce: userSignNonce },
           request,
         },
       });
@@ -151,15 +147,36 @@ function Post() {
 
       if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
         const txId = broadcastResult.data?.broadcast?.txId!;
+        const res = pollUntilIndexed({ txId });
 
-        await pollUntilIndexed({ txId });
-        // console.log('indexerResult', indexerResult);
+        toast.promise(res, {
+          loading: 'Indexing...',
+          success: 'Profile Updated',
+          error: 'Could not update',
+        });
+        await res;
+        navigate(PageRoutes.DISCOVERY);
+        // setIsLoading(false);
       }
 
-      setIsLoading(false);
       if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
+        // setIsLoading(false);
         console.error('create profile metadata via broadcast: failed', broadcastResult);
       } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const createViaDispatcher = async (request: CreatePublicPostRequest) => {
+    const { data } = await createPostViaDispatcher({
+      variables: { request },
+    });
+
+    if (data?.createPostViaDispatcher?.__typename === 'RelayError') {
+      handleCreatePost(request);
     }
   };
 
@@ -193,6 +210,10 @@ function Post() {
     try {
       if (!attachment) {
         toast.error('Please select a image');
+        return 0;
+      }
+      if (selectedArtCategory?.length === 0) {
+        toast.error('Please select a tag');
         return 0;
       }
       setIsLoading(true);
@@ -232,45 +253,7 @@ function Post() {
       if (currentProfile?.dispatcher?.canUseRelay) {
         createViaDispatcher(request);
       } else {
-        const result = await createPostTypedData({
-          variables: {
-            options: { overrideSigNonce: userSignNonce },
-            request,
-          },
-        });
-
-        const typedData = result.data?.createPostTypedData.typedData;
-
-        const signatureTyped = getSignature(typedData);
-        const signature = await signTypedDataAsync(signatureTyped);
-        const broadcastResult = await broadcast({
-          variables: {
-            request: {
-              id: result?.data?.createPostTypedData.id,
-              signature: signature,
-            },
-          },
-        });
-
-        if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
-          const txId = broadcastResult.data?.broadcast?.txId!;
-          const res = pollUntilIndexed({ txId });
-
-          toast.promise(res, {
-            loading: 'Indexing...',
-            success: 'Profile Updated',
-            error: 'Could not update',
-          });
-          await res;
-          navigate(PageRoutes.DISCOVERY);
-
-          setIsLoading(false);
-        }
-
-        if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
-          setIsLoading(false);
-          console.error('create profile metadata via broadcast: failed', broadcastResult);
-        } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
+        handleCreatePost(request);
       }
     } catch (error: any) {
       setIsLoading(false);
@@ -344,14 +327,21 @@ function Post() {
                   options={tagsDropDownOptions}
                   multiSelectError={multiSelectError}
                   setMultiSelectError={setMultiSelectError}
+                  required
                 />
-                <Button
-                  name={isLoading ? 'Posting...' : 'Post'}
-                  variant="primary"
-                  type={'submit'}
-                  disabled={isLoading || imageLoading}
-                  additionalClasses={isLoading || imageLoading ? 'cursor-not-allowed' : ''}
-                />
+                {isLoading ? (
+                  <div className="bg-primary w-[80px] py-2 sm:py-3 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
+                    <Loader />
+                  </div>
+                ) : (
+                  <Button
+                    name={'Post'}
+                    variant="primary"
+                    type={'submit'}
+                    // disabled={isLoading || imageLoading}
+                    // additionalClasses={isLoading || imageLoading ? 'cursor-not-allowed' : ''}
+                  />
+                )}
               </div>
             </form>
           </div>

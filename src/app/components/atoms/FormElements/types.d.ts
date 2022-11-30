@@ -23,6 +23,7 @@ export interface ISearch {
   options?: Array<string>;
   multiSelectError?: boolean;
   setMultiSelectError?: any;
+  required?: boolean;
 }
 
 export interface LoginModalProps {

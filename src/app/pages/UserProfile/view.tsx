@@ -10,23 +10,28 @@ function View({ isArtist }: any) {
 
   const [selectedTab, setSelectedTab] = useState(isArtist ? 'posts' : 'artBoards');
 
+  const selectedTabClass = (condition: any) => {
+    if (condition) return 'border-primary border-b-4';
+    else return '';
+  };
+
   return (
     <div className="col-span-4 pt-10 md:pt-auto md:pl-36">
       <div className="flex gap-4 border-b">
+        <p
+          className={`heading-4 cursor-pointer ${selectedTabClass(selectedTab === 'artBoards')}`}
+          onClick={() => setSelectedTab('artBoards')}
+        >
+          Art Board
+        </p>
         {isArtist && (
           <p
-            className={`heading-4 cursor-pointer ${selectedTab === 'posts' ? 'border-primary border-b-4' : ''}`}
+            className={`heading-4 cursor-pointer ${selectedTabClass(selectedTab === 'posts')}`}
             onClick={() => setSelectedTab('posts')}
           >
             Art Work
           </p>
         )}
-        <p
-          className={`heading-4 cursor-pointer ${selectedTab === 'artBoards' ? 'border-primary border-b-4' : ''}`}
-          onClick={() => setSelectedTab('artBoards')}
-        >
-          Art Board
-        </p>
       </div>
 
       {selectedTab === 'posts' ? (

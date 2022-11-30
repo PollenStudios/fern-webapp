@@ -14,6 +14,9 @@ export const LoginModal = ({ openModal, setIsLoading }: any) => {
   const { connectToBrowserWallets }: any = useContext(WalletContext);
 
   const connectWallet = async () => {
+    if (modalData && modalData.websiteUrl) {
+      window.open(modalData.websiteUrl, '_blank');
+    }
     setModalButtonLoading(true);
     await connectToBrowserWallets(infoModal, closeModal);
     setModalButtonLoading(false);
@@ -43,7 +46,11 @@ export const LoginModal = ({ openModal, setIsLoading }: any) => {
           </div>
         </div>
         <div className="mt-5 sm:mt-9 w-full flex justify-end gap-2 ">
-          {modalData && modalData.websiteUrl && <a href={modalData.websiteUrl}>Go to website</a>}
+          {/* {modalData && modalData.websiteUrl && (
+            <a href={modalData.websiteUrl} target="_blank" rel="noreferrer">
+              Go to website
+            </a>
+          )} */}
           {modalData && modalData?.secondaryButtonText && (
             <Button
               type="button"

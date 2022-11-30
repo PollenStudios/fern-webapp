@@ -1,6 +1,6 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
 import axios from 'axios';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { WalletContext } from 'store/WalletContextProvider';
 import { CreateSetProfileImageUriTypedDataDocument, ProfileDocument, Mutation } from 'graphql/generated/types';
 import useBroadcast from 'hooks/useBroadcast';
@@ -33,7 +33,6 @@ function ProfileImage() {
   const [image, setImage] = useState<any>();
   const [avatar, setAvatar] = useState<any>();
   const [imageLoading, setImageLoading] = useState<boolean>(false);
-  const [open, setOpen] = useState<boolean>(false);
 
   const { broadcast, loading: broadcastLoading } = useBroadcast({
     onCompleted: data => {
@@ -73,8 +72,11 @@ function ProfileImage() {
           if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
             console.error('create profile metadata via broadcast: failed', broadcastResult);
           } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
-        } catch (error) {
+        } catch (error: any) {
           console.log(error);
+          toast.error(error.message);
+        } finally {
+          setLoading(false);
         }
       },
       // onError
@@ -109,18 +111,19 @@ function ProfileImage() {
   };
 
   const uploadImageToLens = async (image: string) => {
-    const request = {
-      profileId: currentProfile?.id,
-      url: image,
-    };
-    setLoading(true);
-    await createSetProfileImageURITypedData({
-      variables: {
-        options: { overrideSigNonce: userSignNonce },
-        request,
-      },
-    });
-    setLoading(false);
+    if (avatar) {
+      const request = {
+        profileId: currentProfile?.id,
+        url: image,
+      };
+      setLoading(true);
+      await createSetProfileImageURITypedData({
+        variables: {
+          options: { overrideSigNonce: userSignNonce },
+          request,
+        },
+      });
+    }
   };
   return (
     <div className="col-span-2 ">
@@ -149,14 +152,20 @@ function ProfileImage() {
         )}
       </div>
       <div className="flex justify-center">
-        <Button
-          type="button"
-          disabled={imageLoading}
-          additionalClasses={imageLoading ? 'cursor-not-allowed' : ''}
-          variant="outline"
-          name="Update Image"
-          onClick={() => uploadImageToLens(image)}
-        />
+        {loading ? (
+          <div className="bg-white min-w-[170px] py-2 sm:py-3 border text-base font-medium rounded-full shadow-sm text-primary focus:outline-none">
+            <Loader className="text-primary" />
+          </div>
+        ) : (
+          <Button
+            type="button"
+            // disabled={imageLoading}
+            additionalClasses={avatar === undefined ? 'cursor-not-allowed' : ''}
+            variant="outline"
+            name="Update Image"
+            onClick={() => uploadImageToLens(image)}
+          />
+        )}
       </div>
     </div>
   );

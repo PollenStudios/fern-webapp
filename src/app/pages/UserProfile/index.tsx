@@ -27,12 +27,13 @@ function UserProfile() {
   };
 
   useEffect(() => {
+    userProfileStatus(profileId);
     getProfile({ variables: { request: reactionRequest } });
   }, [userProfileResult, profileId]);
 
-  useEffect(() => {
-    userProfileStatus(profileId);
-  }, [profileId]);
+  // useEffect(() => {
+  //   userProfileStatus(profileId);
+  // }, [profileId]);
 
   return (
     <>

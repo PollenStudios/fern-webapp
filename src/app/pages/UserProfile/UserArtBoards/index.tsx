@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import config, { PageRoutes } from 'utils/config';
 import noArtBoards from 'Assets/Images/noArtBoards.png';
+import { Loader } from 'app/components/atoms/Loader';
 
 function ArtBoardPosts({ currentProfile }: any) {
   const { id: profileId } = useParams();
@@ -21,7 +22,7 @@ function ArtBoardPosts({ currentProfile }: any) {
   };
   const reactionRequest = { profileId };
 
-  const [getArtBoards, { data }] = useLazyQuery(ProfileFeedDocument, {
+  const [getArtBoards, { data, loading }] = useLazyQuery(ProfileFeedDocument, {
     onCompleted: async () => {
       setArtBoards(data?.publications.items);
     },
@@ -31,20 +32,25 @@ function ArtBoardPosts({ currentProfile }: any) {
     getArtBoards({ variables: { request, reactionRequest, profileId } });
   }, [data, profileId]);
 
+  if (loading)
+    return (
+      <div className="flex h-full justify-center items-center">
+        <Loader />
+      </div>
+    );
+
+  if (ArtBoards && ArtBoards?.length === 0) {
+    return <EmptyArtBoard profileId={profileId} currentProfile={currentProfile} />;
+  }
+
   return (
-    <>
-      {ArtBoards && ArtBoards.length > 0 ? (
-        <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 my-2">
-          {ArtBoards.map((artBoard: any, i: number) => (
-            <div className="col-span-5 sm:col-span-4 md:col-span-6" key={i}>
-              <ArtPreviewCard art={artBoard} />
-            </div>
-          ))}
+    <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 my-2">
+      {ArtBoards?.map((artBoard: any, i: number) => (
+        <div className="col-span-5 sm:col-span-4 md:col-span-6" key={i}>
+          <ArtPreviewCard art={artBoard} />
         </div>
-      ) : (
-        <EmptyArtBoard profileId={profileId} currentProfile={currentProfile} />
-      )}
-    </>
+      ))}
+    </div>
   );
 }
 

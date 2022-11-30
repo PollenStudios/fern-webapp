@@ -25,8 +25,14 @@ function UserProfileSidebar({ userProfile, isArtist }: any) {
       <div className="rounded-full w-48 h-48 absolute -top-24 border-4 border-white md:left-6">
         <img
           className="rounded-full object-cover bg-gray-10  w-full h-full"
-          src={userProfile?.picture?.original?.url ? getIPFSLink(userProfile?.picture?.original?.url) : ProfileLogo}
-          alt={userProfile?.name ?? userProfile?.id}
+          src={
+            userProfile?.picture?.original?.url
+              ? getIPFSLink(userProfile?.picture?.original?.url)
+              : currentProfile
+              ? getIPFSLink(currentProfile?.picture?.original?.url)
+              : ProfileLogo
+          }
+          alt={userProfile?.name ? userProfile?.id : currentProfile ? currentProfile?.name : currentProfile?.id}
         />
       </div>
       <div className="flex justify-center flex-col pl-5 sm:pl-0">

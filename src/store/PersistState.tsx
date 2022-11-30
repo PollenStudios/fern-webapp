@@ -31,6 +31,11 @@ const PersistState = ({ children }: any) => {
     dispatchIsLoggedIn,
   }: any = useContext(WalletContext);
 
+  const logout = () => {
+    clearStorage();
+    dispatchIsLoggedIn({ type: 'success', payload: false });
+  };
+
   const verifyToken = async (token: string) => {
     try {
       const { data } = await verify({
@@ -115,17 +120,18 @@ const PersistState = ({ children }: any) => {
     if (!isLoggedIn) {
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken || accessToken === 'undefined') {
-        clearStorage();
-        dispatchIsLoggedIn({ type: 'success', payload: false });
+        logout();
         return;
       }
+
       const isExpired = Date.now() >= parseJwt(accessToken)?.exp * 1000;
       if (isExpired) {
-        clearStorage();
-        dispatchIsLoggedIn({ type: 'success', payload: false });
+        logout();
         return;
       }
+
       verifyToken(accessToken);
+
       const fetchUserData = async () => {
         try {
           const accounts = await window.ethereum.request({
@@ -134,13 +140,14 @@ const PersistState = ({ children }: any) => {
           if (accounts.length !== 0) {
             dispatchAccount({ type: 'success', payload: accounts[0] });
           }
+
           verifyProfileForLogin(accounts[0]);
+
           const provider = new ethers.providers.Web3Provider(window.ethereum);
           const balance = await provider.getBalance(accounts[0]);
           const balanceInEth = ethers.utils.formatEther(balance);
           dispatchWalletBalance({ type: 'success', payload: balanceInEth });
         } catch (error: any) {
-          console.log('error', error);
           dispatchAccount({ type: 'error', payload: error });
           setIsLoading(false);
           toast.error('Something went wrong');
