@@ -160,7 +160,7 @@ function ProfileImage() {
           <Button
             type="button"
             // disabled={imageLoading}
-            additionalClasses={avatar === undefined ? 'cursor-not-allowed' : ''}
+            additionalClasses={avatar === undefined || imageLoading ? 'cursor-not-allowed' : ''}
             variant="outline"
             name="Update Image"
             onClick={() => uploadImageToLens(image)}
