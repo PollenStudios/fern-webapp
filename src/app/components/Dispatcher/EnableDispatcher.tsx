@@ -8,6 +8,7 @@ import { WalletContext } from 'store/WalletContextProvider';
 import getSignature from 'utils/getSignature';
 import { useSignTypedData } from 'wagmi';
 import { Button } from '../atoms/Buttons';
+import { Loader } from '../atoms/Loader';
 import OverlayLoader from '../OverlayLoader';
 
 const EnableDispatcher = () => {
@@ -19,25 +20,10 @@ const EnableDispatcher = () => {
   const canUseRelay = currentProfile?.dispatcher?.canUseRelay;
 
   const onCompleted = () => {
-    // toast.success('');
-    // window.location.reload();
     console.log('completed');
   };
 
   const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData();
-
-  //   const {
-  //     data: writeData,
-  //     isLoading: writeLoading,
-  //     write,
-  //   } = useContractWrite({
-  //     address: LENSHUB_PROXY,
-  //     abi: LensHubProxy,
-  //     functionName: 'setDispatcherWithSig',
-  //     mode: 'recklesslyUnprepared',
-  //     onSuccess: onCompleted,
-  //     onError,
-  //   });
 
   const { broadcast, data: broadcastData, loading: broadcastLoading } = useBroadcast({ onCompleted });
   const [createSetProfileMetadataTypedData, { loading: typedDataLoading }] = useMutation<Mutation>(
@@ -58,40 +44,48 @@ const EnableDispatcher = () => {
               success: 'Updated',
               error: 'Could not update.',
             });
+
             (await res) && window.location.reload();
           }
-        } catch (error) {
+        } catch (error: any) {
+          toast.error(error.message);
           console.log(error);
+        } finally {
+          setLoading(false);
         }
       },
       //   onError,
     },
   );
 
+  const enableDispatcher = async () => {
+    setLoading(true);
+    await createSetProfileMetadataTypedData({
+      variables: {
+        request: {
+          profileId: currentProfile?.id,
+          enable: canUseRelay ? false : true,
+        },
+      },
+    });
+  };
+
   const isLoading = signLoading || broadcastLoading || typedDataLoading;
 
   return (
     <div>
       {loading && <OverlayLoader />}
-      <Button
-        variant={canUseRelay ? 'danger' : 'outline'}
-        // additionalClasses={'mr-auto'}
-        disabled={isLoading}
-        name={canUseRelay ? 'Disable dispatcher' : 'Enable dispatcher'}
-        onClick={() => {
-          setLoading(true);
-          createSetProfileMetadataTypedData({
-            variables: {
-              request: {
-                profileId: currentProfile?.id,
-                enable: canUseRelay ? false : true,
-              },
-            },
-          });
-
-          setLoading(false);
-        }}
-      />
+      {loading ? (
+        <div className="border-gray-40 w-[180px] py-2 sm:py-3 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
+          <Loader />
+        </div>
+      ) : (
+        <Button
+          variant={canUseRelay ? 'danger' : 'outline'}
+          name={canUseRelay ? 'Disable dispatcher' : 'Enable dispatcher'}
+          onClick={enableDispatcher}
+        />
+      )}
     </div>
   );
 };

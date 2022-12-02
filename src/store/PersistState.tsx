@@ -150,7 +150,8 @@ const PersistState = ({ children }: any) => {
         } catch (error: any) {
           dispatchAccount({ type: 'error', payload: error });
           setIsLoading(false);
-          toast.error('Something went wrong');
+          console.log({ error });
+          // toast.error('Something went wrong');
         }
       };
 

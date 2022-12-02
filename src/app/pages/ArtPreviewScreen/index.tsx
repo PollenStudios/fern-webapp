@@ -9,7 +9,9 @@ import getIPFSLink from 'utils/getIPFSLink';
 import { PageRoutes } from 'utils/config';
 import ArtPreviewSkelton from 'app/components/Skelton/ArtPreviewSkelton';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import Mirror from 'app/components/Mirror';
+import ProfileLogo from 'Assets/Images/defaultLogo.png';
+
+// import Mirror from 'app/components/Mirror';
 
 const ArtPreviewScreen = () => {
   const { id: publicationId } = useParams();
@@ -77,7 +79,7 @@ const ArtPreviewScreen = () => {
                       <img
                         className="w-8 h-8 rounded-full border border-secondary"
                         // @ts-ignore
-                        src={data?.publication?.profile?.picture?.original!.url! ?? ART_PREVIEW}
+                        src={data?.publication?.profile?.picture?.original!.url! ?? ProfileLogo}
                         alt={data?.publication?.profile?.name ?? 'F3RN'}
                       />
                       <div className="text-primary  border-gray-500 ">
@@ -116,7 +118,7 @@ const ArtPreviewScreen = () => {
                     </div>
 
                     <div className="w-full h-20 mt-72 flex flex-col gap-2  border-t">
-                      <div className="flex gap-2 mt-2">
+                      <div className="flex gap-2 mt-2 flex-wrap">
                         {data?.publication?.metadata.attributes
                           ?.filter(item => item.value !== ('image' || 'text_only'))
                           .map(item => (
@@ -129,11 +131,11 @@ const ArtPreviewScreen = () => {
                             </p>
                           ))}
                       </div>
-                      <Mirror
+                      {/* <Mirror
                         publicationId={publicationId}
                         mirrorCounts={data?.publication?.stats?.totalAmountOfMirrors}
                         primary
-                      />
+                      /> */}
                     </div>
                   </div>
                 </div>

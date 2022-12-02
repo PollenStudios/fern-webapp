@@ -60,10 +60,10 @@ export default function Navbar(): any {
                   </Disclosure.Button>
                 </div>
                 <div className="flex flex-1 gap-8 lg:gap-12 items-center justify-center sm:justify-start">
-                  <Link to={PageRoutes.HOMEPAGE} className="w-24 h-20">
+                  <a href="/discover?sortBy=Latest" className="w-24 h-20">
                     {/* <h4 className="heading-4">{config.appName}</h4> */}
                     <img className="w-full h-full" src={F3RN} alt="F3RN" />
-                  </Link>
+                  </a>
                   <div className="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">
                     <div className="flex items-center px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
                       <div className="w-full">
@@ -104,7 +104,7 @@ export default function Navbar(): any {
                   ) : (
                     <>
                       {isLoading ? (
-                        <div className="bg-primary w-[160px] py-2 sm:py-3 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
+                        <div className="bg-primary w-[90px] py-2 sm:py-3 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
                           <Loader />
                         </div>
                       ) : (
@@ -113,7 +113,7 @@ export default function Navbar(): any {
                           variant="primary"
                           disabled={loadingIsLoggedIn}
                           additionalClasses={loadingIsLoggedIn ? 'cursor-not-allowed' : ''}
-                          name="Connect Wallet"
+                          name="Login"
                           onClick={handleConnectWallet}
                         />
                       )}
@@ -139,7 +139,7 @@ export default function Navbar(): any {
                 ) : (
                   <>
                     {isLoading ? (
-                      <div className="bg-primary w-[160px] py-2 sm:py-3 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
+                      <div className="bg-primary w-[80px] py-2 sm:py-3 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
                         <Loader />
                       </div>
                     ) : (
@@ -148,7 +148,7 @@ export default function Navbar(): any {
                         variant="primary"
                         disabled={loadingIsLoggedIn}
                         additionalClasses={loadingIsLoggedIn ? 'cursor-not-allowed' : ''}
-                        name="Connect Wallet"
+                        name="Login"
                         onClick={handleConnectWallet}
                       />
                     )}

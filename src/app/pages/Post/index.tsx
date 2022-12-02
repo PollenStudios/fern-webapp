@@ -338,8 +338,8 @@ function Post() {
                     name={'Post'}
                     variant="primary"
                     type={'submit'}
-                    // disabled={isLoading || imageLoading}
-                    // additionalClasses={isLoading || imageLoading ? 'cursor-not-allowed' : ''}
+                    disabled={imageLoading}
+                    additionalClasses={imageLoading ? 'cursor-not-allowed' : ''}
                   />
                 )}
               </div>

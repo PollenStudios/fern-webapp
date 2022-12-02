@@ -1,16 +1,15 @@
-import { useLazyQuery } from '@apollo/client';
 import ArtPreviewCard from 'app/components/ArtPreviewCard';
 import { Button } from 'app/components/atoms/Buttons';
-import { ProfileFeedDocument, PublicationMainFocus, PublicationTypes } from 'graphql/generated/types';
-import { useEffect, useState } from 'react';
+import { PublicationMainFocus, PublicationTypes, useProfileFeedQuery } from 'graphql/generated/types';
 import { Link, useParams } from 'react-router-dom';
 import config, { PageRoutes } from 'utils/config';
 import noArtBoards from 'Assets/Images/noArtBoards.png';
 import { Loader } from 'app/components/atoms/Loader';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { hasMoreMessage } from 'utils/constant';
 
 function Publications({ currentProfile }: any) {
   const { id: profileId } = useParams();
-  const [userPosts, setUserPosts] = useState<any>();
 
   //variables
   const request = {
@@ -20,17 +19,24 @@ function Publications({ currentProfile }: any) {
     sources: [config.appNameForLensApi],
     metadata: { mainContentFocus: [PublicationMainFocus.Image] },
   };
-  const reactionRequest = { profileId };
 
-  const [getPosts, { data, loading }] = useLazyQuery(ProfileFeedDocument, {
-    onCompleted: async () => {
-      setUserPosts(data?.publications.items);
-    },
+  // API Call Sort By
+  const { data, loading, error, fetchMore } = useProfileFeedQuery({
+    variables: { request },
   });
 
-  useEffect(() => {
-    getPosts({ variables: { request, reactionRequest, profileId } });
-  }, [data, profileId]);
+  // @ts-ignore
+  const publications = data?.publications?.items;
+
+  // @ts-ignore
+  const pageInfo = data?.publications?.pageInfo;
+  const hasMore = pageInfo?.next && publications?.length !== pageInfo?.totalCount;
+
+  const loadMore = async () => {
+    await fetchMore({
+      variables: { request: { ...request, cursor: pageInfo?.next } },
+    });
+  };
 
   if (loading) {
     return (
@@ -40,18 +46,28 @@ function Publications({ currentProfile }: any) {
     );
   }
 
-  if (userPosts && userPosts?.length === 0) {
+  if (publications?.length === 0) {
     return <EmptyArtBoardForPublication profileId={profileId} currentProfile={currentProfile} />;
   }
 
   return (
-    <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 my-2">
-      {userPosts?.map((post: any, i: number) => (
-        <div className="col-span-5 sm:col-span-4 md:col-span-6" key={i}>
-          <ArtPreviewCard art={post} />
-        </div>
-      ))}
-    </div>
+    <InfiniteScroll
+      style={{ overflow: 'hidden' }}
+      next={loadMore}
+      hasMore={hasMore}
+      loader={<Loader />}
+      scrollThreshold={0.9}
+      dataLength={publications?.length ?? 0}
+    >
+      <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 my-2">
+        {publications?.map((post: any, i: number) => (
+          <div className="col-span-5 sm:col-span-4 md:col-span-6" key={i}>
+            <ArtPreviewCard art={post} />
+          </div>
+        ))}
+      </div>
+      {!hasMore && <div className="flex justify-center mt-10">{hasMoreMessage}</div>}
+    </InfiniteScroll>
   );
 }
 

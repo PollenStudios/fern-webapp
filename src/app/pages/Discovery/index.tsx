@@ -1,14 +1,13 @@
-import { PublicationSortCriteria } from 'graphql/generated/types';
+import { PublicationSortCriteria, PublicationTypes } from 'graphql/generated/types';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getArtCategories } from 'utils/generateNonce';
 import DiscoveryPageView from './DiscoveryPageView';
-// import InfiniteScroll from 'react-infinite-scroll-component';
 
 // type FilterProps = {
 //   name: string;
 //   query: string;
-//   type: PublicationSortCriteria;
+//   criteria: PublicationSortCriteria;
 // };
 
 const DiscoveryPage = () => {
@@ -18,8 +17,13 @@ const DiscoveryPage = () => {
 
   //Filter Tags
   const filterTags = [
-    { name: 'Latest', query: 'Latest', type: PublicationSortCriteria.Latest },
-    { name: 'Curated Art', query: 'curated-art', type: PublicationSortCriteria.TopMirrored },
+    { name: 'Latest', query: 'Latest', criteria: PublicationSortCriteria.Latest, type: PublicationTypes.Post },
+    {
+      name: 'Curated Art',
+      query: 'curated-art',
+      criteria: PublicationSortCriteria.TopMirrored,
+      type: PublicationTypes.Mirror,
+    },
   ];
 
   // Variables

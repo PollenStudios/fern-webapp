@@ -3,12 +3,24 @@ import { PublicationMainFocus, useExploreFeedQuery } from 'graphql/generated/typ
 import config from 'utils/config';
 import { Loader } from 'app/components/atoms/Loader';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { hasMoreMessage } from 'utils/constant';
 
 export const SortPosts = ({ selectedTab, filterTags }: any) => {
   const [isLoading, setIsLoading] = useState(true);
 
-  const selectedFilter = () => {
+  const filterSortCriteria = () => {
+    switch (selectedTab) {
+      case filterTags[0].query:
+        return filterTags[0].criteria;
+      case filterTags[1].query:
+        return filterTags[1].criteria;
+      default:
+        return filterTags[0].criteria;
+    }
+  };
+
+  const filterPublicationTypes = () => {
     switch (selectedTab) {
       case filterTags[0].query:
         return filterTags[0].type;
@@ -21,9 +33,10 @@ export const SortPosts = ({ selectedTab, filterTags }: any) => {
 
   // Params Sort Publications
   const request = {
-    sortCriteria: selectedFilter(),
+    sortCriteria: filterSortCriteria(),
+    publicationTypes: filterPublicationTypes(),
     noRandomize: true,
-    limit: 20,
+    limit: 10,
     sources: [config.appNameForLensApi],
     metadata: { mainContentFocus: [PublicationMainFocus.Image] },
   };
@@ -33,7 +46,18 @@ export const SortPosts = ({ selectedTab, filterTags }: any) => {
     variables: { request },
   });
 
+  // @ts-ignore
   const publications = data?.explorePublications?.items;
+
+  // @ts-ignore
+  const pageInfo = data?.explorePublications?.pageInfo;
+  const hasMore = pageInfo?.next && publications?.length !== pageInfo?.totalCount;
+
+  const loadMore = async () => {
+    await fetchMore({
+      variables: { request: { ...request, cursor: pageInfo?.next } },
+    });
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -58,17 +82,36 @@ export const SortPosts = ({ selectedTab, filterTags }: any) => {
     );
   }
 
-  if (publications?.length === 0) {
-    return <div className="w-full h-[60vh] flex justify-center items-center heading-4">No Post found</div>;
-  }
+  //  in future uncomment this code
+
+  // if (publications?.length === 0) {
+  //   return <div className="w-full h-[60vh] flex justify-center items-center heading-4">No Post found</div>;
+  // }
 
   return (
-    <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 mt-20">
-      {publications?.map((post: any, i: number) => (
-        <div className="col-span-4" key={i}>
-          <ArtPreviewCard art={post} />
-        </div>
-      ))}
-    </div>
+    <>
+      {/* in future just remove this condition and render only infiniteScroll  component */}
+      {selectedTab === filterTags[1].query ? (
+        <div className="w-full h-[60vh] flex justify-center  items-center heading-4">Coming Soon</div>
+      ) : (
+        <InfiniteScroll
+          style={{ overflow: 'hidden' }}
+          next={loadMore}
+          hasMore={hasMore}
+          loader={<Loader />}
+          scrollThreshold={0.9}
+          dataLength={publications?.length ?? 0}
+        >
+          <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 mt-20">
+            {publications?.map((post: any, i: number) => (
+              <div className="col-span-4" key={i}>
+                <ArtPreviewCard art={post} />
+              </div>
+            ))}
+          </div>
+          {!hasMore && <div className="flex justify-center mt-10">{hasMoreMessage}</div>}
+        </InfiniteScroll>
+      )}
+    </>
   );
 };

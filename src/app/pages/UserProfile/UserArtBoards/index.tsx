@@ -1,16 +1,17 @@
-import { useLazyQuery } from '@apollo/client';
 import ArtPreviewCard from 'app/components/ArtPreviewCard';
 import { Button } from 'app/components/atoms/Buttons';
-import { ProfileFeedDocument, PublicationMainFocus, PublicationTypes } from 'graphql/generated/types';
-import React, { useEffect, useState } from 'react';
+import { PublicationMainFocus, PublicationTypes, useProfileFeedQuery } from 'graphql/generated/types';
 import { Link, useParams } from 'react-router-dom';
 import config, { PageRoutes } from 'utils/config';
 import noArtBoards from 'Assets/Images/noArtBoards.png';
 import { Loader } from 'app/components/atoms/Loader';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { hasMoreMessage } from 'utils/constant';
+
+//don't remove anything in this code, we need it in future
 
 function ArtBoardPosts({ currentProfile }: any) {
   const { id: profileId } = useParams();
-  const [ArtBoards, setArtBoards] = useState<any>();
 
   //variables
   const request = {
@@ -20,17 +21,24 @@ function ArtBoardPosts({ currentProfile }: any) {
     sources: [config.appNameForLensApi],
     metadata: { mainContentFocus: [PublicationMainFocus.Image] },
   };
-  const reactionRequest = { profileId };
 
-  const [getArtBoards, { data, loading }] = useLazyQuery(ProfileFeedDocument, {
-    onCompleted: async () => {
-      setArtBoards(data?.publications.items);
-    },
+  // API Call Sort By
+  const { data, loading, error, fetchMore } = useProfileFeedQuery({
+    variables: { request },
   });
 
-  useEffect(() => {
-    getArtBoards({ variables: { request, reactionRequest, profileId } });
-  }, [data, profileId]);
+  // @ts-ignore
+  const publications = data?.publications?.items;
+
+  // @ts-ignore
+  const pageInfo = data?.publications?.pageInfo;
+  const hasMore = pageInfo?.next && publications?.length !== pageInfo?.totalCount;
+
+  const loadMore = async () => {
+    await fetchMore({
+      variables: { request: { ...request, cursor: pageInfo?.next } },
+    });
+  };
 
   if (loading)
     return (
@@ -39,18 +47,31 @@ function ArtBoardPosts({ currentProfile }: any) {
       </div>
     );
 
-  if (ArtBoards && ArtBoards?.length === 0) {
-    return <EmptyArtBoard profileId={profileId} currentProfile={currentProfile} />;
-  }
+  // in Futute uncomment this code and remove div with coming soon
+
+  // if (publications?.length === 0) {
+  //   return <EmptyArtBoard profileId={profileId} currentProfile={currentProfile} />;
+  // }
 
   return (
-    <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 my-2">
-      {ArtBoards?.map((artBoard: any, i: number) => (
-        <div className="col-span-5 sm:col-span-4 md:col-span-6" key={i}>
-          <ArtPreviewCard art={artBoard} />
-        </div>
-      ))}
-    </div>
+    <div className="w-full h-[40vh] flex justify-center items-center heading-5">Coming Soon</div>
+    // <InfiniteScroll
+    //   style={{ overflow: 'hidden' }}
+    //   next={loadMore}
+    //   hasMore={hasMore}
+    //   loader={<Loader />}
+    //   scrollThreshold={0.9}
+    //   dataLength={publications?.length ?? 0}
+    // >
+    //   <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 my-2">
+    //     {publications?.map((artBoard: any, i: number) => (
+    //       <div className="col-span-5 sm:col-span-4 md:col-span-6" key={i}>
+    //         <ArtPreviewCard art={artBoard} />
+    //       </div>
+    //     ))}
+    //   </div>
+    //   {!hasMore && <div className="flex justify-center mt-10">{hasMoreMessage}</div>}
+    // </InfiniteScroll>
   );
 }
 

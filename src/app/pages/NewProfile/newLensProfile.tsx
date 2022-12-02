@@ -1,5 +1,6 @@
 import { Button } from 'app/components/atoms/Buttons';
 import { Input } from 'app/components/atoms/FormElements';
+import { Loader } from 'app/components/atoms/Loader';
 import { ImagePreviewer } from 'app/components/atoms/UploadFiles';
 import OverlayLoader from 'app/components/OverlayLoader';
 
@@ -82,13 +83,13 @@ function NewLensProfile({
         </ul>
       </div>
       <div className="mt-10">
-        <Button
-          variant="primary"
-          disabled={isLoading}
-          additionalClasses={isLoading ? 'cursor-not-allowed' : ''}
-          name={isLoading ? 'Creating...' : 'Create'}
-          type="submit"
-        />
+        {isLoading ? (
+          <div className="bg-primary w-[98px] py-2 sm:py-3 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
+            <Loader />
+          </div>
+        ) : (
+          <Button variant="primary" name="Create" type="submit" />
+        )}
       </div>
     </form>
   );

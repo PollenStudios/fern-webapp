@@ -10,6 +10,7 @@ import { useContext, useEffect, useState } from 'react';
 import { WalletContext } from 'store/WalletContextProvider';
 import { apiRoutes } from 'API/apiRoutes';
 import { backendToken } from 'utils/getBackendToken';
+import { Loader } from 'app/components/atoms/Loader';
 
 function SignUpForArtist() {
   const navigate = useNavigate();
@@ -130,13 +131,13 @@ function SignUpForArtist() {
             required
           />
           <div className="flex justify-end">
-            <Button
-              variant="primary"
-              disabled={isLoading}
-              additionalClasses={isLoading ? 'cursor-not-allowed' : ''}
-              name={isLoading ? 'Submiting...' : 'Submit'}
-              type="submit"
-            />{' '}
+            {isLoading ? (
+              <div className="bg-primary w-[98px] py-2 sm:py-3 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
+                <Loader />
+              </div>
+            ) : (
+              <Button variant="primary" name="Submit" type="submit" />
+            )}
           </div>
         </form>
       </div>

@@ -37,7 +37,7 @@ const DiscoveryPageView = ({
         <div className="flex flex-col sm:flex-row justify-between mt-10 mb-5">
           <p className="heading-3 flex items-center">Discover</p>
           <div className="flex flex-col justify-end">
-            <p className="paragraph-2 pl-4">Set Category</p>
+            <p className="paragraph-2 pl-4">Select Category</p>
             <Select
               selected={selectedArtCategory}
               setSelected={setSelectedArtCategory}

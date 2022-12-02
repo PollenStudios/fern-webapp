@@ -108,9 +108,16 @@ const WalletProvider = ({ children }: any) => {
 
       await validateChain(accounts[0], closeModal, infoModal);
 
+      // infoModal({
+      //   heading: 'Sign-in with F3RN',
+      //   paragraph: 'Please sign with your wallet',
+      //   primaryButtonText: 'Sign wallet',
+      //   onClick: await handleSign(accounts[0], closeModal, infoModal),
+      // });
+
       await handleSign(accounts[0], closeModal, infoModal);
     } catch (error: any) {
-      // toast.error(error.message);
+      toast.error(error.message);
       dispatchAccount({ type: 'error', payload: error });
     } finally {
       setIsLoading(false);
@@ -221,7 +228,8 @@ const WalletProvider = ({ children }: any) => {
       // navigate(PageRoutes.ERROR_PAGE);
     }
   };
-
+  //check chain id
+  // some times user can login with chain id other than mumbai, check it why is it so
   const validateChain = async (address: string, closeModal: any, infoModal: any) => {
     const fetchChainId = walletProvider.current.chainId;
     if (!DEFAULT_CHAIN_IDS.includes(fetchChainId)) {
@@ -237,6 +245,28 @@ const WalletProvider = ({ children }: any) => {
       }
     } else {
       return true;
+    }
+  };
+
+  //Auto connect wallet
+
+  const handleAutoConnectWallet = () => {
+    if (window.ethereum) {
+      window.ethereum
+        .request({ method: 'eth_requestAccounts' })
+        .then((accounts: any) => {
+          dispatchAccount({ type: 'success', payload: accounts[0] });
+          fetchWalletBalance(accounts[0]);
+        })
+        .catch((error: any) => {
+          if (error.code === 4001) {
+            toast.error(error.message);
+          }
+          // console.log(error, 'Not Connected');
+        });
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -258,6 +288,10 @@ const WalletProvider = ({ children }: any) => {
       logout();
     });
   }, [walletProvider?.current?.chainId]);
+
+  useEffect(() => {
+    handleAutoConnectWallet();
+  }, []);
 
   return (
     <>

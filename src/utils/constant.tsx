@@ -1,6 +1,8 @@
 import config from './config';
 // /^(?:(ftp|http|https):\/\/)?(?:[\w-]+\.)+[a-z]{2,24}$/;
 
+export const hasMoreMessage = 'No more data left';
+
 //Regex
 export const URL_REGEX =
   /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[\da-z]+([.\-][\da-z]+)*\.[a-z]{2,63}(:\d{1,5})?(\/.*)?$/;

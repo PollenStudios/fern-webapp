@@ -6,11 +6,13 @@ import { ProfileDocument } from 'graphql/generated/types';
 import { userProfileLens } from 'utils/generateNonce';
 import View from './view';
 import UserProfileSidebar from './userProfileSidebar';
+import OverlayLoader from 'app/components/OverlayLoader';
 
 function UserProfile() {
   const { id: profileId } = useParams();
   const [userProfile, setUserProfile] = useState<any>();
   const [isArtist, setIsArtist] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Variables
   const reactionRequest = { profileId };
@@ -24,6 +26,7 @@ function UserProfile() {
   const userProfileStatus = async (profileId: string | undefined) => {
     const userStatus = await userProfileLens(profileId);
     userStatus[0]?.artist_approval_status === 'approved' && setIsArtist(true);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -31,9 +34,7 @@ function UserProfile() {
     getProfile({ variables: { request: reactionRequest } });
   }, [userProfileResult, profileId]);
 
-  // useEffect(() => {
-  //   userProfileStatus(profileId);
-  // }, [profileId]);
+  if (isLoading) return <OverlayLoader />;
 
   return (
     <>
@@ -44,6 +45,7 @@ function UserProfile() {
           } - F3rn | Fine Art Discovery and Curation`}</title>
         </Helmet>
       </HelmetProvider>
+
       <div className="mb-10 mt-16">
         <div>
           <img

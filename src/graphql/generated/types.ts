@@ -34937,3 +34937,35 @@ export type SearchPublicationsQueryResult = Apollo.QueryResult<
   SearchPublicationsQuery,
   SearchPublicationsQueryVariables
 >;
+
+/**
+ * __useProfileFeedQuery__
+ *
+ * To run a query within a React component, call `useProfileFeedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProfileFeedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProfileFeedQuery({
+ *   variables: {
+ *      request: // value for 'request'
+ *      reactionRequest: // value for 'reactionRequest'
+ *      profileId: // value for 'profileId'
+ *   },
+ * });
+ */
+export function useProfileFeedQuery(baseOptions: Apollo.QueryHookOptions<ProfileFeedQuery, ProfileFeedQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<ProfileFeedQuery, ProfileFeedQueryVariables>(ProfileFeedDocument, options);
+}
+export function useProfileFeedLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<ProfileFeedQuery, ProfileFeedQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<ProfileFeedQuery, ProfileFeedQueryVariables>(ProfileFeedDocument, options);
+}
+export type ProfileFeedQueryHookResult = ReturnType<typeof useProfileFeedQuery>;
+export type ProfileFeedLazyQueryHookResult = ReturnType<typeof useProfileFeedLazyQuery>;
+export type ProfileFeedQueryResult = Apollo.QueryResult<ProfileFeedQuery, ProfileFeedQueryVariables>;

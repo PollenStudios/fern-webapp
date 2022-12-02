@@ -132,9 +132,9 @@ const NewProfile = () => {
             if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
               const indexingResult = pollUntilIndexed({ txHash: broadcastResult?.data?.broadcast?.txHash });
               toast.promise(indexingResult, {
-                loading: 'Creating...',
-                success: 'Profile Created',
-                error: 'Could not created',
+                loading: 'Uploading profile image',
+                success: 'Profile Image Uploaded',
+                error: 'Could not uploaded',
               });
               console.log('indexerResult ', await indexingResult);
 
@@ -149,8 +149,10 @@ const NewProfile = () => {
 
             dispatchIsLoggedIn({ type: 'success', payload: true });
             dispatchCurrentProfile({ type: 'success', payload: allProfiles.items[0] });
-          } catch ({ message }) {
-            console.log('error', message);
+          } catch (error: any) {
+            console.log('error', error.message);
+            toast.success('Refresh the page for login');
+            // toast.error(error.message);
           } finally {
             navigate(PageRoutes.DISCOVERY);
           }

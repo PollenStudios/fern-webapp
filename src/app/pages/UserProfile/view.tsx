@@ -3,12 +3,15 @@ import { WalletContext } from 'store/WalletContextProvider';
 import ArtBoardPosts from './UserArtBoards';
 import Publications from './UserPublication';
 
+//The commented code below is for future purposes, so don't delete it
+
 function View({ isArtist }: any) {
   const {
     currentProfileState: { currentProfile },
   }: any = useContext(WalletContext);
 
   const [selectedTab, setSelectedTab] = useState(isArtist ? 'posts' : 'artBoards');
+  // const [selectedTab, setSelectedTab] = useState('posts');
 
   const selectedTabClass = (condition: any) => {
     if (condition) return 'border-primary border-b-4';
@@ -18,12 +21,6 @@ function View({ isArtist }: any) {
   return (
     <div className="col-span-4 pt-10 md:pt-auto md:pl-36">
       <div className="flex gap-4 border-b">
-        <p
-          className={`heading-4 cursor-pointer ${selectedTabClass(selectedTab === 'artBoards')}`}
-          onClick={() => setSelectedTab('artBoards')}
-        >
-          Art Board
-        </p>
         {isArtist && (
           <p
             className={`heading-4 cursor-pointer ${selectedTabClass(selectedTab === 'posts')}`}
@@ -32,6 +29,12 @@ function View({ isArtist }: any) {
             Art Work
           </p>
         )}
+        <p
+          className={`heading-4 cursor-pointer ${selectedTabClass(selectedTab === 'artBoards')}`}
+          onClick={() => setSelectedTab('artBoards')}
+        >
+          Art Board
+        </p>
       </div>
 
       {selectedTab === 'posts' ? (
