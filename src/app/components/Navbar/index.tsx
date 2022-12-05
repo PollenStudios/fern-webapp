@@ -48,7 +48,7 @@ export default function Navbar(): any {
           <>
             <div className="mx-auto max-w-7xl px-2 md:px-6 lg:px-8">
               <div className="relative flex h-16 items-center justify-between">
-                <div className="absolute inset-y-0 right-0 flex items-center md:hidden">
+                <div className="absolute inset-y-0 -right-2  flex items-center md:hidden">
                   {/* Mobile menu button*/}
                   <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-600 focus:bg-gray-200 focus:text-white ">
                     <span className="sr-only">Open main menu</span>
@@ -59,26 +59,26 @@ export default function Navbar(): any {
                     )}
                   </Disclosure.Button>
                 </div>
-                <div className="flex flex-1 gap-8 lg:gap-12 items-center justify-center sm:justify-start">
+                <div className="flex flex-grow  gap-0  lg:gap-10 items-center justify-center sm:justify-start">
                   <a href="/discover?sortBy=Latest" className="w-24 h-20">
                     {/* <h4 className="heading-4">{config.appName}</h4> */}
-                    <img className="w-full h-full" src={F3RN} alt="F3RN" />
+                    <img className="w-3/4 md:w-full h-full" src={F3RN} alt="F3RN" />
                   </a>
-                  <div className="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">
-                    <div className="flex items-center px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
+                  <div className="min-w-0 flex-1  xl:col-span-6">
+                    <div className="flex items-center px-4 md:px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
                       <div className="w-full">
                         <label htmlFor="search" className="sr-only font-inter">
                           Explore
                         </label>
                         <div className="relative">
                           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                            <MagnifyingGlassIcon className="md:h-5 md:w-5 h-4 w-4 -ml-7 md:ml-0 text-gray-400" aria-hidden="true" />
                           </div>
-                          <form onSubmit={handleSubmit}>
+                          <form className="-ml-7 md:ml-0" onSubmit={handleSubmit}>
                             <input
                               id="search"
                               name="search"
-                              className="block w-3/4 lg:w-1/2 paragraph-3 rounded-full border border-gray-300 bg-white py-2 pl-10 pr-3 text-xs placeholder-gray-500 focus:border-gray-500 focus:text-primary  focus:outline-none focus:ring-1 focus:ring-gray-100 sm:text-xs "
+                              className="block w-11/12 sm:w-3/4 md:w-full lg:w-1/2 paragraph-3 rounded-full border border-gray-300 bg-white py-1 md:py-2 pl-10 pr-3 text-xs placeholder-gray-500 focus:border-gray-500 focus:text-primary  focus:outline-none focus:ring-1 focus:ring-gray-100 sm:text-xs "
                               placeholder="Explore feed..."
                               type="search"
                               onChange={e => handleSearch(e)}
