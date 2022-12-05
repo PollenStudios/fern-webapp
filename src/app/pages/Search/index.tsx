@@ -22,20 +22,20 @@ function Search() {
           <title>Search - F3rn | Fine Art Discovery and Curation</title>
         </Helmet>
       </HelmetProvider>
-      <div className="main-container min-h-[76vh] mt-28 mb-12">
+      <div className="main-container min-h-[70vh] mt-20 mb-6">
         <div className=" pt-5 mb-4 flex gap-1 items-baseline">
           <p className="paragraph-1">Showing results of</p>
           <p className="heading-5">{query}</p>
         </div>
         <div className="flex gap-4 border-b">
           <p
-            className={`heading-4 cursor-pointer ${selectedTab === 'publications' ? 'border-primary border-b-4' : ''}`}
+            className={`heading-5 lg:heading-4 cursor-pointer ${selectedTab === 'publications' ? 'border-primary border-b-4' : ''}`}
             onClick={() => setSelectedTab('publications')}
           >
             Art
           </p>
           <p
-            className={`heading-4 cursor-pointer ${selectedTab === 'profiles' ? 'border-primary border-b-4' : ''}`}
+            className={`heading-5 lg:heading-4 cursor-pointer ${selectedTab === 'profiles' ? 'border-primary border-b-4' : ''}`}
             onClick={() => setSelectedTab('profiles')}
           >
             User Profile

@@ -104,7 +104,7 @@ export default function Navbar(): any {
                   ) : (
                     <>
                       {isLoading ? (
-                        <div className="bg-primary w-[90px] py-2 sm:py-3 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
+                        <div className="bg-primary min-w-[118px] py-2 px-6 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
                           <Loader />
                         </div>
                       ) : (

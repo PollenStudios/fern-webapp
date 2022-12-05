@@ -41,7 +41,7 @@ function Publication({ query }: any) {
   }
 
   if (publications?.length === 0) {
-    return <div className="w-full h-[60vh] flex justify-center items-center heading-4">No Art found</div>;
+    return <div className="w-full h-[60vh] flex justify-center items-center heading-5 lg;heading-4">No Art found</div>;
   }
 
   return (

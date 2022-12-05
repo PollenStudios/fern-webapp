@@ -11,6 +11,12 @@ import { Button } from '../atoms/Buttons';
 import { Loader } from '../atoms/Loader';
 import OverlayLoader from '../OverlayLoader';
 
+import { Switch } from '@headlessui/react';
+
+function classNames(...classes: any) {
+  return classes.filter(Boolean).join(' ');
+}
+
 const EnableDispatcher = () => {
   const {
     currentProfileState: { currentProfile },
@@ -80,11 +86,32 @@ const EnableDispatcher = () => {
           <Loader />
         </div>
       ) : (
-        <Button
-          variant={canUseRelay ? 'danger' : 'outline'}
-          name={canUseRelay ? 'Disable dispatcher' : 'Enable dispatcher'}
-          onClick={enableDispatcher}
-        />
+        <>
+          {/* <Switch
+            checked={canUseRelay}
+            disabled={isLoading}
+            className={classNames(
+              canUseRelay ? 'bg-gray-700' : 'bg-gray-400',
+              'relative inline-flex h-6 w-11 ml-3 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2',
+            )}
+            onClick={enableDispatcher}
+          >
+            <span
+              aria-hidden="true"
+              className={classNames(
+                canUseRelay ? 'translate-x-5' : 'translate-x-0',
+                'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+              )}
+            />
+          </Switch> */}
+
+                    
+          <Button
+            variant={canUseRelay ? 'danger' : 'outline'}
+            name={canUseRelay ? 'Disable dispatcher' : 'Enable dispatcher'}
+            onClick={enableDispatcher}
+          />
+        </>
       )}
     </div>
   );
