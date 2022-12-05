@@ -49,7 +49,7 @@ const ProfileDropdown = () => {
           >
             <div className="flex bg-primary items-center relative rounded-full min-w-[150px] cursor-pointer">
               {/* <Button type="button" additionalClasses="relative" name="Profile" /> */}
-              <span className="heading-6 w-3/4 md:w-full sm:w-auto  py-2 sm:px-4 sm:py-3 text-base font-medium rounded-full shadow-sm text-white focus:outline-none relative">
+              <span className="heading-6 w-3/4  sm:w-auto  py-2 sm:px-4 sm:py-3 text-base font-medium rounded-full shadow-sm text-white focus:outline-none relative">
                 Profile
               </span>
               <img
