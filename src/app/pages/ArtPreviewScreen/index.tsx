@@ -66,6 +66,7 @@ const ArtPreviewScreen = () => {
                         : ART_PREVIEW
                     }
                     alt={data && data?.publication?.id}
+                    loading="lazy"
                   />
                 }
               </div>
@@ -81,6 +82,7 @@ const ArtPreviewScreen = () => {
                         // @ts-ignore
                         src={data?.publication?.profile?.picture?.original!.url! ?? ProfileLogo}
                         alt={data?.publication?.profile?.name ?? 'F3RN'}
+                        loading="lazy"
                       />
                       <div className="text-primary  border-gray-500 ">
                         <p>{data && data?.publication?.metadata.name?.split('y')[1]}</p>

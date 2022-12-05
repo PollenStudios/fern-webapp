@@ -52,6 +52,7 @@ function UserProfile() {
             className="w-full h-72 sm:h-96 bg-gray-300"
             src="https://images.unsplash.com/photo-1667679831953-b8fa28deb04e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxNTN8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
             alt="cover"
+            loading="lazy"
           />
         </div>
         <div className="main-container flex flex-col md:grid grid-cols-5">

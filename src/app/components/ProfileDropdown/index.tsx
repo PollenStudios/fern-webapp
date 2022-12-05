@@ -59,6 +59,7 @@ const ProfileDropdown = () => {
                     : profileImg
                 }
                 alt={currentProfile?.name}
+                loading="lazy"
                 className="w-10 h-10 rounded-full mr-2 object-cover"
               />
             </div>
@@ -90,6 +91,7 @@ const ProfileDropdown = () => {
                           }
                           alt={currentProfile?.name ?? currentProfile?.id}
                           className="w-12 h-12 rounded-full mr-2 object-cover"
+                          loading="lazy"
                         />
                       </div>
                       <h6 className="font-semibold ml-2 w-36 truncate capitalize">

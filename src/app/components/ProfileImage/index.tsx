@@ -172,6 +172,7 @@ function ProfileImage() {
           className="rounded-full object-cover border  w-48 h-48"
           src={avatar ? URL.createObjectURL(avatar) : currentProfile?.picture?.original?.url ?? ProfileLogo}
           alt={currentProfile?.name}
+          loading="lazy"
         />
       </div>
       <div className="flex justify-center items-center flex-col gap-2 my-8">
