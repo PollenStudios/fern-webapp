@@ -75,7 +75,6 @@ const NewProfile = () => {
       };
       const { data } = await createSetProfileImageURITypedData({
         variables: {
-          // options: { overrideSigNonce: userSignNonce },
           request,
         },
       });
@@ -126,6 +125,8 @@ const NewProfile = () => {
         if (generateNonceResult.token) {
           try {
             const { id, typedData } = await uploadImageToLens(createUserResult.data.profile_pic, firstProfile.id);
+            //getting an error in signTypedDataAsync, it return promise and giving error connector not found
+            //TODO: need to resolve it
             const signature = await signTypedDataAsync(getSignature(typedData));
             const broadcastResult = await broadcast({ request: { id, signature } });
 
