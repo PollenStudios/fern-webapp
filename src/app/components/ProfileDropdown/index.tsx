@@ -76,7 +76,7 @@ const ProfileDropdown = () => {
           >
             <Popover.Panel className="absolute z-10 -ml-4 mt-3 w-screen max-w-md transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2">
               <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                <div className="w-full h-screen md:h-auto md:w-[350px] bg-white absolute rounded-md  right-0 sm:right-80 md:right-70 lg:right-40">
+                <div className="w-full h-auto md:w-[350px] bg-white absolute rounded-md top-2.5 md:top-0 right-1 md:right-72 lg:right-40">
                   <Link
                     className="flex  justify-between px-4 py-6 cursor-pointer"
                     to={PageRoutes.USER_PROFILE.split(':')[0] + currentProfile?.id}
@@ -118,7 +118,7 @@ const ProfileDropdown = () => {
                     </div>
                   </div>
 
-                  <div className="mt-8">
+                  <div className="md:mt-8">
                     <Link to={PageRoutes.SETTINGS}>
                       <div className="flex hover:bg-gray-100  justify-between p-4">
                         <div className="flex items-center">
@@ -131,7 +131,7 @@ const ProfileDropdown = () => {
                       </div>
                     </Link>
                     <div
-                      className="flex hover:bg-gray-100 cursor-pointer justify-between p-4"
+                      className="flex hover:bg-gray-100 cursor-pointer justify-between pt-0 sm:pt-4 p-4"
                       onClick={() => alert('coming soon')}
                     >
                       <div className="flex items-center">
@@ -142,7 +142,7 @@ const ProfileDropdown = () => {
 
                       <ChevronRightIcon className="w-6 text-gray-600" />
                     </div>
-                    <div onClick={Disconnect} className="flex hover:bg-gray-100 cursor-pointer  justify-between p-4">
+                    <div onClick={Disconnect} className="flex hover:bg-gray-100 cursor-pointer  justify-between pt-0 sm:pt-0 p-4">
                       <div className="flex items-center">
                         <ArrowLeftOnRectangleIcon className="w-8 h-8 text-black" />
 

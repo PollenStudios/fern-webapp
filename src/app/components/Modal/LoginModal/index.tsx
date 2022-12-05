@@ -38,12 +38,12 @@ export const LoginModal = ({ openModal, setIsLoading }: any) => {
       <>
         <div>
           <div className="flex justify-between items-center border-b pb-2">
-            <p className="heading-5">Login</p>
+            <p className="heading-5 sm:heading-5">Login</p>
 
             <XMarkIcon className="w-8 h-8 cursor-pointer rounded-full hover:bg-gray-200 p-1" onClick={closeModal} />
           </div>
           <div className="mt-3 text-left sm:mt-5">
-            <p className="paragraph-1">{modalData ? modalData.heading : 'Login into Metamask'}</p>
+            <p className="paragraph-2 sm:paragraph-1">{modalData ? modalData.heading : 'Login into Metamask'}</p>
           </div>
         </div>
         <div className="mt-5 sm:mt-9 w-full flex justify-end gap-2 ">
@@ -64,7 +64,7 @@ export const LoginModal = ({ openModal, setIsLoading }: any) => {
 
           <>
             {modalButtonLoading ? (
-              <div className="bg-primary min-w-[115px] py-2.5  border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
+              <div className="bg-primary  min-w-[115px] py-2.5  border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
                 <Loader />
               </div>
             ) : (
