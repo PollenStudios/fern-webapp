@@ -2,7 +2,13 @@ import { useLazyQuery, useMutation } from '@apollo/client';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { WalletContext } from 'store/WalletContextProvider';
-import { CreateSetProfileImageUriTypedDataDocument, ProfileDocument, Mutation } from 'graphql/generated/types';
+import {
+  CreateSetProfileImageUriTypedDataDocument,
+  ProfileDocument,
+  Mutation,
+  CreateSetProfileImageUriViaDispatcherDocument,
+  UpdateProfileImageRequest,
+} from 'graphql/generated/types';
 import useBroadcast from 'hooks/useBroadcast';
 import getSignature from 'utils/getSignature';
 import { Button } from 'app/components/atoms/Buttons';
@@ -37,6 +43,16 @@ function ProfileImage() {
   const { broadcast, loading: broadcastLoading } = useBroadcast({
     onCompleted: data => {
       console.log('data_useBroadcast', data);
+    },
+  });
+
+  const [createSetProfileImageURIViaDispatcher] = useMutation(CreateSetProfileImageUriViaDispatcherDocument, {
+    onCompleted: data => {
+      if (data.createSetProfileImageURIViaDispatcher.__typename === 'RelayerResult') {
+        setLoading(false);
+        toast.success('Profile image updated successfully');
+        console.log('txId Dispatcher', { txId: data.createSetProfileImageURIViaDispatcher });
+      }
     },
   });
 
@@ -83,6 +99,23 @@ function ProfileImage() {
     },
   );
 
+  const setProfileImageViaDispatcher = async (request: UpdateProfileImageRequest) => {
+    const { data } = await createSetProfileImageURIViaDispatcher({
+      variables: { request },
+    });
+
+    console.log('data', data);
+
+    if (data?.createSetProfileImageURIViaDispatcher?.__typename === 'RelayError') {
+      await createSetProfileImageURITypedData({
+        variables: {
+          options: { overrideSigNonce: userSignNonce },
+          request,
+        },
+      });
+    }
+  };
+
   const handleUpload = async (value: any) => {
     // value.preventDefault();
     // setUploading(true);
@@ -106,7 +139,8 @@ function ProfileImage() {
       }
     } catch (error) {
       setImageLoading(false);
-      console.log('error', error);
+      console.log('error in image loading', error);
+      // setAvatar(currentProfile?.picture?.original?.url);
     }
   };
 
@@ -117,12 +151,17 @@ function ProfileImage() {
         url: image,
       };
       setLoading(true);
-      await createSetProfileImageURITypedData({
-        variables: {
-          options: { overrideSigNonce: userSignNonce },
-          request,
-        },
-      });
+      console.log('currentProfile?.dispatcher?.canUseRelay', currentProfile?.dispatcher?.canUseRelay);
+      if (currentProfile?.dispatcher?.canUseRelay) {
+        setProfileImageViaDispatcher(request);
+      } else {
+        await createSetProfileImageURITypedData({
+          variables: {
+            options: { overrideSigNonce: userSignNonce },
+            request,
+          },
+        });
+      }
     }
   };
   return (
