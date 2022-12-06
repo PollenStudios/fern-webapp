@@ -87,28 +87,22 @@ export const SortPosts = ({ selectedTab, filterTags }: any) => {
   }
 
   return (
-    <>
-      {/* in future just remove this condition and render only infiniteScroll  component */}
-      {selectedTab === filterTags[1].query ? (
-        <div className="w-full h-[60vh] flex justify-center   items-center heading-4">Coming Soon</div>
-      ) : (
-        <InfiniteScroll
-          style={{ overflow: 'hidden' }}
-          next={loadMore}
-          hasMore={hasMore}
-          loader={<Loader />}
-          scrollThreshold={0.9}
-          dataLength={publications?.length ?? 0}
-        >
-          <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 mt-20">
-            {publications?.map((post: any, i: number) => (
-              <div className="col-span-4" key={i}>
-                <ArtPreviewCard art={post} />
-              </div>
-            ))}
+    <InfiniteScroll
+      style={{ overflow: 'hidden' }}
+      next={loadMore}
+      hasMore={hasMore}
+      loader={<Loader />}
+      scrollThreshold={0.9}
+      dataLength={publications?.length ?? 0}
+    >
+      <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 mt-20">
+        {publications?.map((post: any, i: number) => (
+          <div className="col-span-4" key={i}>
+            <ArtPreviewCard art={post} />
           </div>
         ))}
       </div>
+
       {!hasMore && <div className="flex justify-center mt-10">{hasMoreMessage}</div>}
     </InfiniteScroll>
   );
