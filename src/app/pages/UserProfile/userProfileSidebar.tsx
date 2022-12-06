@@ -33,7 +33,7 @@ function UserProfileSidebar({ userProfile, isArtist }: any) {
         <p className="w-40 md:w-60 heading-6 sm:heading-5 text-center pt-28 capitalize">
           {userProfile?.name ?? userProfile?.id}
         </p>
-        {isArtist && <span className="w-40 md:w-60 heading-5  text-center text-secondary ">Artist </span>}
+        {isArtist && <span className="w-40 md:w-60 heading-5  text-center text-tertiary ">Artist </span>}
         <p className="w-40 md:w-60 heading-6 sm:heading-5 text-gray-40 text-center pt-2 pb-5">
           {userProfile?.ownedBy ? userProfile?.ownedBy?.slice(0, 9) + '...' + userProfile?.ownedBy?.slice(-4) : ''}
         </p>
