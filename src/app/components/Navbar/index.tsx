@@ -83,6 +83,7 @@ export default function Navbar(): any {
                               type="search"
                               onChange={e => handleSearch(e)}
                             />
+                            
                           </form>
                         </div>
                       </div>

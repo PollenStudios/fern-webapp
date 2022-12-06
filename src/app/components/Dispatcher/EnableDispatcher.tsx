@@ -87,11 +87,11 @@ const EnableDispatcher = () => {
         </div>
       ) : (
         <>
-          {/* <Switch
+          <Switch
             checked={canUseRelay}
             disabled={isLoading}
             className={classNames(
-              canUseRelay ? 'bg-gray-700' : 'bg-gray-400',
+              canUseRelay ? 'bg-gray-700' : 'bg-gray-300',
               'relative inline-flex h-6 w-11 ml-3 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2',
             )}
             onClick={enableDispatcher}
@@ -103,14 +103,7 @@ const EnableDispatcher = () => {
                 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
               )}
             />
-          </Switch> */}
-
-                    
-          <Button
-            variant={canUseRelay ? 'danger' : 'outline'}
-            name={canUseRelay ? 'Disable dispatcher' : 'Enable dispatcher'}
-            onClick={enableDispatcher}
-          />
+          </Switch>
         </>
       )}
     </div>
