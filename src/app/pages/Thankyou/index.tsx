@@ -10,7 +10,7 @@ function Thankyou() {
       <div>
         <div className="w-full flex justify-center">
           <div className="w-60 h-60 bg-gray-20 rounded-full flex justify-center items-center mb-4">
-            <img className=" " src={ArtPreview} alt="" />
+            <img className=" " src={ArtPreview} alt="Thankyou" />
           </div>
         </div>
         <div className="text-center flex flex-col gap-3">

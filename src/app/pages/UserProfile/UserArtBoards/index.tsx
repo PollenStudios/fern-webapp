@@ -47,31 +47,28 @@ function ArtBoardPosts({ currentProfile }: any) {
       </div>
     );
 
-  // in Futute uncomment this code and remove div with coming soon
-
-  // if (publications?.length === 0) {
-  //   return <EmptyArtBoard profileId={profileId} currentProfile={currentProfile} />;
-  // }
+  if (publications?.length === 0) {
+    return <EmptyArtBoard profileId={profileId} currentProfile={currentProfile} />;
+  }
 
   return (
-    <div className="w-full h-[40vh] flex justify-center items-center heading-5">Coming Soon</div>
-    // <InfiniteScroll
-    //   style={{ overflow: 'hidden' }}
-    //   next={loadMore}
-    //   hasMore={hasMore}
-    //   loader={<Loader />}
-    //   scrollThreshold={0.9}
-    //   dataLength={publications?.length ?? 0}
-    // >
-    //   <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 my-2">
-    //     {publications?.map((artBoard: any, i: number) => (
-    //       <div className="col-span-5 sm:col-span-4 md:col-span-6" key={i}>
-    //         <ArtPreviewCard art={artBoard} />
-    //       </div>
-    //     ))}
-    //   </div>
-    //   {!hasMore && <div className="flex justify-center mt-10">{hasMoreMessage}</div>}
-    // </InfiniteScroll>
+    <InfiniteScroll
+      style={{ overflow: 'hidden' }}
+      next={loadMore}
+      hasMore={hasMore}
+      loader={<Loader />}
+      scrollThreshold={0.9}
+      dataLength={publications?.length ?? 0}
+    >
+      <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 my-2">
+        {publications?.map((artBoard: any, i: number) => (
+          <div className="col-span-5 sm:col-span-4 md:col-span-6" key={i}>
+            <ArtPreviewCard art={artBoard} />
+          </div>
+        ))}
+      </div>
+      {!hasMore && <div className="flex justify-center mt-10">{hasMoreMessage}</div>}
+    </InfiniteScroll>
   );
 }
 

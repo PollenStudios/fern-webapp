@@ -118,6 +118,8 @@ function Post() {
   const [createPostViaDispatcher] = useMutation(CreatePostViaDispatcherDocument, {
     onCompleted: data => {
       if (data.createPostViaDispatcher.__typename === 'RelayerResult') {
+        setIsLoading(false);
+        toast.success('Profile created successfully');
         console.log('txId', { txId: data.createPostViaDispatcher });
       }
     },
@@ -151,8 +153,8 @@ function Post() {
 
         toast.promise(res, {
           loading: 'Indexing...',
-          success: 'Profile Updated',
-          error: 'Could not update',
+          success: 'Profile created successfully',
+          error: 'Could not create',
         });
         await res;
         navigate(PageRoutes.DISCOVERY);

@@ -66,7 +66,8 @@ function Profiles({ query }: any) {
                   <img
                     src={profile?.picture !== null ? profile?.picture?.original?.url : cardImg}
                     alt={profile.id}
-                    className="cursor-pointer rounded-full bg-white object-cover w-full h-full text-white "
+                    className="cursor-pointer rounded-full bg-white object-cover w-full h-full text-white"
+                    loading="lazy"
                   />
                 </div>
                 <div className="p-6 pt-4 flex flex-col justify-center">

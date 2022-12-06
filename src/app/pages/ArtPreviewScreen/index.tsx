@@ -11,7 +11,7 @@ import ArtPreviewSkelton from 'app/components/Skelton/ArtPreviewSkelton';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import ProfileLogo from 'Assets/Images/defaultLogo.png';
 
-// import Mirror from 'app/components/Mirror';
+import Mirror from 'app/components/Mirror';
 
 const ArtPreviewScreen = () => {
   const { id: publicationId } = useParams();
@@ -66,6 +66,7 @@ const ArtPreviewScreen = () => {
                         : ART_PREVIEW
                     }
                     alt={data && data?.publication?.id}
+                    loading="lazy"
                   />
                 }
               </div>
@@ -81,6 +82,7 @@ const ArtPreviewScreen = () => {
                         // @ts-ignore
                         src={data?.publication?.profile?.picture?.original!.url! ?? ProfileLogo}
                         alt={data?.publication?.profile?.name ?? 'F3RN'}
+                        loading="lazy"
                       />
                       <div className="text-primary  border-gray-500 ">
                         <p>{data && data?.publication?.metadata.name?.split('y')[1]}</p>
@@ -131,11 +133,11 @@ const ArtPreviewScreen = () => {
                             </p>
                           ))}
                       </div>
-                      {/* <Mirror
+                      <Mirror
                         publicationId={publicationId}
                         mirrorCounts={data?.publication?.stats?.totalAmountOfMirrors}
                         primary
-                      /> */}
+                      />
                     </div>
                   </div>
                 </div>

@@ -53,19 +53,11 @@ const HomePage = () => {
             className="py-10 grid grid-cols-12 gap-8 md:gap-10 border-b-2 cursor-pointer shadow-xl rounded-lg md:rounded-none md:shadow-none hover:shadow-xl hover:rounded-xl"
           >
             <div className="w-24 h-24 md:w-40 md:h-40 col-span-4 md:col-span-3">
-              {profile.picture ? (
-                <img
-                  src={profile.picture.original?.url}
-                  alt={profile.name}
-                  className="object-cover w-full h-full rounded-full ml-2 md:ml-10"
-                />
-              ) : (
-                <img
-                  src={defaultLogo}
-                  alt={profile.name}
-                  className="object-cover w-full h-full rounded-full ml-2 md:ml-10"
-                />
-              )}
+              <img
+                src={profile?.picture?.original?.url ?? defaultLogo}
+                alt={profile.name}
+                className="object-cover w-full h-full rounded-full ml-2 md:ml-10"
+              />
             </div>
             <div className="col-span-8 md:col-span-9">
               <h2 className="sub-heading mb-1 md:mb-2">{profile.name}</h2>

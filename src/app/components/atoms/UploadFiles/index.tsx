@@ -35,6 +35,7 @@ const ImageUploader = ({ maximumFiles, parentDivClassName, imageClassName, image
                 src={images[0].preview}
                 alt={images[0].name}
                 className={`bg-gray-20 w-full h-full ${imageClassName}`}
+                loading="lazy"
               />
             </div>
           </div>

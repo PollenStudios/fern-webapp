@@ -1,37 +1,37 @@
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { ApolloProvider } from '@apollo/client';
 import Client from 'utils/apolloClient';
-
 import WalletProvider from 'store/WalletContextProvider';
-
-import Navbar from './components/Navbar';
-import SignUpForArtist from './pages/SignUpForArtist';
-import Footer from './components/Footer';
 import { WagmiConfig } from 'wagmi';
-import ArtPreviewScreen from './pages/ArtPreviewScreen';
-import DiscoveryPage from './pages/Discovery';
-
-import Settings from './pages/Settings';
-import UserProfile from './pages/UserProfile';
 
 import PersistState from 'store/PersistState';
 import { PageRoutes } from 'utils/config';
 import wagmiClient from 'utils/wagmiClient';
 import FullPageLoader from './components/FullPageLoader';
 import ScrollTop from './components/ScrollTop';
-import NewProfile from './pages/NewProfile';
-import NotFoundPage from './pages/NotFoundPage';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import Post from './pages/Post';
-import PublicRoute from './components/PublicRoute';
-import Thankyou from './pages/Thankyou';
+// import PublicRoute from './components/PublicRoute';
+
 import PrivateRoute from './components/PrivateRoute';
-import ErrorPage from './pages/ErrorPage';
-import Search from './pages/Search';
+
 import * as Sentry from '@sentry/react';
+
+const Navbar = lazy(() => import('./components/Navbar'));
+const DiscoveryPage = lazy(() => import('./pages/Discovery'));
+const SignUpForArtist = lazy(() => import('./pages/SignUpForArtist'));
+const ArtPreviewScreen = lazy(() => import('./pages/ArtPreviewScreen'));
+const Settings = lazy(() => import('./pages/Settings'));
+const UserProfile = lazy(() => import('./pages/UserProfile'));
+const NewProfile = lazy(() => import('./pages/NewProfile'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const Post = lazy(() => import('./pages/Post'));
+const ErrorPage = lazy(() => import('./pages/ErrorPage'));
+const Search = lazy(() => import('./pages/Search'));
+const Thankyou = lazy(() => import('./pages/Thankyou'));
+const Footer = lazy(() => import('./components/Footer'));
 
 const SentryRoutes = Sentry.withSentryReactRouterV6Routing(Routes);
 

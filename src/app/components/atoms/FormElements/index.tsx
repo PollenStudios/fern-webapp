@@ -165,7 +165,7 @@ export default function Select({ selected, setSelected, options, setSortPosts }:
       value={selected}
       onChange={art => {
         setSelected(art);
-        setSortPosts(false);
+        art !== 'All' ? setSortPosts(false) : setSortPosts(true);
       }}
     >
       {({ open }) => (
