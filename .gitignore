@@ -34,3 +34,4 @@ yarn.lock
 .env.prod
 .env.local
 .env.test
+yarn.lock

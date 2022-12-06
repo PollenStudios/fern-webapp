@@ -177,7 +177,7 @@ function ProfileImage() {
       </div>
       <div className="flex justify-center items-center flex-col gap-2 my-8">
         <input
-          className=" border"
+          className=" border file:bg-white file:border-gray-20 file:border file:px-3 file:py-1 file:rounded-full"
           type="file"
           accept=".png, .jpg, .jpeg, .gif"
           onChange={e => {

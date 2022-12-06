@@ -47,9 +47,9 @@ const ProfileDropdown = () => {
               'group inline-flex items-center rounded-md bg-white text-base font-medium hover:text-gray-900 focus:outline-none ',
             )}
           >
-            <div className="flex bg-primary items-center rounded-full cursor-pointer">
+            <div className="flex bg-primary items-center relative rounded-full min-w-[150px] cursor-pointer">
               {/* <Button type="button" additionalClasses="relative" name="Profile" /> */}
-              <span className="heading-6 w-full sm:w-auto px-3 py-2 sm:px-6 sm:py-3 text-base font-medium rounded-full shadow-sm text-white focus:outline-none relative">
+              <span className="heading-6 w-3/4  sm:w-auto  py-2 sm:px-4 sm:py-3 text-base font-medium rounded-full shadow-sm text-white focus:outline-none relative">
                 Profile
               </span>
               <img
@@ -60,7 +60,7 @@ const ProfileDropdown = () => {
                 }
                 alt={currentProfile?.name}
                 loading="lazy"
-                className="w-10 h-10 rounded-full mr-2 object-cover"
+                className="sm:w-10 sm:h-10 w-8 h-8 rounded-full object-cover absolute right-2"
               />
             </div>
           </Popover.Button>
@@ -76,7 +76,7 @@ const ProfileDropdown = () => {
           >
             <Popover.Panel className="absolute z-10 -ml-4 mt-3 w-screen max-w-md transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2">
               <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                <div className="w-full h-screen md:h-auto md:w-[350px] bg-white absolute rounded-md  right-0 sm:right-80 md:right-70 lg:right-40">
+                <div className="w-full h-auto md:w-[350px] bg-white absolute rounded-md top-2.5 md:top-0 right-1 md:right-[20rem] lg:right-40">
                   <Link
                     className="flex  justify-between px-4 py-6 cursor-pointer"
                     to={PageRoutes.USER_PROFILE.split(':')[0] + currentProfile?.id}
@@ -118,7 +118,7 @@ const ProfileDropdown = () => {
                     </div>
                   </div>
 
-                  <div className="mt-8">
+                  <div className="md:mt-8">
                     <Link to={PageRoutes.SETTINGS}>
                       <div className="flex hover:bg-gray-100  justify-between p-4">
                         <div className="flex items-center">
@@ -131,7 +131,7 @@ const ProfileDropdown = () => {
                       </div>
                     </Link>
                     <div
-                      className="flex hover:bg-gray-100 cursor-pointer justify-between p-4"
+                      className="flex hover:bg-gray-100 cursor-pointer justify-between pt-0 sm:pt-4 p-4"
                       onClick={() => alert('coming soon')}
                     >
                       <div className="flex items-center">
@@ -142,7 +142,7 @@ const ProfileDropdown = () => {
 
                       <ChevronRightIcon className="w-6 text-gray-600" />
                     </div>
-                    <div onClick={Disconnect} className="flex hover:bg-gray-100 cursor-pointer  justify-between p-4">
+                    <div onClick={Disconnect} className="flex hover:bg-gray-100 cursor-pointer  justify-between pt-0 sm:pt-0 p-4">
                       <div className="flex items-center">
                         <ArrowLeftOnRectangleIcon className="w-8 h-8 text-black" />
 

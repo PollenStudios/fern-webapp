@@ -53,16 +53,16 @@ function Profiles({ query }: any) {
       style={{ overflow: 'hidden' }}
       next={loadMore}
       hasMore={hasMore}
-      loader={<Loader />}
+      loader={<Loader myClass="mt-5" />}
       scrollThreshold={0.9}
       dataLength={profiles?.length ?? 0}
     >
-      <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 mt-10">
+      <div className="grid grid-cols-6 md:grid-cols-12 gap-3 sm:gap-5 mt-10">
         {profiles?.map((profile: any, index: number) => (
           <div className="col-span-6" key={index}>
             <Link to={PageRoutes.USER_PROFILE.split(':')[0] + profile?.id}>
               <div className="rounded-xl border flex hover:border hover:border-primary hover:shadow-sm">
-                <div className="w-40 h-40 p-4">
+                <div className="md:w-40 md:h-40 sm:w-32 sm:h-32 w-24 h-24 p-3 sm:p-4">
                   <img
                     src={profile?.picture !== null ? profile?.picture?.original?.url : cardImg}
                     alt={profile.id}
@@ -70,10 +70,10 @@ function Profiles({ query }: any) {
                     loading="lazy"
                   />
                 </div>
-                <div className="p-6 pt-4 flex flex-col justify-center">
-                  <h6 className="paragraph-1 truncate capitalize text-primary">{profile.name ?? profile.id}</h6>
+                <div className="flex flex-col justify-center ml-2">
+                  <h6 className="paragraph-2 sm:paragraph-1 truncate capitalize text-primary">{profile.name ?? profile.id}</h6>
 
-                  <h5 className="paragraph-2 w-44 truncate text-primary">{profile.handle}</h5>
+                  <h5 className="paragraph-3 sm:paragraph-2  w-32 sm:w-44 truncate text-primary">{profile.handle}</h5>
                 </div>
               </div>
             </Link>
@@ -86,3 +86,4 @@ function Profiles({ query }: any) {
 }
 
 export default Profiles;
+// max-h-24 max-w-[96px] sm:max-h-full sm:max-w-full

@@ -102,6 +102,7 @@ export const SortPosts = ({ selectedTab, filterTags }: any) => {
           </div>
         ))}
       </div>
+
       {!hasMore && <div className="flex justify-center mt-10">{hasMoreMessage}</div>}
     </InfiniteScroll>
   );

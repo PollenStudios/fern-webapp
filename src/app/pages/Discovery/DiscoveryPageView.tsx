@@ -33,7 +33,7 @@ const DiscoveryPageView = ({
           <title>Discover - F3rn | Fine Art Discovery and Curation</title>
         </Helmet>
       </HelmetProvider>
-      <div className="main-container min-h-[76vh] mt-28 mb-12">
+      <div className="main-container min-h-[70vh] mt-20 mb-6">
         <div className="flex flex-col sm:flex-row justify-between mt-10 mb-5">
           <p className="heading-3 flex items-center">Discover</p>
           <div className="flex flex-col justify-end">
