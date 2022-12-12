@@ -119,7 +119,7 @@ function Post() {
     onCompleted: data => {
       if (data.createPostViaDispatcher.__typename === 'RelayerResult') {
         setIsLoading(false);
-        toast.success('Profile created successfully');
+        toast.success('Post created successfully');
         console.log('txId', { txId: data.createPostViaDispatcher });
       }
     },
@@ -153,7 +153,7 @@ function Post() {
 
         toast.promise(res, {
           loading: 'Indexing...',
-          success: 'Profile created successfully',
+          success: 'Post created successfully',
           error: 'Could not create',
         });
         await res;
