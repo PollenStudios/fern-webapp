@@ -34,6 +34,7 @@ const config = {
   appName: process.env.REACT_APP_APP_NAME,
   appNameForLensApi: process.env.REACT_APP_APP_NAME_TO_GET_DATA_FROM_LENS,
   chainId: process.env.REACT_APP_IS_MAINNET === 'true' ? POLYGON_MAINNET.id : POLYGON_MUMBAI.id,
+  rpcUrl: 'https://rpc.ankr.com/polygon_mumbai',
 };
 export const PageRoutes = {
   HOMEPAGE: '/',

@@ -149,7 +149,7 @@ function Post() {
 
       if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
         const txId = broadcastResult.data?.broadcast?.txId!;
-        const res = pollUntilIndexed({ txId });
+        const res = pollUntilIndexed({ txId }, setIsLoading, navigate);
 
         toast.promise(res, {
           loading: 'Indexing...',

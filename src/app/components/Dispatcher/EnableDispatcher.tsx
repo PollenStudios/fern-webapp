@@ -12,12 +12,14 @@ import { Loader } from '../atoms/Loader';
 import OverlayLoader from '../OverlayLoader';
 
 import { Switch } from '@headlessui/react';
+import { useNavigate } from 'react-router-dom';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ');
 }
 
 const EnableDispatcher = () => {
+  const navigate = useNavigate();
   const {
     currentProfileState: { currentProfile },
   }: any = useContext(WalletContext);
@@ -44,10 +46,10 @@ const EnableDispatcher = () => {
             data: { broadcast: result },
           } = await broadcast({ request: { id, signature } });
           if (result) {
-            const res = pollUntilIndexed({ txHash: result.txHash });
+            const res = pollUntilIndexed({ txHash: result.txHash }, setLoading, navigate);
             toast.promise(res, {
               loading: 'Indexing...',
-              success: 'Updated',
+              success: 'Dispatcher is updated',
               error: 'Could not update.',
             });
 

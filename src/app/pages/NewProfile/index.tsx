@@ -20,6 +20,7 @@ import { PageRoutes } from 'utils/config';
 import { useSignTypedData } from 'wagmi';
 import { backendToken } from 'utils/getBackendToken';
 import NewLensProfile from './newLensProfile';
+import { handleSignTypeData } from 'graphql/utils/signMessage';
 
 const NewProfile = () => {
   const {
@@ -102,7 +103,7 @@ const NewProfile = () => {
         setIsLoading(false);
         return 0;
       } else if (createProfileResult?.__typename === 'RelayerResult') {
-        const indexingResult = pollUntilIndexed({ txHash: createProfileResult.txHash });
+        const indexingResult = pollUntilIndexed({ txHash: createProfileResult.txHash }, setIsLoading, navigate);
         toast.promise(indexingResult, {
           loading: 'Creating...',
           success: 'Profile Created',
@@ -125,13 +126,19 @@ const NewProfile = () => {
         if (generateNonceResult.token) {
           try {
             const { id, typedData } = await uploadImageToLens(createUserResult.data.profile_pic, firstProfile.id);
+            console.log({ typedData });
             //getting an error in signTypedDataAsync, it return promise and giving error connector not found
             //TODO: need to resolve it
-            const signature = await signTypedDataAsync(getSignature(typedData));
+            // const signature = await signTypedDataAsync(getSignature(typedData));
+            const signature = await handleSignTypeData(getSignature(typedData));
             const broadcastResult = await broadcast({ request: { id, signature } });
 
             if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
-              const indexingResult = pollUntilIndexed({ txHash: broadcastResult?.data?.broadcast?.txHash });
+              const indexingResult = pollUntilIndexed(
+                { txHash: broadcastResult?.data?.broadcast?.txHash },
+                setIsLoading,
+                navigate,
+              );
               toast.promise(indexingResult, {
                 loading: 'Uploading profile image',
                 success: 'Profile Image Uploaded',

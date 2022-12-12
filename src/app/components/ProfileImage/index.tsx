@@ -22,8 +22,10 @@ import OverlayLoader from '../OverlayLoader';
 import { apiRoutes } from 'API/apiRoutes';
 import { backendToken } from 'utils/getBackendToken';
 import Modal from '../Modal/index';
+import { useNavigate } from 'react-router-dom';
 
 function ProfileImage() {
+  const navigate = useNavigate();
   const {
     userSigNonceState: {
       userSigNonce: { userSignNonce },
@@ -54,6 +56,9 @@ function ProfileImage() {
         console.log('txId Dispatcher', { txId: data.createSetProfileImageURIViaDispatcher });
       }
     },
+    onError(error) {
+      console.log(error);
+    },
   });
 
   const [createSetProfileImageURITypedData, { loading: typedDataLoading }] = useMutation<Mutation>(
@@ -69,7 +74,7 @@ function ProfileImage() {
           if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
             const txId = broadcastResult.data?.broadcast?.txId!;
             // await pollUntilIndexed({ txId });
-            const res = pollUntilIndexed({ txId });
+            const res = pollUntilIndexed({ txId }, setLoading, navigate);
             toast.promise(res, {
               loading: 'Indexing...',
               success: 'Profile updated',
@@ -95,7 +100,9 @@ function ProfileImage() {
           setLoading(false);
         }
       },
-      // onError
+      onError(error) {
+        console.log(error);
+      },
     },
   );
 
@@ -103,8 +110,6 @@ function ProfileImage() {
     const { data } = await createSetProfileImageURIViaDispatcher({
       variables: { request },
     });
-
-    console.log('data', data);
 
     if (data?.createSetProfileImageURIViaDispatcher?.__typename === 'RelayError') {
       await createSetProfileImageURITypedData({
@@ -151,7 +156,6 @@ function ProfileImage() {
         url: image,
       };
       setLoading(true);
-      console.log('currentProfile?.dispatcher?.canUseRelay', currentProfile?.dispatcher?.canUseRelay);
       if (currentProfile?.dispatcher?.canUseRelay) {
         setProfileImageViaDispatcher(request);
       } else {
@@ -199,7 +203,6 @@ function ProfileImage() {
         ) : (
           <Button
             type="button"
-            // disabled={imageLoading}
             additionalClasses={avatar === undefined || imageLoading ? 'cursor-not-allowed' : ''}
             variant="outline"
             name="Update Image"

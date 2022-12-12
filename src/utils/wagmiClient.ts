@@ -6,10 +6,13 @@ import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import config from './config';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 
+//using jsonrpcprovider now and alchemyprovider is commented for now
 const { chains, provider } = configureChains(
   [config.isMainNet ? chain.polygon : chain.polygonMumbai],
-  [alchemyProvider({ apiKey: config.alchemyApiKey })],
+  // [alchemyProvider({ apiKey: config.alchemyApiKey })],
+  [jsonRpcProvider({ rpc: () => ({ http: config.rpcUrl }) })],
 );
 
 const connectors = () => {
@@ -20,7 +23,8 @@ const connectors = () => {
     }),
     new WalletConnectConnector({
       chains,
-      options: { rpc: { [config.isMainNet ? chain.polygon.id : chain.polygonMumbai.id]: config.alchemyMainRpc } },
+      // options: { rpc: { [config.isMainNet ? chain.polygon.id : chain.polygonMumbai.id]: config.alchemyMainRpc } },
+      options: { rpc: { [config.isMainNet ? chain.polygon.id : chain.polygonMumbai.id]: config.rpcUrl } },
     }),
     new MetaMaskConnector({
       chains,

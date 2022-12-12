@@ -1,6 +1,7 @@
 import { HasTxHashBeenIndexedDocument, HasTxHashBeenIndexedRequest } from 'graphql/generated/types';
 import { toast } from 'react-hot-toast';
 import Client from 'utils/apolloClient';
+import { PageRoutes } from 'utils/config';
 
 const hasTxBeenIndexed = async (request: HasTxHashBeenIndexedRequest) => {
   const result = await Client.query({
@@ -13,11 +14,19 @@ const hasTxBeenIndexed = async (request: HasTxHashBeenIndexedRequest) => {
 
   return result.data.hasTxHashBeenIndexed;
 };
-export const pollUntilIndexed = async (input: { txHash: string } | { txId: string }) => {
+export const pollUntilIndexed = async (
+  input: { txHash: string } | { txId: string },
+  setIsLoading?: any,
+  navigate?: any,
+) => {
   try {
+    setTimeout(() => {
+      setIsLoading(false);
+      navigate(PageRoutes.HOMEPAGE);
+    }, 5000);
+
     while (true) {
       const response = await hasTxBeenIndexed(input);
-
       if (response.__typename === 'TransactionIndexedResult') {
         if (response.metadataStatus) {
           if (response.metadataStatus.status === 'SUCCESS') {
@@ -34,7 +43,7 @@ export const pollUntilIndexed = async (input: { txHash: string } | { txId: strin
         }
 
         // sleep for a second before trying again
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise(resolve => setTimeout(resolve, 500));
       } else {
         // it got reverted and failed!
         toast.error('Reverted');

@@ -8,6 +8,7 @@ import {
   CreatePublicSetProfileMetadataUriRequest,
   CreateSetProfileMetadataTypedDataDocument,
   CreateSetProfileMetadataViaDispatcherDocument,
+  Mutation,
   ProfileDocument,
 } from 'graphql/generated/types';
 import { v4 as uuidv4 } from 'uuid';
@@ -24,6 +25,8 @@ import OverlayLoader from 'app/components/OverlayLoader';
 import { isEmpty } from 'utils/utility';
 
 import SettingsView from './view';
+
+//TODO: In future need to resolve the artistStatus function
 
 // const artistStatus = (status: string) => {
 //   switch (status) {
@@ -62,6 +65,22 @@ const Settings = () => {
 
   const [createSetProfileMetadataTypedData] = useMutation(CreateSetProfileMetadataTypedDataDocument);
 
+  const getProfileResultFromBackend = async () => {
+    const getProfileResult = await getBackendProfile();
+    const profile = await getProfile({
+      variables: {
+        request: {
+          profileId: currentProfile.id,
+        },
+      },
+    });
+
+    dispatchCurrentProfile({
+      type: 'success',
+      payload: { ...profile.data?.profile, artistApprovalStatus: getProfileResult?.artist_approval_status },
+    });
+  };
+
   const updateProfile = async (request: CreatePublicSetProfileMetadataUriRequest) => {
     dispatchCurrentProfile({ loading: true, currentProfile: {} });
     try {
@@ -87,41 +106,23 @@ const Settings = () => {
       if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
         const txId = broadcastResult.data?.broadcast?.txId!;
 
-        const indexerResult = pollUntilIndexed({ txId });
+        const indexerResult = pollUntilIndexed({ txId }, setIsLoading, navigate);
 
         toast.promise(indexerResult, {
           loading: 'Indexing...',
           success: 'Please refresh the page now, to see updated data',
-          // success: 'Profile updated',
           error: 'Could not update',
         });
 
-        const indexedResult = await indexerResult;
-        // if (indexedResult) {
-        const getProfileResult = await getBackendProfile();
+        await indexerResult;
 
-        const profile = await getProfile({
-          variables: {
-            request: {
-              profileId: currentProfile.id,
-            },
-          },
-        });
-
-        dispatchCurrentProfile({
-          type: 'success',
-          payload: { ...profile.data?.profile, artistApprovalStatus: getProfileResult?.artist_approval_status },
-        });
-        // setIsLoading(false);
-        // window.location.reload();
-        // }
+        getProfileResultFromBackend();
       }
 
       if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
         console.error('create profile metadata via broadcast: failed', broadcastResult);
       } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
       setIsLoading(false);
-      // window.location.reload();
     } catch ({ message }) {
       toast.error(`${message}`);
       setIsLoading(false);
@@ -149,13 +150,17 @@ const Settings = () => {
     }
   }, [currentProfile, account]);
 
-  const [updateProfileViaDispatcher] = useMutation(CreateSetProfileMetadataViaDispatcherDocument, {
+  const [updateProfileViaDispatcher] = useMutation<Mutation>(CreateSetProfileMetadataViaDispatcherDocument, {
     onCompleted: data => {
       if (data.createSetProfileMetadataViaDispatcher.__typename === 'RelayerResult') {
         console.log('txId', { txId: data.createSetProfileMetadataViaDispatcher });
+        getProfileResultFromBackend();
+        toast.success('Please refresh the page now, to see updated data');
         setIsLoading(false);
-        // window.location.reload();
       }
+    },
+    onError(error) {
+      console.log(error);
     },
   });
 
@@ -163,6 +168,7 @@ const Settings = () => {
     const { data } = await updateProfileViaDispatcher({
       variables: { request },
     });
+
     if (data?.createSetProfileMetadataViaDispatcher?.__typename === 'RelayError') {
       updateProfile(request);
     }
@@ -206,7 +212,6 @@ const Settings = () => {
         createdOn: new Date(),
         appId: config.appNameForLensApi,
       };
-      // toast.success('Submitting Profile');
 
       const uploadToWeb3result = await storeFiles(dataObject);
       const createProfileMetadataRequest = {

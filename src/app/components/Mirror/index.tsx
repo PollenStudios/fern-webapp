@@ -10,6 +10,7 @@ import {
 import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
 import { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import { WalletContext } from 'store/WalletContextProvider';
 import getSignature from 'utils/getSignature';
 import { useSignTypedData } from 'wagmi';
@@ -17,6 +18,7 @@ import { Loader } from '../atoms/Loader';
 import { LoginModal } from '../Modal/LoginModal';
 
 function Mirror({ publicationId, mirrorCounts, primary }: any) {
+  const navigate = useNavigate();
   const {
     userSigNonceState: {
       userSigNonce: { userSignNonce },
@@ -27,12 +29,16 @@ function Mirror({ publicationId, mirrorCounts, primary }: any) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [ifUserNotLoggedInShowModal, setIfUserNotLoggedInShowModal] = useState<boolean>(false);
 
-  const [createMirrorViaDispatcher] = useMutation(CreateMirrorViaDispatcherDocument, {
+  const [createMirrorViaDispatcher] = useMutation<Mutation>(CreateMirrorViaDispatcherDocument, {
     onCompleted: data => {
       if (data.createMirrorViaDispatcher.__typename === 'RelayerResult') {
         setIsLoading(false);
+        toast.success('Successfully mirrored');
         console.log('txId', { txId: data.createMirrorViaDispatcher });
       }
+    },
+    onError(error) {
+      console.log(error);
     },
   });
   const [broadcast] = useMutation(BroadcastDocument);
@@ -64,7 +70,7 @@ function Mirror({ publicationId, mirrorCounts, primary }: any) {
       if (broadcastResult.data?.broadcast.__typename === 'RelayerResult') {
         const txId = broadcastResult.data?.broadcast?.txId!;
 
-        const res = pollUntilIndexed({ txId });
+        const res = pollUntilIndexed({ txId }, setIsLoading, navigate);
         toast.promise(res, {
           loading: 'Indexing...',
           success: 'Post has been mirrored',
