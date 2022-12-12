@@ -80,7 +80,7 @@ function Like({ publication, primary }: any) {
           }`}
         >
           {liked ? (
-            <HeartIconSolid className={`w-5 ${primary ? 'bg-primary' : 'bg-white '}`} />
+            <HeartIconSolid className={`w-5 ${primary ? ' text-black' : 'text-white '}`} />
           ) : (
             <HeartIcon className={`w-5 ${primary ? 'text-primary' : 'text-white '}`} />
           )}

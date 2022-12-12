@@ -58,6 +58,7 @@ const ArtPreviewCard = ({ art }: any) => {
           <div className=" flex justify-between">
             <h6 className="paragraph-1 h-10 w-52 truncate text-white pt-1.5 capitalize">{art.metadata.content}</h6>
             <div className="flex items-center gap-1 text-gray-300 ">
+              {/* TODO: explore publication api reaction is coming null but we exprect UPVOTE for liked posts, need to discuss DISCORD */}
               <Like publication={art} />
               <Mirror
                 publicationId={art?.id}
