@@ -3,6 +3,7 @@ import cardImg from 'Assets/Images/artPreview.png';
 import getIPFSLink from 'utils/getIPFSLink';
 import { PageRoutes } from 'utils/config';
 import Mirror from '../Mirror';
+import Like from '../Like';
 import { EllipsisVerticalIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { useContext, useState } from 'react';
 import { useHidePublicationMutation } from 'graphql/generated/types';
@@ -56,7 +57,8 @@ const ArtPreviewCard = ({ art }: any) => {
         <div className="p-6 pt-4 bg-primary rounded-b-xl">
           <div className=" flex justify-between">
             <h6 className="paragraph-1 h-10 w-52 truncate text-white pt-1.5 capitalize">{art.metadata.content}</h6>
-            <div className="flex space-x-1 text-gray-300 ">
+            <div className="flex items-center gap-1 text-gray-300 ">
+              <Like publication={art} />
               <Mirror
                 publicationId={art?.id}
                 mirrorCounts={art?.mirrorOf?.stats?.totalAmountOfMirrors || art.stats?.totalAmountOfMirrors}
