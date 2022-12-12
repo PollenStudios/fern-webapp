@@ -79,7 +79,7 @@ export const DeleteModal = ({ isModalOpen, setIsModalOpen, publication }: any) =
     onCompleted: () => {
       setIsModalOpen(false);
       console.log('Post has been deleted');
-      toast.success('Deleted! Refresh the  page to see expected results');
+      window.location.reload();
     },
   });
   const deletePost = async () => {
