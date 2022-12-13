@@ -25,6 +25,7 @@ import OverlayLoader from 'app/components/OverlayLoader';
 import { isEmpty } from 'utils/utility';
 
 import SettingsView from './view';
+import { handleSignTypeData } from 'graphql/utils/signMessage';
 
 //TODO: In future need to resolve the artistStatus function
 
@@ -93,7 +94,9 @@ const Settings = () => {
       const typedData = result.data?.createSetProfileMetadataTypedData.typedData;
 
       const signatureTyped = getSignature(typedData);
-      const signature = await signTypedDataAsync(signatureTyped);
+      // const signature = await signTypedDataAsync(signatureTyped);
+      const signature = await handleSignTypeData(signatureTyped);
+
       const broadcastResult = await broadcast({
         variables: {
           request: {
