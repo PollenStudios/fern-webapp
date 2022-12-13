@@ -20,7 +20,7 @@ const ArtPreviewCard = ({ art }: any) => {
   const [openList, setOpenList] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const openDeleteModal = async () => {
+  const openDeleteModal = () => {
     setIsModalOpen(true);
   };
 
@@ -78,7 +78,7 @@ export const DeleteModal = ({ isModalOpen, setIsModalOpen, publication }: any) =
   const [hidePost] = useHidePublicationMutation({
     onCompleted: () => {
       setIsModalOpen(false);
-      console.log('Post has been deleted');
+      toast.success('Post has been deleted');
       window.location.reload();
     },
   });
