@@ -21,7 +21,7 @@
     @apply font-inter font-semibold text-3xl leading-snug -tracking-extraTight;
   }
   .heading-5 {
-    @apply font-inter font-semibold text-2xl leading-snug -tracking-extraTight;
+    @apply font-inter font-semibold text-2xl leading-snug -tracking-tightest;
   }
   .heading-6 {
     @apply font-inter font-medium text-base leading-snug -tracking-wide;

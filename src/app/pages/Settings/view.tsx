@@ -183,9 +183,16 @@ function SettingsView({
               )}
 
               {/* Enable Dispatcher Component */}
-              <p className="heading-5 pb-2 pt-8 border-b border-primary">Dispatcher</p>
-              <div className="flex">
-                <EnableDispatcher />
+              <div className="bg-gray-100 px-4 py-6 rounded-lg border mt-8">
+                <div className="flex justify-between">
+                  <p className="heading-5 ">Dispatcher</p>
+                  <div className="flex">
+                    <EnableDispatcher />
+                  </div>
+                </div>
+                <p className="heading-6 pt-2 text-gray-600">
+                  We suggest you to enable dispatcher so you don't need to sign all your transactions in F3RN.
+                </p>
               </div>
 
               <div className="mt-4">
@@ -196,8 +203,8 @@ function SettingsView({
                 ) : (
                   <Button
                     variant="primary"
-                    // disabled={!isDirty}
-                    // additionalClasses={!isDirty ? 'cursor-not-allowed' : ''}
+                    disabled={!isDirty}
+                    additionalClasses={!isDirty ? 'cursor-not-allowed' : ''}
                     name="Save"
                     type="submit"
                   />

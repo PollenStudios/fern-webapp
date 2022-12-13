@@ -26,9 +26,9 @@ const ArtPreviewCard = ({ art }: any) => {
       <DeleteModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} publication={art} />
       <div className="w-[91vw] sm:w-full  rounded-xl border relative">
         {currentProfile?.id === art?.profile?.id && (
-          <div className="absolute top-1 right-2 flex justify-end cursor-pointer ">
+          <div className="absolute top-3 right-2 flex justify-end cursor-pointer ">
             <EllipsisVerticalIcon
-              className="z-10 w-8 h-8 hover:bg-gray-30 hover:rounded-full"
+              className="z-10 w-6 h-6 hover:bg-gray-30 hover:rounded-full"
               onClick={() => setOpenList(!openList)}
             />
             {openList && (
@@ -52,7 +52,9 @@ const ArtPreviewCard = ({ art }: any) => {
         </Link>
         <div className="p-6 pt-4 bg-primary rounded-b-xl">
           <div className=" flex justify-between">
-            <h6 className="paragraph-1 h-10 w-52 truncate text-white pt-1.5 capitalize">{art.metadata.content}</h6>
+            <h6 className="font-inter font-semibold text-xl leading-snug -tracking-tightest h-10 w-52 truncate text-white pt-1.5 capitalize">
+              {art.metadata.content}
+            </h6>
             <div className="flex items-center gap-1 text-gray-300 ">
               {/* TODO: explore publication api reaction is coming null but we exprect UPVOTE for liked posts, need to discuss DISCORD */}
               <Like publication={art} />
@@ -63,7 +65,7 @@ const ArtPreviewCard = ({ art }: any) => {
             </div>
           </div>
           <Link to={PageRoutes.ART_PREVIEW.split(':')[0] + art?.id}>
-            <h5 className="paragraph-2 w-44 truncate text-white">{art.metadata.name?.split('y')[1]}</h5>
+            <h5 className="heading-6 w-44 truncate text-gray-300">{art.metadata.name?.split('y')[1]}</h5>
           </Link>
         </div>
       </div>

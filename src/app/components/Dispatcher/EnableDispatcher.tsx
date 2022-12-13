@@ -84,7 +84,7 @@ const EnableDispatcher = () => {
     <div>
       {loading && <OverlayLoader />}
       {loading ? (
-        <div className="border-gray-40 w-[180px] py-2 sm:py-3 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
+        <div className="border-gray-40 w-[60px] py-2 sm:py-1 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
           <Loader />
         </div>
       ) : (

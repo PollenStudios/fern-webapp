@@ -11,11 +11,12 @@ import { PageRoutes } from 'utils/config';
 import ArtPreviewSkelton from 'app/components/Skelton/ArtPreviewSkelton';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import ProfileLogo from 'Assets/Images/defaultLogo.png';
-import { TrashIcon } from '@heroicons/react/24/solid';
+import { TrashIcon, ArrowsRightLeftIcon } from '@heroicons/react/24/solid';
 
 import Mirror from 'app/components/Mirror';
 import Like from 'app/components/Like';
 import { DeleteModal } from 'app/components/Delete';
+import { SmallButton } from 'app/components/atoms/Buttons';
 
 const ArtPreviewScreen = () => {
   const { id: publicationId } = useParams();
@@ -43,6 +44,8 @@ const ArtPreviewScreen = () => {
   useEffect(() => {
     window.scroll(0, 0);
   }, []);
+  const isMirror = data?.publication?.__typename === 'Mirror';
+  console.log(data);
   return (
     <>
       <DeleteModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} publication={data?.publication} />
@@ -82,7 +85,7 @@ const ArtPreviewScreen = () => {
                   <div className="flex justify-between items-center bg-gray-30 px-6">
                     <Link
                       to={PageRoutes.USER_PROFILE.split(':')[0] + data?.publication?.profile?.id}
-                      className="flex items-center h-20 gap-2"
+                      className="flex items-center h-20 gap-x-2"
                     >
                       <img
                         className="w-8 h-8 rounded-full border border-secondary"
@@ -92,31 +95,48 @@ const ArtPreviewScreen = () => {
                         loading="lazy"
                       />
                       <div className="text-primary  border-gray-500 ">
-                        <p>{data && data?.publication?.metadata.name?.split('y')[1]}</p>
+                        <p>{data && data?.publication?.profile.handle}</p>
                       </div>
                     </Link>
                     {/* <div>
                     <Button name="Follow" type="button" variant="outline" />
                   </div> */}
+                    {isMirror && (
+                      <Link
+                        className=""
+                        //  @ts-ignore
+                        to={PageRoutes.USER_PROFILE.split(':')[0] + data?.publication?.mirrorOf?.profile?.id}
+                      >
+                        <SmallButton name="See Artist" variant="outline" />
+                      </Link>
+                    )}
                   </div>
                   <div className="px-6 flex flex-col justify-around">
                     <div>
-                      <div className="flex items-center text-gray-40 gap-2 pt-5 md:pt-8 ">
-                        <p>
-                          {data &&
-                            new Date(data.publication?.createdAt).toLocaleString('en-in', {
-                              timeStyle: 'short',
-                            })}
-                        </p>
-                        <p>-</p>
-                        <p>
-                          {data &&
-                            new Date(data.publication?.createdAt).toLocaleString('en-in', {
-                              month: 'short',
-                              day: 'numeric',
-                              year: 'numeric',
-                            })}
-                        </p>
+                      <div className="flex justify-between items-center pt-5 md:pt-8 ">
+                        {isMirror && (
+                          <div className="flex gap-1 items-center">
+                            <ArrowsRightLeftIcon className="w-4 h-4 text-gray-40" />
+                            <p className="text-gray-40">Mirrored Post</p>
+                          </div>
+                        )}
+                        <div className="flex items-center text-gray-40 gap-2 ">
+                          <p>
+                            {data &&
+                              new Date(data.publication?.createdAt).toLocaleString('en-in', {
+                                timeStyle: 'short',
+                              })}
+                          </p>
+                          <p>-</p>
+                          <p>
+                            {data &&
+                              new Date(data.publication?.createdAt).toLocaleString('en-in', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric',
+                              })}
+                          </p>
+                        </div>
                       </div>
                       <h1 className="heading-4 border-b capitalize">{data?.publication?.metadata.content}</h1>
                       <p className=" paragraph-1 lg:w-full break-words pt-5 text-gray-500 overflow-auto max-h-96">
@@ -145,11 +165,17 @@ const ArtPreviewScreen = () => {
                           <Like publication={data?.publication} primary />
                           <Mirror
                             publicationId={publicationId}
-                            mirrorCounts={data?.publication?.stats?.totalAmountOfMirrors}
+                            mirrorCounts={
+                              //@ts-ignore
+                              data?.publication?.mirrorOf?.stats?.totalAmountOfMirrors ||
+                              data?.publication?.stats?.totalAmountOfMirrors
+                            }
                             primary
                           />
                         </div>
-                        {currentProfile?.id === data?.publication?.profile?.id && (
+                        {currentProfile?.id ===
+                          // @ts-ignore
+                          (isMirror ? data?.publication?.mirrorOf?.profile?.id : data?.publication?.profile?.id) && (
                           <div onClick={() => setIsModalOpen(true)}>
                             <TrashIcon className="w-5 h-5 text-red-500 cursor-pointer" />
                           </div>

@@ -31,6 +31,20 @@ export const Button = ({ variant, name, disabled, type, onClick, additionalClass
   );
 };
 
+export const SmallButton = ({ variant, name, disabled, type, onClick, additionalClasses }: IButton) => {
+  return (
+    <button
+      onClick={onClick}
+      type={type}
+      disabled={disabled}
+      className={`heading-6 w-full sm:w-auto px-3 py-2 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none 
+      ${checkVariant(variant)} ${additionalClasses}`}
+    >
+      {name}
+    </button>
+  );
+};
+
 export const ButtonWithLeadingIcon = ({ variant, name, disabled, type, icon, onClick, additionalClasses }: IButton) => {
   return (
     <button

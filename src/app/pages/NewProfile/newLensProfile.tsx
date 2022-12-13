@@ -1,5 +1,5 @@
 import { Button } from 'app/components/atoms/Buttons';
-import { Input } from 'app/components/atoms/FormElements';
+import { Input, InputNewProfileHandle } from 'app/components/atoms/FormElements';
 import { Loader } from 'app/components/atoms/Loader';
 import { ImagePreviewer } from 'app/components/atoms/UploadFiles';
 import OverlayLoader from 'app/components/OverlayLoader';
@@ -60,7 +60,7 @@ function NewLensProfile({
           </div>
         </div>
         <div>
-          <Input
+          <InputNewProfileHandle
             type="text"
             name="handle"
             label="User handle"

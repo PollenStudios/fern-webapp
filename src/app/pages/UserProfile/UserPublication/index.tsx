@@ -51,6 +51,7 @@ function Publications({ currentProfile }: any) {
   }
 
   return (
+    // TODO: create a new component for infinite scroll
     <InfiniteScroll
       style={{ overflow: 'hidden' }}
       next={loadMore}
@@ -66,7 +67,8 @@ function Publications({ currentProfile }: any) {
           </div>
         ))}
       </div>
-      {!hasMore && <div className="flex justify-center mt-10">{hasMoreMessage}</div>}
+      {/* @ts-ignore */}
+      {!hasMore && publications?.length > 10 && <div className="flex justify-center mt-10">{hasMoreMessage}</div>}
     </InfiniteScroll>
   );
 }

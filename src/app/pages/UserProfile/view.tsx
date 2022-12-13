@@ -20,17 +20,17 @@ function View({ isArtist }: any) {
 
   return (
     <div className="col-span-4 pt-10 md:pt-auto md:pl-36">
-      <div className="flex gap-4 border-b">
+      <div className="flex gap-4 border-b mb-6">
         {isArtist && (
           <p
-            className={`heading-4 cursor-pointer ${selectedTabClass(selectedTab === 'posts')}`}
+            className={`heading-5 cursor-pointer ${selectedTabClass(selectedTab === 'posts')}`}
             onClick={() => setSelectedTab('posts')}
           >
             Art Work
           </p>
         )}
         <p
-          className={`heading-4 cursor-pointer ${selectedTabClass(selectedTab === 'artBoards')}`}
+          className={`heading-5 cursor-pointer ${selectedTabClass(selectedTab === 'artBoards')}`}
           onClick={() => setSelectedTab('artBoards')}
         >
           Art Board

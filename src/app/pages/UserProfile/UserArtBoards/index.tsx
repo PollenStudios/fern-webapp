@@ -67,7 +67,8 @@ function ArtBoardPosts({ currentProfile }: any) {
           </div>
         ))}
       </div>
-      {!hasMore && <div className="flex justify-center mt-10">{hasMoreMessage}</div>}
+      {/* @ts-ignore */}
+      {!hasMore && publications?.length > 10 && <div className="flex justify-center mt-10">{hasMoreMessage}</div>}
     </InfiniteScroll>
   );
 }

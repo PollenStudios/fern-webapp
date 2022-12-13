@@ -71,7 +71,9 @@ function Profiles({ query }: any) {
                   />
                 </div>
                 <div className="flex flex-col justify-center ml-2">
-                  <h6 className="paragraph-2 sm:paragraph-1 truncate capitalize text-primary">{profile.name ?? profile.id}</h6>
+                  <h6 className="paragraph-2 sm:paragraph-1 truncate capitalize text-primary">
+                    {profile.name ?? profile.id}
+                  </h6>
 
                   <h5 className="paragraph-3 sm:paragraph-2  w-32 sm:w-44 truncate text-primary">{profile.handle}</h5>
                 </div>
@@ -80,7 +82,8 @@ function Profiles({ query }: any) {
           </div>
         ))}
       </div>
-      {!hasMore && <div className="flex justify-center mt-10">{hasMoreMessage}</div>}
+      {/* @ts-ignore */}
+      {!hasMore && profiles?.length > 10 && <div className="flex justify-center mt-10">{hasMoreMessage}</div>}
     </InfiniteScroll>
   );
 }

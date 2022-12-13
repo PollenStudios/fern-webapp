@@ -28,15 +28,15 @@ const DiscoveryPage = () => {
 
   // Variables
   const [selectedTab, setSelectedTab] = useState<string>(urlQueryForSort || filterTags[0].query);
-  const [selectedArtCategory, setSelectedArtCategory] = useState<string>(urlQueryForFilter || 'All');
-  // const [selectedArtCategory, setSelectedArtCategory] = useState<string>('All');
+  const [selectedArtCategory, setSelectedArtCategory] = useState<string>(urlQueryForFilter || 'Category');
+  // const [selectedArtCategory, setSelectedArtCategory] = useState<string>('Category');
 
   const [artCategories, setArtCategories] = useState<string[]>([]);
   const [sortPosts, setSortPosts] = useState<boolean>(true);
 
   const fetchArtCategoriesFromBackend = async () => {
     const data = await getArtCategories();
-    data.unshift('All');
+    data.unshift('Category');
     setArtCategories(data);
   };
 
@@ -45,7 +45,7 @@ const DiscoveryPage = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedArtCategory === 'All') {
+    if (selectedArtCategory === 'Category') {
       navigate(`/discover?sortBy=${selectedTab}`);
     } else {
       navigate(`/discover?filteredBy=${selectedArtCategory}`);

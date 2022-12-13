@@ -30,12 +30,13 @@ function UserProfileSidebar({ userProfile, isArtist }: any) {
         />
       </div>
       <div className="flex justify-center flex-col pl-5 sm:pl-0">
-        <p className="w-40 md:w-60 heading-6 sm:heading-5 text-center pt-28 capitalize">
+        {isArtist && <p className="w-40 md:w-60 heading-6 text-center pt-28 text-tertiary">Artist </p>}
+        <p className="w-40 md:w-60 heading-6 sm:heading-5 text-center  capitalize">
           {userProfile?.name ?? userProfile?.id}
         </p>
-        {isArtist && <span className="w-40 md:w-60 heading-5  text-center text-tertiary ">Artist </span>}
-        <p className="w-40 md:w-60 heading-6 sm:heading-5 text-gray-40 text-center pt-2 pb-5">
-          {userProfile?.ownedBy ? userProfile?.ownedBy?.slice(0, 9) + '...' + userProfile?.ownedBy?.slice(-4) : ''}
+        <p className="w-40 md:w-60 heading-6 sm:heading-6 text-gray-40 text-center pt-2 pb-5">
+          {/* {userProfile?.ownedBy ? userProfile?.ownedBy?.slice(0, 9) + '...' + userProfile?.ownedBy?.slice(-4) : ''} */}
+          {'@' + userProfile?.handle}
         </p>
         {isLoggedIn && profileId === currentProfile?.id && (
           <div className="w-40 md:w-60 sm:ml-6 md:ml-0">

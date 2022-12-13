@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -21,12 +21,13 @@ export default function Navbar(): any {
     isLoggedInState: { isLoggedIn, loading: loadingIsLoggedIn },
     currentProfileState: { currentProfile },
   }: any = useContext(WalletContext);
+  const navigate = useNavigate();
 
   const [query, setQuery] = useState<string>();
 
   const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    window.location.replace(`/search?q=${query}&type=publications`);
+    navigate(`/search?q=${query}&type=publications`);
   };
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +47,8 @@ export default function Navbar(): any {
       <Disclosure as="nav" className="bg-white drop-shadow-3xl w-full fixed top-0 z-40">
         {({ open }) => (
           <>
-            <div className="mx-auto max-w-7xl px-2 md:px-6 lg:px-8">
+            {/* mx-auto max-w-7xl px-2 md:px-6 lg:px-8 */}
+            <div className="main-container">
               <div className="relative flex h-16 items-center justify-between">
                 <div className="absolute inset-y-0 -right-2  flex items-center md:hidden">
                   {/* Mobile menu button*/}
@@ -60,10 +62,10 @@ export default function Navbar(): any {
                   </Disclosure.Button>
                 </div>
                 <div className="flex flex-grow  gap-0  lg:gap-10 items-center justify-center sm:justify-start">
-                  <a href="/discover?sortBy=Latest" className="w-24 h-20">
+                  <Link to="/discover" className="w-24 h-20">
                     {/* <h4 className="heading-4">{config.appName}</h4> */}
                     <img className="w-3/4 md:w-full h-full" src={F3RN} alt="F3RN" />
-                  </a>
+                  </Link>
                   <div className="min-w-0 flex-1  xl:col-span-6">
                     <div className="flex items-center px-4 md:px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
                       <div className="w-full">

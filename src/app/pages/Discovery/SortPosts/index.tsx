@@ -60,26 +60,24 @@ export const SortPosts = ({ selectedTab, filterTags }: any) => {
     });
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-    setIsLoading(true);
-  }, [selectedTab]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 500);
+  //   setIsLoading(true);
+  // }, [selectedTab]);
 
-  if (loading || isLoading) {
-    return (
-      <div className="w-full h-[63vh] flex justify-center items-center">
-        <Loader />
-      </div>
-    );
-  }
+  // if (loading || isLoading) {
+  //   return (
+  //     <div className="w-full h-[63vh] flex justify-center items-center">
+  //       <Loader />
+  //     </div>
+  //   );
+  // }
 
   if (error) {
     return (
-      <div className="main-container flex justify-center items-center w-full h-[92vh] heading-5">
-        Failed to load discover feed
-      </div>
+      <div className=" flex justify-center items-center w-full h-[92vh] heading-5">Failed to load discover feed</div>
     );
   }
 
@@ -96,15 +94,15 @@ export const SortPosts = ({ selectedTab, filterTags }: any) => {
       scrollThreshold={0.9}
       dataLength={publications?.length ?? 0}
     >
-      <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 mt-20">
+      <div className="grid sm:grid-cols-8 lg:grid-cols-12 gap-6 mt-10">
         {publications?.map((post: any, i: number) => (
           <div className="col-span-4" key={i}>
             <ArtPreviewCard art={post} />
           </div>
         ))}
       </div>
-
-      {!hasMore && <div className="flex justify-center mt-10">{hasMoreMessage}</div>}
+      {/* @ts-ignore */}
+      {!hasMore && publications?.length > 10 && <div className="flex justify-center mt-10">{hasMoreMessage}</div>}
     </InfiniteScroll>
   );
 };
