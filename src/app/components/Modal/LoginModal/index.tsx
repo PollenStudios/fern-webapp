@@ -64,7 +64,7 @@ export const LoginModal = ({ openModal, setIsLoading }: any) => {
 
           <>
             {modalButtonLoading ? (
-              <div className="bg-primary  min-w-[115px] py-2.5  border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
+              <div className="bg-primary  w-[90px] py-3  border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
                 <Loader />
               </div>
             ) : (

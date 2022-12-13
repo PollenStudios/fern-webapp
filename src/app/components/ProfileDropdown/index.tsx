@@ -142,7 +142,10 @@ const ProfileDropdown = () => {
 
                       <ChevronRightIcon className="w-6 text-gray-600" />
                     </div>
-                    <div onClick={Disconnect} className="flex hover:bg-gray-100 cursor-pointer  justify-between pt-0 sm:pt-0 p-4">
+                    <div
+                      onClick={Disconnect}
+                      className="flex hover:bg-gray-100 cursor-pointer  justify-between pt-0 sm:pt-4 p-4"
+                    >
                       <div className="flex items-center">
                         <ArrowLeftOnRectangleIcon className="w-8 h-8 text-black" />
 

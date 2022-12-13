@@ -72,7 +72,10 @@ export default function Navbar(): any {
                         </label>
                         <div className="relative">
                           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                            <MagnifyingGlassIcon className="md:h-5 md:w-5 h-4 w-4 -ml-7 md:ml-0 text-gray-400" aria-hidden="true" />
+                            <MagnifyingGlassIcon
+                              className="md:h-5 md:w-5 h-4 w-4 -ml-7 md:ml-0 text-gray-400"
+                              aria-hidden="true"
+                            />
                           </div>
                           <form className="-ml-7 md:ml-0" onSubmit={handleSubmit}>
                             <input
@@ -83,7 +86,6 @@ export default function Navbar(): any {
                               type="search"
                               onChange={e => handleSearch(e)}
                             />
-                            
                           </form>
                         </div>
                       </div>
@@ -105,7 +107,7 @@ export default function Navbar(): any {
                   ) : (
                     <>
                       {isLoading ? (
-                        <div className="bg-primary min-w-[118px] py-2 px-6 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
+                        <div className="bg-primary w-[90px] py-3 px-6 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
                           <Loader />
                         </div>
                       ) : (
