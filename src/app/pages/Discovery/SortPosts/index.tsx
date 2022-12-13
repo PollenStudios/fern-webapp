@@ -67,13 +67,13 @@ export const SortPosts = ({ selectedTab, filterTags }: any) => {
   //   setIsLoading(true);
   // }, [selectedTab]);
 
-  // if (loading || isLoading) {
-  //   return (
-  //     <div className="w-full h-[63vh] flex justify-center items-center">
-  //       <Loader />
-  //     </div>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <div className="w-full h-[63vh] flex justify-center items-center">
+        <Loader />
+      </div>
+    );
+  }
 
   if (error) {
     return (
