@@ -196,8 +196,8 @@ function SettingsView({
                 ) : (
                   <Button
                     variant="primary"
-                    disabled={!isDirty}
-                    additionalClasses={!isDirty ? 'cursor-not-allowed' : ''}
+                    // disabled={!isDirty}
+                    // additionalClasses={!isDirty ? 'cursor-not-allowed' : ''}
                     name="Save"
                     type="submit"
                   />
