@@ -9,7 +9,6 @@ import { PageRoutes } from 'utils/config';
 export const DeleteModal = ({ isModalOpen, setIsModalOpen, publication }: any) => {
   const { id: publicationId } = useParams();
   const location = useLocation();
-  console.log(location.pathname === `/art/${publicationId}` ? 'kfh' : 'nahi');
   const [hidePost] = useHidePublicationMutation({
     onCompleted: () => {
       setIsModalOpen(false);
