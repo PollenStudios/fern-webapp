@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import ART_PREVIEW from 'Assets/Images/artPreview.png';
 import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -10,13 +11,17 @@ import { PageRoutes } from 'utils/config';
 import ArtPreviewSkelton from 'app/components/Skelton/ArtPreviewSkelton';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import ProfileLogo from 'Assets/Images/defaultLogo.png';
+import { TrashIcon } from '@heroicons/react/24/solid';
 
 import Mirror from 'app/components/Mirror';
 import Like from 'app/components/Like';
+import { DeleteModal } from 'app/components/Delete';
 
 const ArtPreviewScreen = () => {
   const { id: publicationId } = useParams();
   const navigate = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const {
     currentProfileState: { currentProfile },
@@ -40,6 +45,7 @@ const ArtPreviewScreen = () => {
   }, []);
   return (
     <>
+      <DeleteModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} publication={data?.publication} />
       <HelmetProvider>
         <Helmet>
           <title>{`${
@@ -134,13 +140,20 @@ const ArtPreviewScreen = () => {
                             </p>
                           ))}
                       </div>
-                      <div className="flex items-center">
-                        <Like publication={data?.publication} primary />
-                        <Mirror
-                          publicationId={publicationId}
-                          mirrorCounts={data?.publication?.stats?.totalAmountOfMirrors}
-                          primary
-                        />
+                      <div className="flex justify-between">
+                        <div className="flex items-center">
+                          <Like publication={data?.publication} primary />
+                          <Mirror
+                            publicationId={publicationId}
+                            mirrorCounts={data?.publication?.stats?.totalAmountOfMirrors}
+                            primary
+                          />
+                        </div>
+                        {currentProfile?.id === data?.publication?.profile?.id && (
+                          <div onClick={() => setIsModalOpen(true)}>
+                            <TrashIcon className="w-5 h-5 text-red-500 cursor-pointer" />
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

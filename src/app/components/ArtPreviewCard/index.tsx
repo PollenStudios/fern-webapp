@@ -6,12 +6,8 @@ import Mirror from '../Mirror';
 import Like from '../Like';
 import { EllipsisVerticalIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { useContext, useState } from 'react';
-import { useHidePublicationMutation } from 'graphql/generated/types';
 import { WalletContext } from 'store/WalletContextProvider';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import Modal from '../Modal';
-import { Button } from '../atoms/Buttons';
-import { toast } from 'react-hot-toast';
+import { DeleteModal } from '../Delete';
 
 const ArtPreviewCard = ({ art }: any) => {
   const {
@@ -76,38 +72,3 @@ const ArtPreviewCard = ({ art }: any) => {
 };
 
 export default ArtPreviewCard;
-
-export const DeleteModal = ({ isModalOpen, setIsModalOpen, publication }: any) => {
-  const [hidePost] = useHidePublicationMutation({
-    onCompleted: () => {
-      setIsModalOpen(false);
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
-      toast.success('Post has been deleted');
-    },
-  });
-  const deletePost = async () => {
-    hidePost({
-      variables: { request: { publicationId: publication?.id } },
-    });
-  };
-  return (
-    <Modal open={isModalOpen} setOpen={() => setIsModalOpen(false)}>
-      <div>
-        <div className="flex justify-between items-center border-b pb-2">
-          <p className="heading-5 sm:heading-5">Delete Post</p>
-
-          <XMarkIcon
-            className="w-8 h-8 cursor-pointer rounded-full hover:bg-gray-200 p-1"
-            onClick={() => setIsModalOpen(false)}
-          />
-        </div>
-        <div className="mt-3 flex justify-between items-center sm:mt-5">
-          <p className="paragraph-2 sm:paragraph-1">Are you Sure?</p>
-          <Button name="Delete" variant="danger" onClick={deletePost} />
-        </div>
-      </div>
-    </Modal>
-  );
-};
