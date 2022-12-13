@@ -81,8 +81,10 @@ export const DeleteModal = ({ isModalOpen, setIsModalOpen, publication }: any) =
   const [hidePost] = useHidePublicationMutation({
     onCompleted: () => {
       setIsModalOpen(false);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
       toast.success('Post has been deleted');
-      window.location.reload();
     },
   });
   const deletePost = async () => {
