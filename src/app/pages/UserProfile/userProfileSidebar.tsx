@@ -29,8 +29,8 @@ function UserProfileSidebar({ userProfile, isArtist }: any) {
           alt={userProfile?.name ?? userProfile?.id}
         />
       </div>
-      <div className="flex justify-center flex-col pl-5 sm:pl-0">
-        {isArtist && <p className="w-40 md:w-60 heading-6 text-center pt-28 text-tertiary">Artist </p>}
+      <div className="flex justify-center flex-col pl-5 sm:pl-0 pt-28">
+        {isArtist && <p className="w-40 md:w-60 heading-6 text-center text-tertiary">Artist </p>}
         <p className="w-40 md:w-60 heading-6 sm:heading-5 text-center  capitalize">
           {userProfile?.name ?? userProfile?.id}
         </p>

@@ -45,7 +45,7 @@ const ArtPreviewScreen = () => {
     window.scroll(0, 0);
   }, []);
   const isMirror = data?.publication?.__typename === 'Mirror';
-  console.log(data);
+
   return (
     <>
       <DeleteModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} publication={data?.publication} />
@@ -176,8 +176,11 @@ const ArtPreviewScreen = () => {
                         {currentProfile?.id ===
                           // @ts-ignore
                           (isMirror ? data?.publication?.mirrorOf?.profile?.id : data?.publication?.profile?.id) && (
-                          <div onClick={() => setIsModalOpen(true)}>
-                            <TrashIcon className="w-5 h-5 text-red-500 cursor-pointer" />
+                          <div
+                            onClick={() => setIsModalOpen(true)}
+                            className="flex justify-center items-center hover:bg-red-100 w-8 h-8 rounded-full cursor-pointer"
+                          >
+                            <TrashIcon className="w-5 h-5 text-red-500" />
                           </div>
                         )}
                       </div>

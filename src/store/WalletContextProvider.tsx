@@ -108,14 +108,14 @@ const WalletProvider = ({ children }: any) => {
 
       await validateChain(accounts[0], closeModal, infoModal);
 
-      infoModal({
-        heading: 'Sign-in with F3RN',
-        paragraph: 'Please sign with your wallet',
-        primaryButtonText: 'Sign wallet',
-        onClick: await handleSign(accounts[0], closeModal, infoModal),
-      });
+      // infoModal({
+      //   heading: 'Sign-in with F3RN',
+      //   paragraph: 'Please sign with your wallet',
+      //   primaryButtonText: 'Sign wallet',
+      //   onClick: await handleSign(accounts[0], closeModal, infoModal),
+      // });
 
-      // await handleSign(accounts[0], closeModal, infoModal);
+      await handleSign(accounts[0], closeModal, infoModal);
     } catch (error: any) {
       toast.error(error.message);
       dispatchAccount({ type: 'error', payload: error });

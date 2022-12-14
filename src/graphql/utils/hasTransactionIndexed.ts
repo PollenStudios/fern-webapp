@@ -20,10 +20,12 @@ export const pollUntilIndexed = async (
   navigate?: any,
 ) => {
   try {
-    setTimeout(() => {
-      setIsLoading(false);
-      navigate(PageRoutes.HOMEPAGE);
-    }, 5000);
+    if (navigate) {
+      setTimeout(() => {
+        setIsLoading(false);
+        navigate(PageRoutes.HOMEPAGE);
+      }, 5000);
+    }
 
     while (true) {
       const response = await hasTxBeenIndexed(input);

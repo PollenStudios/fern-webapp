@@ -103,10 +103,10 @@ const NewProfile = () => {
         setIsLoading(false);
         return 0;
       } else if (createProfileResult?.__typename === 'RelayerResult') {
-        const indexingResult = pollUntilIndexed({ txHash: createProfileResult.txHash }, setIsLoading, navigate);
+        const indexingResult = pollUntilIndexed({ txHash: createProfileResult.txHash });
         toast.promise(indexingResult, {
           loading: 'Creating...',
-          success: 'Profile Created',
+          success: 'User profile created and just wait for profile image to upload',
           error: 'Could not create.',
         });
         console.log('indexingResult', await indexingResult);
@@ -121,7 +121,7 @@ const NewProfile = () => {
         formBodyData.append('profile_pic', avatar ?? '');
 
         const createUserResult: any = await createUser(formBodyData);
-        toast.success('User profile created');
+        // toast.success('User profile created');
         const generateNonceResult = await generateNonce(firstProfile.handle, account, firstProfile.id);
         if (generateNonceResult.token) {
           try {
@@ -141,7 +141,7 @@ const NewProfile = () => {
               );
               toast.promise(indexingResult, {
                 loading: 'Uploading profile image',
-                success: 'Profile Image Uploaded',
+                success: 'Profile Image Uploaded, Please refresh your page to see profile Image',
                 error: 'Could not uploaded',
               });
               console.log('indexerResult ', await indexingResult);
