@@ -23,14 +23,14 @@ function View({ isArtist }: any) {
       <div className="flex gap-4 border-b mb-6">
         {isArtist && (
           <p
-            className={`heading-5 cursor-pointer ${selectedTabClass(selectedTab === 'posts')}`}
+            className={`heading-5 cursor-pointer pb-4 ${selectedTabClass(selectedTab === 'posts')}`}
             onClick={() => setSelectedTab('posts')}
           >
             Art Work
           </p>
         )}
         <p
-          className={`heading-5 cursor-pointer ${selectedTabClass(selectedTab === 'artBoards')}`}
+          className={`heading-5 cursor-pointer pb-4 ${selectedTabClass(selectedTab === 'artBoards')}`}
           onClick={() => setSelectedTab('artBoards')}
         >
           Art Board

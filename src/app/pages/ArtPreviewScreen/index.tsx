@@ -38,12 +38,13 @@ const ArtPreviewScreen = () => {
   });
 
   const searchQuery = (query: string | null | undefined) => {
-    window.location.replace(`/search?q=${query}&type=publications`);
+    navigate(`/search?q=${query}&type=publications`);
   };
 
   useEffect(() => {
     window.scroll(0, 0);
   }, []);
+
   const isMirror = data?.publication?.__typename === 'Mirror';
 
   return (

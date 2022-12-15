@@ -2,12 +2,12 @@ import ArtPreviewCard from 'app/components/ArtPreviewCard';
 import { PublicationMainFocus, useExploreFeedQuery } from 'graphql/generated/types';
 import config from 'utils/config';
 import { Loader } from 'app/components/atoms/Loader';
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { hasMoreMessage } from 'utils/constant';
 
 export const SortPosts = ({ selectedTab, filterTags }: any) => {
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
   const filterSortCriteria = () => {
     switch (selectedTab) {

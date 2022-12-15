@@ -29,13 +29,15 @@ function Search() {
         </div>
         <div className="flex gap-4 border-b">
           <p
-            className={`heading-5 cursor-pointer ${selectedTab === 'publications' ? 'border-primary border-b-4' : ''}`}
+            className={`heading-5 cursor-pointer pb-4 ${
+              selectedTab === 'publications' ? 'border-primary border-b-4' : ''
+            }`}
             onClick={() => setSelectedTab('publications')}
           >
             Art
           </p>
           <p
-            className={`heading-5 cursor-pointer ${selectedTab === 'profiles' ? 'border-primary border-b-4' : ''}`}
+            className={`heading-5 cursor-pointer pb-4 ${selectedTab === 'profiles' ? 'border-primary border-b-4' : ''}`}
             onClick={() => setSelectedTab('profiles')}
           >
             User Profile
