@@ -175,11 +175,11 @@ const NewProfile = () => {
       setIsLoading(false);
     }
   };
-  useEffect(() => {
-    if (backendToken()) {
-      navigate(PageRoutes.DISCOVERY);
-    }
-  }, [backendToken()]);
+  // useEffect(() => {
+  //   if (backendToken()) {
+  //     navigate(PageRoutes.DISCOVERY);
+  //   }
+  // }, [backendToken()]);
 
   return (
     <NewLensProfile

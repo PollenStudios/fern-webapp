@@ -1,7 +1,7 @@
 import { CustomFiltersTypes, SearchRequestTypes, useSearchProfilesQuery } from 'graphql/generated/types';
 import { Link } from 'react-router-dom';
 import config, { PageRoutes } from 'utils/config';
-import cardImg from 'Assets/Images/artPreview.png';
+import profileImage from 'Assets/Images/defaultLogo.png';
 import { Loader } from 'app/components/atoms/Loader';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { hasMoreMessage } from 'utils/constant';
@@ -46,8 +46,6 @@ function Profiles({ query }: any) {
     return <div className="w-full h-[60vh] flex justify-center items-center heading-4">No Profile found</div>;
   }
 
-  console.log(hasMore);
-
   return (
     <InfiniteScroll
       style={{ overflow: 'hidden' }}
@@ -64,7 +62,7 @@ function Profiles({ query }: any) {
               <div className="rounded-xl border flex hover:border hover:border-primary hover:shadow-sm">
                 <div className="md:w-40 md:h-40 sm:w-32 sm:h-32 w-24 h-24 p-3 sm:p-4">
                   <img
-                    src={profile?.picture !== null ? profile?.picture?.original?.url : cardImg}
+                    src={profile?.picture !== null ? profile?.picture?.original?.url : profileImage}
                     alt={profile.id}
                     className="cursor-pointer rounded-full bg-white object-cover w-full h-full text-white"
                     loading="lazy"
