@@ -32,6 +32,7 @@ import { apiRoutes } from 'API/apiRoutes';
 import { getArtCategories } from 'utils/generateNonce';
 import { backendToken } from 'utils/getBackendToken';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { handleSignTypeData } from 'graphql/utils/signMessage';
 
 function Post() {
   const navigate = useNavigate();
@@ -136,8 +137,9 @@ function Post() {
 
       const typedData = result.data?.createPostTypedData.typedData;
 
-      const signatureTyped = getSignature(typedData);
-      const signature = await signTypedDataAsync(signatureTyped);
+      // const signatureTyped = getSignature(typedData);
+      // const signature = await signTypedDataAsync(signatureTyped);
+      const signature = await handleSignTypeData(getSignature(typedData));
       const broadcastResult = await broadcast({
         variables: {
           request: {

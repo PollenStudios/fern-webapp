@@ -23,6 +23,7 @@ import { apiRoutes } from 'API/apiRoutes';
 import { backendToken } from 'utils/getBackendToken';
 import Modal from '../Modal/index';
 import { useNavigate } from 'react-router-dom';
+import { handleSignTypeData } from 'graphql/utils/signMessage';
 
 function ProfileImage() {
   const navigate = useNavigate();
@@ -67,7 +68,8 @@ function ProfileImage() {
       onCompleted: async ({ createSetProfileImageURITypedData }) => {
         try {
           const { id, typedData } = createSetProfileImageURITypedData;
-          const signature = await signTypedDataAsync(getSignature(typedData));
+          // const signature = await signTypedDataAsync(getSignature(typedData));
+          const signature = await handleSignTypeData(getSignature(typedData));
 
           const broadcastResult = await broadcast({ request: { id, signature } });
 

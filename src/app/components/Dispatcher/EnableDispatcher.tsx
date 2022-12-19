@@ -13,6 +13,7 @@ import OverlayLoader from '../OverlayLoader';
 
 import { Switch } from '@headlessui/react';
 import { useNavigate } from 'react-router-dom';
+import { handleSignTypeData } from 'graphql/utils/signMessage';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ');
@@ -40,7 +41,8 @@ const EnableDispatcher = () => {
       onCompleted: async ({ createSetDispatcherTypedData }) => {
         try {
           const { id, typedData } = createSetDispatcherTypedData;
-          const signature = await signTypedDataAsync(getSignature(typedData));
+          // const signature = await signTypedDataAsync(getSignature(typedData));
+          const signature = await handleSignTypeData(getSignature(typedData));
 
           const {
             data: { broadcast: result },

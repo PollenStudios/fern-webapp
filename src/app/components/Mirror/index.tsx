@@ -16,6 +16,7 @@ import getSignature from 'utils/getSignature';
 import { useSignTypedData } from 'wagmi';
 import { Loader } from '../atoms/Loader';
 import { LoginModal } from '../Modal/LoginModal';
+import { handleSignTypeData } from 'graphql/utils/signMessage';
 
 function Mirror({ publicationId, mirrorCounts, primary }: any) {
   const navigate = useNavigate();
@@ -56,8 +57,9 @@ function Mirror({ publicationId, mirrorCounts, primary }: any) {
 
       const typedData = result.data?.createMirrorTypedData.typedData;
 
-      const signatureTyped = getSignature(typedData);
-      const signature = await signTypedDataAsync(signatureTyped);
+      // const signatureTyped = getSignature(typedData);
+      // const signature = await signTypedDataAsync(signatureTyped);
+      const signature = await handleSignTypeData(getSignature(typedData));
       const broadcastResult = await broadcast({
         variables: {
           request: {
