@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { WalletContext } from 'store/WalletContextProvider';
 import {
@@ -17,8 +17,7 @@ import useBroadcast from 'hooks/useBroadcast';
 import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
 
 import { PageRoutes } from 'utils/config';
-import { useSignTypedData } from 'wagmi';
-import { backendToken } from 'utils/getBackendToken';
+// import { useSignTypedData } from 'wagmi';
 import NewLensProfile from './newLensProfile';
 import { handleSignTypeData } from 'graphql/utils/signMessage';
 
@@ -31,7 +30,7 @@ const NewProfile = () => {
   const [avatar, setAvatar] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isHandleExist, setIsHandleExist] = useState<boolean>(false);
-  const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData();
+  // const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData();
 
   const {
     accountState: { account },
@@ -109,7 +108,7 @@ const NewProfile = () => {
           success: 'User profile created and just wait for profile image to upload',
           error: 'Could not create.',
         });
-        console.log('indexingResult', await indexingResult);
+        await indexingResult;
 
         const allProfiles = await getAllProfiles({ ownedBy: account });
         const firstProfile = allProfiles.items[0];
@@ -121,14 +120,11 @@ const NewProfile = () => {
         formBodyData.append('profile_pic', avatar ?? '');
 
         const createUserResult: any = await createUser(formBodyData);
-        // toast.success('User profile created');
         const generateNonceResult = await generateNonce(firstProfile.handle, account, firstProfile.id);
         if (generateNonceResult.token) {
           try {
             const { id, typedData } = await uploadImageToLens(createUserResult.data.profile_pic, firstProfile.id);
-            console.log({ typedData });
-            //getting an error in signTypedDataAsync, it return promise and giving error connector not found
-            //TODO: need to resolve it
+            //Getting signature from wagmi,but not working
             // const signature = await signTypedDataAsync(getSignature(typedData));
             const signature = await handleSignTypeData(getSignature(typedData));
             const broadcastResult = await broadcast({ request: { id, signature } });
@@ -141,33 +137,28 @@ const NewProfile = () => {
               );
               toast.promise(indexingResult, {
                 loading: 'Uploading profile image',
-                success: 'Profile Image Uploaded, Please refresh your page to see profile Image',
+                success: 'Profile image uploaded',
                 error: 'Could not uploaded',
               });
-              console.log('indexerResult ', await indexingResult);
+              await indexingResult;
 
               const profiles = await getAllProfiles({
                 ownedBy: account,
               });
               dispatchCurrentProfile({ type: 'success', payload: profiles.items[0] });
-            }
-            if (broadcastResult.data?.broadcast.__typename !== 'RelayerResult') {
+            } else {
               console.error('create profile metadata via broadcast: failed', broadcastResult);
-            } else console.log('create profile metadata via broadcast: broadcastResult', broadcastResult);
-
-            dispatchIsLoggedIn({ type: 'success', payload: true });
-            dispatchCurrentProfile({ type: 'success', payload: allProfiles.items[0] });
+            }
           } catch (error: any) {
-            console.log('error', error.message);
-            toast.success('Refresh the page for login');
-            // toast.error(error.message);
+            dispatchCurrentProfile({ type: 'success', payload: allProfiles.items[0] });
+            toast.error('Profile image is not uploaded');
           } finally {
+            dispatchIsLoggedIn({ type: 'success', payload: true });
             navigate(PageRoutes.DISCOVERY);
           }
         }
       }
     } catch (error: any) {
-      console.log(error);
       toast.error(error.message);
       dispatchIsLoggedIn({ type: 'error', payload: error });
       navigate(PageRoutes.ERROR_PAGE);
@@ -175,11 +166,6 @@ const NewProfile = () => {
       setIsLoading(false);
     }
   };
-  // useEffect(() => {
-  //   if (backendToken()) {
-  //     navigate(PageRoutes.DISCOVERY);
-  //   }
-  // }, [backendToken()]);
 
   return (
     <NewLensProfile
