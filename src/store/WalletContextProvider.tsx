@@ -73,10 +73,10 @@ const WalletProvider = ({ children }: any) => {
 
   const connectToBrowserWallets = async (infoModal: any, closeModal: any) => {
     //user is connected but not have a profile
-    if (localStorage.getItem('accessToken') && hasProfileState.hasProfile === false) {
-      closeModal();
-      return navigate(PageRoutes.SIGN_UP);
-    }
+    // if (localStorage.getItem('accessToken') && hasProfileState.hasProfile === false) {
+    //   closeModal();
+    //   return navigate(PageRoutes.SIGN_UP);
+    // }
     setIsLoading(true);
 
     try {
