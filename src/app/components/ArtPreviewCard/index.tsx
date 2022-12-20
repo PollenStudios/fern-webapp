@@ -65,7 +65,7 @@ const ArtPreviewCard = ({ art }: any) => {
               />
             </div>
           </div>
-          <Link to={PageRoutes.ART_PREVIEW.split(':')[0] + art?.id}>
+          <Link to={PageRoutes.USER_PROFILE.split(':')[0] + art?.profile?.id}>
             <h5 className="heading-6 w-44 truncate text-gray-300">{art.metadata.name?.split('y')[1]}</h5>
           </Link>
         </div>
