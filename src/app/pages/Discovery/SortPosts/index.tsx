@@ -20,26 +20,26 @@ export const SortPosts = ({ selectedTab, filterTags }: any) => {
     }
   };
 
-  // const filterPublicationTypes = () => {
-  //   switch (selectedTab) {
-  //     case filterTags[0].query:
-  //       return filterTags[0].type;
-  //     case filterTags[1].query:
-  //       return filterTags[1].type;
-  //     default:
-  //       return filterTags[0].type;
-  //   }
-  // };
+  const filterPublicationTypes = () => {
+    switch (selectedTab) {
+      case filterTags[0].query:
+        return filterTags[0].type;
+      case filterTags[1].query:
+        return filterTags[1].type;
+      default:
+        return filterTags[0].type;
+    }
+  };
 
   // Params Sort Publications
   const request = {
     sortCriteria: filterSortCriteria(),
-    publicationTypes: filterTags[0].type,
+    publicationTypes: filterPublicationTypes(),
     noRandomize: true,
     limit: 10,
     sources: [config.appNameForLensApi],
     metadata: { mainContentFocus: [PublicationMainFocus.Image] },
-    timestamp: 1,
+    // timestamp: 1,
   };
 
   // API Call Sort By
