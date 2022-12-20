@@ -1,11 +1,16 @@
 import ArtPreviewCard from 'app/components/ArtPreviewCard';
 import { Loader } from 'app/components/atoms/Loader';
 import { CustomFiltersTypes, SearchRequestTypes, useSearchPublicationsQuery } from 'graphql/generated/types';
+import { useContext } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { WalletContext } from 'store/WalletContextProvider';
 import config from 'utils/config';
 import { hasMoreMessage } from 'utils/constant';
 
 function Publication({ query }: any) {
+  const {
+    currentProfileState: { currentProfile },
+  }: any = useContext(WalletContext);
   // Variables
   const request = {
     query,
@@ -15,8 +20,11 @@ function Publication({ query }: any) {
     sources: [config.appNameForLensApi],
   };
 
+  const reactionRequest = currentProfile ? { profileId: currentProfile?.id } : null;
+  const currentProfileId = currentProfile?.id;
+
   const { data, loading, error, fetchMore } = useSearchPublicationsQuery({
-    variables: { request },
+    variables: { request, reactionRequest, profileId: currentProfileId },
   });
 
   // @ts-ignore
@@ -28,7 +36,7 @@ function Publication({ query }: any) {
 
   const loadMore = async () => {
     await fetchMore({
-      variables: { request: { ...request, cursor: pageInfo?.next } },
+      variables: { request: { ...request, cursor: pageInfo?.next }, reactionRequest, profileId: currentProfileId },
     });
   };
 

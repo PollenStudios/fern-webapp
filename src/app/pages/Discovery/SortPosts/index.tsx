@@ -5,9 +5,15 @@ import { Loader } from 'app/components/atoms/Loader';
 // import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { hasMoreMessage } from 'utils/constant';
+import { useContext } from 'react';
+import { WalletContext } from 'store/WalletContextProvider';
 
 export const SortPosts = ({ selectedTab, filterTags }: any) => {
   // const [isLoading, setIsLoading] = useState(true);
+
+  const {
+    currentProfileState: { currentProfile },
+  }: any = useContext(WalletContext);
 
   const filterSortCriteria = () => {
     switch (selectedTab) {
@@ -42,9 +48,12 @@ export const SortPosts = ({ selectedTab, filterTags }: any) => {
     // timestamp: 1,
   };
 
+  const reactionRequest = currentProfile ? { profileId: currentProfile?.id } : null;
+  const currentProfileId = currentProfile?.id;
+
   // API Call Sort By
   const { data, loading, error, fetchMore } = useExploreFeedQuery({
-    variables: { request },
+    variables: { request, reactionRequest, profileId: currentProfileId },
   });
 
   // @ts-ignore
@@ -56,7 +65,7 @@ export const SortPosts = ({ selectedTab, filterTags }: any) => {
 
   const loadMore = async () => {
     await fetchMore({
-      variables: { request: { ...request, cursor: pageInfo?.next } },
+      variables: { request: { ...request, cursor: pageInfo?.next }, reactionRequest, profileId: currentProfileId },
     });
   };
 

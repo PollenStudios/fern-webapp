@@ -22,9 +22,12 @@ function ArtBoardPosts({ currentProfile }: any) {
     metadata: { mainContentFocus: [PublicationMainFocus.Image] },
   };
 
+  const reactionRequest = currentProfile ? { profileId: currentProfile?.id } : null;
+  const currentProfileId = currentProfile?.id;
+
   // API Call Sort By
   const { data, loading, error, fetchMore } = useProfileFeedQuery({
-    variables: { request },
+    variables: { request, reactionRequest, profileId: currentProfileId },
   });
 
   // @ts-ignore
@@ -36,7 +39,7 @@ function ArtBoardPosts({ currentProfile }: any) {
 
   const loadMore = async () => {
     await fetchMore({
-      variables: { request: { ...request, cursor: pageInfo?.next } },
+      variables: { request: { ...request, cursor: pageInfo?.next }, reactionRequest, profileId: currentProfileId },
     });
   };
 
