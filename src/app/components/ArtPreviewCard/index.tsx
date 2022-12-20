@@ -21,7 +21,7 @@ const ArtPreviewCard = ({ art }: any) => {
     setIsModalOpen(true);
   };
 
-  // const isMirror = art?.__typename === 'Mirror';
+  const isMirror = art?.__typename === 'Mirror';
 
   return (
     <>
@@ -65,7 +65,9 @@ const ArtPreviewCard = ({ art }: any) => {
               />
             </div>
           </div>
-          <Link to={PageRoutes.USER_PROFILE.split(':')[0] + art?.profile?.id}>
+          <Link
+            to={PageRoutes.USER_PROFILE.split(':')[0] + `${isMirror ? art?.mirrorOf?.profile?.id : art?.profile?.id}`}
+          >
             <h5 className="heading-6 w-44 truncate text-gray-300">{art.metadata.name?.split('y')[1]}</h5>
           </Link>
         </div>
