@@ -2,14 +2,14 @@ import ArtPreviewCard from 'app/components/ArtPreviewCard';
 import { PublicationMainFocus, useExploreFeedQuery } from 'graphql/generated/types';
 import config from 'utils/config';
 import { Loader } from 'app/components/atoms/Loader';
-// import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { hasMoreMessage } from 'utils/constant';
 import { useContext } from 'react';
 import { WalletContext } from 'store/WalletContextProvider';
 
 export const SortPosts = ({ selectedTab, filterTags }: any) => {
-  // const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     currentProfileState: { currentProfile },
@@ -69,14 +69,14 @@ export const SortPosts = ({ selectedTab, filterTags }: any) => {
     });
   };
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setIsLoading(false);
-  //   }, 500);
-  //   setIsLoading(true);
-  // }, [selectedTab]);
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    setIsLoading(true);
+  }, [selectedTab]);
 
-  if (loading) {
+  if (loading || isLoading) {
     return (
       <div className="w-full h-[63vh] flex justify-center items-center">
         <Loader />

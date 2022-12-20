@@ -87,7 +87,7 @@ const ImageUploader = ({ maximumFiles, parentDivClassName, imageClassName, image
 export const ImagePreviewer = ({ height, width, imagePreview, profileImage }: any) => {
   const tailwindCssClassForComponents = {
     profileImage: `w-40 border h-40 lg:w-80 lg:h-80 xl:w-60 xl:h-60 flex flex-col justify-center  gap-4 rounded-full`,
-    postImage: 'w-full border h-60 lg:h-80 xl:h-60 flex flex-col justify-center gap-4"',
+    postImage: 'w-full border h-60 lg:h-80 xl:h-80 flex flex-col justify-center gap-4"',
   };
   return (
     <div className="flex ">

@@ -272,7 +272,7 @@ function Post() {
           <title>Create new post - F3rn | Fine Art Discovery and Curation</title>
         </Helmet>
       </HelmetProvider>
-      <div className="md:main-container flex flex-col justify-center w-full sm:w-[50vw] xl:w-[30vw]  min-h-[72.5vh]  my-24">
+      <div className="md:main-container flex flex-col justify-center w-full sm:w-[50vw]  xl:w-[50vw] 2xl:w-[40vw]  min-h-[72.5vh]  my-24">
         {isLoading && <OverlayLoader />}
         <div className="flex flex-col px-10 gap-y-6 border">
           <div className="border-b pt-7 pb-2 flex items-center gap-x-2 cursor-pointer" onClick={() => navigate(-1)}>
@@ -285,7 +285,7 @@ function Post() {
               <ImagePreviewer imagePreview={avatar && URL.createObjectURL(avatar)} />
               <div className="flex flex-col mt-6">
                 <input
-                  className="w-full  border-dotted"
+                  className="w-full border-dotted"
                   type="file"
                   accept=".png, .jpg, .jpeg, .gif"
                   onChange={e => {

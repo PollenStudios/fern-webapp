@@ -22,7 +22,7 @@ const DiscoveryPageView = ({
   };
 
   const selectedTabClass = (condition: any) => {
-    if (condition) return 'border-primary border-b-4';
+    if (condition) return 'border-green-10 border-b-4';
     else return '';
   };
 

@@ -30,6 +30,9 @@ module.exports = {
           40: '#808080',
           45: '#F6F6F6',
         },
+        green: {
+          10: '#85cb33',
+        },
       },
       letterSpacing: {
         extraTight: '0.0625em',

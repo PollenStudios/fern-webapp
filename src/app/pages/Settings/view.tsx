@@ -30,7 +30,7 @@ function SettingsView({
         {isLoading && <OverlayLoader />}
         <p className="heading-4 mb-6 md:mb-2">Settings</p>
         <div className="flex justify-between">
-          <p className="heading-5 border-b-4 pb-2 border-primary flex items-end">Edit Profile</p>
+          <p className="heading-5 border-b-4 pb-2 border-green-10 flex items-end">Edit Profile</p>
 
           <div className="mb-2 sm:mb-4 flex justify-end items-end">
             {currentProfile?.artistApprovalStatus === null ? (
@@ -42,7 +42,7 @@ function SettingsView({
             )}
           </div>
         </div>
-        <div className="flex flex-col md:grid md:grid-cols-6 pt-10 border-t border-primary">
+        <div className="flex flex-col md:grid md:grid-cols-6 pt-10 border-t ">
           <div className="col-span-2">
             {/* profile Image Component */}
             <ProfileImage />
