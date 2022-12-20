@@ -174,9 +174,7 @@ const ArtPreviewScreen = () => {
                             primary
                           />
                         </div>
-                        {currentProfile?.id ===
-                          // @ts-ignore
-                          (isMirror ? data?.publication?.mirrorOf?.profile?.id : data?.publication?.profile?.id) && (
+                        {currentProfile?.id === data?.publication?.profile?.id && (
                           <div
                             onClick={() => setIsModalOpen(true)}
                             className="flex justify-center items-center hover:bg-red-100 w-8 h-8 rounded-full cursor-pointer"

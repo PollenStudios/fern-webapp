@@ -21,15 +21,13 @@ const ArtPreviewCard = ({ art }: any) => {
     setIsModalOpen(true);
   };
 
-  const isMirror = art?.__typename === 'Mirror';
+  // const isMirror = art?.__typename === 'Mirror';
 
   return (
     <>
       <DeleteModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} publication={art} />
       <div className="w-[91vw] sm:w-full  rounded-xl border relative">
-        {currentProfile?.id ===
-          // @ts-ignore
-          (isMirror ? art?.mirrorOf?.profile?.id : art?.profile?.id) && (
+        {currentProfile?.id === art?.profile?.id && (
           <div className="absolute top-3 right-2 flex justify-end cursor-pointer ">
             <EllipsisVerticalIcon
               className="z-10 w-6 h-6 hover:bg-gray-30 hover:rounded-full"
@@ -60,7 +58,6 @@ const ArtPreviewCard = ({ art }: any) => {
               {art.metadata.content}
             </h6>
             <div className="flex items-center gap-1 text-gray-300 ">
-              {/* TODO: explore publication api reaction is coming null but we exprect UPVOTE for liked posts, need to discuss DISCORD */}
               <Like publication={art} />
               <Mirror
                 publicationId={art?.id}
