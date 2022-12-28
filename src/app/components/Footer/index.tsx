@@ -1,9 +1,10 @@
 import config, { PageRoutes } from 'utils/config';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import socialMediaLinks from './socialMediaLinks';
 
 export default function Footer() {
   const navigate = useNavigate();
+  const year = new Date().getFullYear();
   return (
     <footer className="bg-gray-50">
       <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
@@ -23,7 +24,7 @@ export default function Footer() {
         </div>
         <div className="mt-8 md:order-1 md:mt-0 flex flex-col md:flex-row gap-x-6">
           <p className="text-center paragraph-2 text-gray-400">
-            &copy;{` 2022 ${config.appName} | All rights reserved`}
+            &copy;{` ${year} ${config.appName} | All rights reserved`}
           </p>
           <p
             className="text-center paragraph-2 text-gray-400 cursor-pointer"
