@@ -62,7 +62,7 @@ export default function Navbar(): any {
                   </Disclosure.Button>
                 </div>
                 <div className="flex flex-grow  gap-0  lg:gap-10 items-center justify-center sm:justify-start">
-                  <Link to="/discover" className="w-24 h-20">
+                  <Link to={PageRoutes.DISCOVERY + '?sortBy=Latest'} className="w-24 h-20">
                     {/* <h4 className="heading-4">{config.appName}</h4> */}
                     <img className="w-3/4 md:w-full h-full" src={F3RN} alt="F3RN" />
                   </Link>
@@ -95,7 +95,7 @@ export default function Navbar(): any {
                   </div>
                 </div>
                 <div className=" md:flex  items-center gap-8 lg:gap-10 pr-2  hidden md:ml-6 md:pr-0">
-                  <Link to={PageRoutes.DISCOVERY} className="text-gray-700 text-lg font-medium">
+                  <Link to={PageRoutes.DISCOVERY + '?sortBy=Latest'} className="text-gray-700 text-lg font-medium">
                     Discover
                   </Link>
                   {isLoggedIn && currentProfile?.artistApprovalStatus === 'approved' && (
@@ -129,7 +129,7 @@ export default function Navbar(): any {
             </div>
 
             <Disclosure.Panel className="md:hidden flex flex-col p-5 space-y-6 ">
-              <Link to={PageRoutes.DISCOVERY} className="text-gray-700 text-lg font-medium">
+              <Link to={PageRoutes.DISCOVERY + '?sortBy=Latest'} className="text-gray-700 text-lg font-medium">
                 Discover
               </Link>
               {isLoggedIn && currentProfile?.artistApprovalStatus === 'approved' && (

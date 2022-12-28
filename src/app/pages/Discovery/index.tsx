@@ -45,6 +45,12 @@ const DiscoveryPage = () => {
   }, []);
 
   useEffect(() => {
+    if (urlQueryForSort !== null) {
+      setSelectedTab(urlQueryForSort ?? 'Latest');
+    }
+  }, [urlQueryForSort]);
+
+  useEffect(() => {
     if (selectedArtCategory === 'Category') {
       navigate(`/discover?sortBy=${selectedTab}`);
     } else {

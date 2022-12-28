@@ -45,7 +45,7 @@ export const SortPosts = ({ selectedTab, filterTags }: any) => {
     limit: 10,
     sources: [config.appNameForLensApi],
     metadata: { mainContentFocus: [PublicationMainFocus.Image] },
-    // timestamp: 1,
+    timestamp: 1,
   };
 
   const reactionRequest = currentProfile ? { profileId: currentProfile?.id } : null;
