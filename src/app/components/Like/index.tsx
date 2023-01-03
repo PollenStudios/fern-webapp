@@ -1,10 +1,10 @@
 import { HeartIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
 import { ReactionTypes, useAddReactionMutation, useRemoveReactionMutation } from 'graphql/generated/types';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { WalletContext } from 'store/WalletContextProvider';
-import { LoginModal } from '../Modal/LoginModal';
+import WalletConnector from '../WalletSelector';
 
 function Like({ publication, primary }: any) {
   const {
@@ -71,7 +71,7 @@ function Like({ publication, primary }: any) {
 
   return (
     <>
-      <LoginModal openModal={ifUserNotLoggedInShowModal} setIsLoading={setIfUserNotLoggedInShowModal} />
+      <WalletConnector openModal={ifUserNotLoggedInShowModal} setIsLoading={setIfUserNotLoggedInShowModal} />
       <div className="flex items-center gap-1">
         <div
           onClick={createLike}

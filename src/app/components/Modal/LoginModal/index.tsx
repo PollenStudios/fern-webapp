@@ -46,7 +46,7 @@ export const LoginModal = ({ openModal, setIsLoading }: any) => {
             <p className="paragraph-2 sm:paragraph-1">{modalData ? modalData.heading : 'Login into Metamask'}</p>
           </div>
         </div>
-        <div className="mt-5 sm:mt-9 w-full flex justify-end gap-2 ">
+        <div className="mt-5 sm:mt-9 w-full flex justify-end gap-2">
           {/* {modalData && modalData.websiteUrl && (
             <a href={modalData.websiteUrl} target="_blank" rel="noreferrer">
               Go to website

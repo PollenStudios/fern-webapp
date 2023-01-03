@@ -23,16 +23,13 @@ import {
 import generateNonce, { createUser, getBackendProfile } from 'utils/generateNonce';
 import clearStorage from 'utils/clearStorage';
 
-import config, { DEFAULT_CHAIN_IDS, PageRoutes } from 'utils/config';
-import { useSwitchNetwork } from 'wagmi';
+import { PageRoutes } from 'utils/config';
 
 export const WalletContext = createContext({});
 
 const WalletProvider = ({ children }: any) => {
   const navigate = useNavigate();
-  const { switchNetwork } = useSwitchNetwork();
 
-  // const [account, setAccount] = useState('');
   const [loadChallenge] = useLazyQuery(ChallengeDocument, {
     fetchPolicy: 'no-cache',
   });
@@ -71,64 +68,11 @@ const WalletProvider = ({ children }: any) => {
     }
   };
 
-  const connectToBrowserWallets = async (infoModal: any, closeModal: any) => {
-    //user is connected but not have a profile
-    // if (localStorage.getItem('accessToken') && hasProfileState.hasProfile === false) {
-    //   closeModal();
-    //   return navigate(PageRoutes.SIGN_UP);
-    // }
-    setIsLoading(true);
-
-    try {
-      if (window.ethereum === undefined) {
-        infoModal({
-          heading: "You don't have Metamask",
-          paragraph: 'Please install Metamask',
-          primaryButtonText: 'Install Metamask',
-          websiteUrl: 'https://metamask.io/download/',
-        });
-
-        throw new Error('Metamask is not installed');
-      }
-
-      dispatchAccount({ type: 'loading' });
-      const accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts',
-      });
-
-      if (accounts.length === 0) {
-        toast.error('No account found');
-        return false;
-      }
-
-      walletProvider.current = window.ethereum;
-      dispatchAccount({ type: 'success', payload: accounts[0] });
-
-      fetchWalletBalance(accounts[0]);
-
-      await validateChain(accounts[0], closeModal, infoModal);
-
-      // infoModal({
-      //   heading: 'Sign-in with F3RN',
-      //   paragraph: 'Please sign with your wallet',
-      //   primaryButtonText: 'Sign wallet',
-      //   onClick: await handleSign(accounts[0], closeModal, infoModal),
-      // });
-
-      await handleSign(accounts[0], closeModal, infoModal);
-    } catch (error: any) {
-      toast.error(error.message);
-      dispatchAccount({ type: 'error', payload: error });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   // get wallet balance
   const fetchWalletBalance = async (address: string) => {
     try {
       dispatchWalletBalance({ type: 'loading' });
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const provider = new ethers.providers.Web3Provider(walletProvider?.current);
       const balance = await provider.getBalance(address);
       const balanceInEth = ethers.utils.formatEther(balance);
       dispatchWalletBalance({ type: 'success', payload: balanceInEth });
@@ -139,11 +83,14 @@ const WalletProvider = ({ children }: any) => {
   };
 
   //signMessage
-  const handleSign = async (address: string, closeModal: any, infoModal: any) => {
+  const handleSign = async (address: string, closeModal: any) => {
     dispatchHasProfile({ type: 'loading' });
     dispatchCurrentProfile({ type: 'loading' });
     dispatchUserSigNonce({ type: 'loading' });
     dispatchIsLoggedIn({ type: 'loading' });
+
+    //fetch wallet balance
+    fetchWalletBalance(address);
 
     try {
       // Fetch challenge from lens
@@ -153,11 +100,6 @@ const WalletProvider = ({ children }: any) => {
 
       // If user is not able to get the challenge from Lens api
       if (!challenge?.data?.challenge?.text) {
-        infoModal({
-          heading: 'Signature message is not valid',
-          paragraph: 'Signature message is not valid',
-          buttonText: 'Retry again',
-        });
         throw new Error('Lens login is not completed');
       }
 
@@ -194,7 +136,7 @@ const WalletProvider = ({ children }: any) => {
           icon: '⏲',
         });
         navigate(PageRoutes.SIGN_UP);
-        closeModal();
+        // closeModal();
       } else {
         const profiles: any = profilesData?.profiles?.items;
         const generateNonceResult = await generateNonce(profiles[0].handle, address, profiles[0].id);
@@ -228,47 +170,6 @@ const WalletProvider = ({ children }: any) => {
       // navigate(PageRoutes.ERROR_PAGE);
     }
   };
-  //check chain id
-  // some times user can login with chain id other than mumbai, check it why is it so
-  const validateChain = async (address: string, closeModal: any, infoModal: any) => {
-    const fetchChainId = walletProvider.current.chainId;
-    if (!DEFAULT_CHAIN_IDS.includes(fetchChainId)) {
-      if (switchNetwork) {
-        infoModal({
-          heading: 'Switch your Network',
-          paragraph: 'Please switch your network chain',
-          primaryButtonText: 'Switch Network',
-          onClick: switchNetwork(config.chainId),
-        });
-
-        throw new Error('Chain network is not correct');
-      }
-    } else {
-      return true;
-    }
-  };
-
-  //Auto connect wallet
-
-  const handleAutoConnectWallet = () => {
-    if (window.ethereum) {
-      window.ethereum
-        .request({ method: 'eth_requestAccounts' })
-        .then((accounts: any) => {
-          dispatchAccount({ type: 'success', payload: accounts[0] });
-          fetchWalletBalance(accounts[0]);
-        })
-        .catch((error: any) => {
-          if (error.code === 4001) {
-            toast.error(error.message);
-          }
-          // console.log(error, 'Not Connected');
-        });
-      return true;
-    } else {
-      return false;
-    }
-  };
 
   const logout = () => {
     dispatchIsLoggedIn({ type: 'success', payload: false });
@@ -289,10 +190,6 @@ const WalletProvider = ({ children }: any) => {
     });
   }, [walletProvider?.current?.chainId]);
 
-  useEffect(() => {
-    handleAutoConnectWallet();
-  }, []);
-
   return (
     <>
       <WalletContext.Provider
@@ -311,9 +208,8 @@ const WalletProvider = ({ children }: any) => {
           dispatchCurrentProfile,
           isLoggedInState,
           dispatchIsLoggedIn,
-          connectToBrowserWallets,
-          validateChain,
           handleSign,
+          fetchWalletBalance,
         }}
       >
         {children}

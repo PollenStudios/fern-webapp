@@ -15,8 +15,8 @@ import { WalletContext } from 'store/WalletContextProvider';
 import getSignature from 'utils/getSignature';
 import { useSignTypedData } from 'wagmi';
 import { Loader } from '../atoms/Loader';
-import { LoginModal } from '../Modal/LoginModal';
 import { handleSignTypeData } from 'graphql/utils/signMessage';
+import WalletConnector from '../WalletSelector';
 
 function Mirror({ publicationId, mirrorCounts, primary }: any) {
   const navigate = useNavigate();
@@ -123,7 +123,7 @@ function Mirror({ publicationId, mirrorCounts, primary }: any) {
 
   return (
     <>
-      <LoginModal openModal={ifUserNotLoggedInShowModal} setIsLoading={setIfUserNotLoggedInShowModal} />
+      <WalletConnector openModal={ifUserNotLoggedInShowModal} setIsLoading={setIfUserNotLoggedInShowModal} />
       <div className="flex items-center gap-1">
         {isLoading ? (
           <div className="flex justify-center items-center  w-8 h-8">

@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { WalletContext } from 'store/WalletContextProvider';
 import clearStorage from 'utils/clearStorage';
 import parseJwt from 'utils/parseJwt';
@@ -10,10 +10,14 @@ import { useNavigate } from 'react-router-dom';
 import { getBackendProfile } from 'utils/generateNonce';
 import { PageRoutes } from 'utils/config';
 import toast from 'react-hot-toast';
+import { useAccount } from 'wagmi';
 // import { useLocation } from 'react-router-dom';
 
 const PersistState = ({ children }: any) => {
   // const { pathname } = useLocation();
+  const walletProvider = useRef(window.ethereum);
+
+  const { address } = useAccount();
   const navigate = useNavigate();
   const [verify] = useLazyQuery(VerifyDocument);
 
@@ -50,14 +54,13 @@ const PersistState = ({ children }: any) => {
       console.log(error);
     }
   };
-  const verifyProfileForLogin = async (address: string) => {
+  const verifyProfileForLogin = async (address: string | undefined) => {
     try {
       dispatchHasProfile({ type: 'loading' });
       dispatchCurrentProfile({ type: 'loading' });
       dispatchUserSigNonce({ type: 'loading' });
 
       //get all profiles
-
       const { data: profilesData } = await getProfiles({
         variables: { ownedBy: address },
       });
@@ -134,17 +137,17 @@ const PersistState = ({ children }: any) => {
 
       const fetchUserData = async () => {
         try {
-          const accounts = await window.ethereum.request({
-            method: 'eth_requestAccounts',
-          });
-          if (accounts.length !== 0) {
-            dispatchAccount({ type: 'success', payload: accounts[0] });
+          const accountAddress = address?.toLowerCase();
+
+          if (accountAddress?.length !== 0) {
+            dispatchAccount({ type: 'success', payload: accountAddress });
           }
 
-          verifyProfileForLogin(accounts[0]);
+          verifyProfileForLogin(accountAddress);
 
-          const provider = new ethers.providers.Web3Provider(window.ethereum);
-          const balance = await provider.getBalance(accounts[0]);
+          const provider = new ethers.providers.Web3Provider(walletProvider.current);
+          //@ts-ignore
+          const balance = await provider.getBalance(accountAddress);
           const balanceInEth = ethers.utils.formatEther(balance);
           dispatchWalletBalance({ type: 'success', payload: balanceInEth });
         } catch (error: any) {

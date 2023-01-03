@@ -14,7 +14,7 @@ import { PageRoutes } from 'utils/config';
 
 import F3RN from 'Assets/Images/fernLogo.svg';
 import { Loader } from '../atoms/Loader';
-import { LoginModal } from '../Modal/LoginModal';
+import WalletConnector from '../WalletSelector';
 
 export default function Navbar(): any {
   const {
@@ -43,11 +43,10 @@ export default function Navbar(): any {
 
   return (
     <>
-      <LoginModal openModal={isLoading} setIsLoading={setIsLoading} />
+      <WalletConnector openModal={isLoading} setIsLoading={setIsLoading} />
       <Disclosure as="nav" className="bg-white drop-shadow-3xl w-full fixed top-0 z-40">
         {({ open }) => (
           <>
-            {/* mx-auto max-w-7xl px-2 md:px-6 lg:px-8 */}
             <div className="main-container">
               <div className="relative flex h-16 items-center justify-between">
                 <div className="absolute inset-y-0 -right-2  flex items-center md:hidden">
