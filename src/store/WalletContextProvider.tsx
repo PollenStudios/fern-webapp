@@ -36,7 +36,7 @@ const WalletProvider = ({ children }: any) => {
   const [authenticate] = useMutation(AuthenticateDocument);
   const [getProfiles] = useLazyQuery(UserProfilesDocument);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [walletBalanceState, dispatchWalletBalance] = useReducer(reducerWalletBalance, initialStateWalletBalance);
 
@@ -84,6 +84,7 @@ const WalletProvider = ({ children }: any) => {
 
   //signMessage
   const handleSign = async (address: string, closeModal: any) => {
+    setIsLoading(true);
     dispatchHasProfile({ type: 'loading' });
     dispatchCurrentProfile({ type: 'loading' });
     dispatchUserSigNonce({ type: 'loading' });
@@ -166,7 +167,7 @@ const WalletProvider = ({ children }: any) => {
       dispatchCurrentProfile({ type: 'error', payload: error });
       dispatchUserSigNonce({ type: 'error', payload: error });
       dispatchIsLoggedIn({ type: 'error', payload: error });
-      // closeModal();
+      closeModal();
       // navigate(PageRoutes.ERROR_PAGE);
     }
   };

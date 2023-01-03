@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import config from 'utils/config';
 import { useAccount, useConnect, useNetwork } from 'wagmi';
 import SwitchNetwork from '../SwitchNetwork';
@@ -13,20 +13,35 @@ interface Props {
   setIsLoading: (openModal: boolean) => void;
 }
 
-const WalletConnector = ({ openModal, setIsLoading }: Props) => {
+const WalletConnector = ({ openModal, setIsLoading: setOpenModalLoading }: Props) => {
   const { connector: activeConnector, isConnected, address } = useAccount();
-  const { connect, connectors, isLoading } = useConnect({
+  const {
+    connect,
+    connectors,
+    isLoading: walletConnectLoading,
+  } = useConnect({
     onError(error) {
       toast.error(error.message);
     },
   });
   const { chain } = useNetwork();
 
-  const { handleSign }: any = useContext(WalletContext);
+  const {
+    handleSign,
+    dispatchAccount,
+    accountState: { account },
+    isLoading,
+    setIsLoading,
+  }: any = useContext(WalletContext);
 
   const closeModal = () => {
+    setOpenModalLoading(false);
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    dispatchAccount({ type: 'success', payload: address?.toLowerCase() });
+  }, [address, dispatchAccount]);
 
   return (
     <Modal open={openModal} setOpen={setIsLoading}>
@@ -46,7 +61,7 @@ const WalletConnector = ({ openModal, setIsLoading }: Props) => {
               </div>
               {isConnected && (
                 <div className="w-full flex justify-end">
-                  <Button name="Sign-In" onClick={() => handleSign(address?.toLowerCase(), closeModal)} />
+                  <Button name={isLoading ? 'Loading...' : 'Sign-In'} onClick={() => handleSign(account, closeModal)} />
                 </div>
               )}
             </>
@@ -70,10 +85,18 @@ const WalletConnector = ({ openModal, setIsLoading }: Props) => {
                 connector.id === 'injected' && (
                   <div className="w-full flex justify-end items-center" key={connector.id}>
                     <Button
-                      disabled={!connector.ready}
+                      // disabled={!connector.ready}
                       key={connector.id}
-                      onClick={() => connect({ connector })}
-                      name={isLoading ? 'Loading...' : `Browser Wallet ${!connector.ready ? ' (Not installed)' : ''}`}
+                      onClick={() =>
+                        !connector.ready
+                          ? window.open('https://metamask.io/download/', '_blank')
+                          : connect({ connector })
+                      }
+                      name={
+                        walletConnectLoading
+                          ? 'Loading...'
+                          : `${!connector.ready ? ' Install Metamask' : 'Browser Wallet'}`
+                      }
                     />
                   </div>
                 ),
