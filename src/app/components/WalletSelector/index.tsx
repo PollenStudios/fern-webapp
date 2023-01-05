@@ -44,13 +44,13 @@ const WalletConnector = ({ openModal, setIsLoading: setOpenModalLoading }: Props
   }, [address, dispatchAccount]);
 
   return (
-    <Modal open={openModal} setOpen={setIsLoading}>
+    <Modal open={openModal} setOpen={setOpenModalLoading}>
       <div>
         <div className="flex justify-between items-center border-b pb-2">
           <p className="heading-5 sm:heading-5">Login</p>
           <XMarkIcon
             className="w-8 h-8 cursor-pointer rounded-full hover:bg-gray-200 p-1"
-            onClick={() => setIsLoading(false)}
+            onClick={() => setOpenModalLoading(false)}
           />
         </div>
         {activeConnector?.id ? (
