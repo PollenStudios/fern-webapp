@@ -179,7 +179,7 @@ const WalletConnector = ({openModal, setIsLoading}: Props) => {
   }, [address, setWalletAddress])
 
   return (
-    <Modal open={openModal} setOpen={setOpenModalLoading}>
+    <Modal open={openModal} setOpen={setIsLoading}>
       <div>
         <div className='flex justify-between items-center border-b pb-2'>
           <p className='heading-5 sm:heading-5'>Login</p>
