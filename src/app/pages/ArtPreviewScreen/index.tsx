@@ -1,55 +1,57 @@
-import { useState } from 'react';
-import ART_PREVIEW from 'Assets/Images/artPreview.png';
-import { ArrowLeftIcon } from '@heroicons/react/24/solid';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
-import { WalletContext } from 'store/WalletContextProvider';
-import { PublicationDocument } from 'graphql/generated/types';
-import { useQuery } from '@apollo/client';
-import getIPFSLink from 'utils/getIPFSLink';
-import { PageRoutes } from 'utils/config';
-import ArtPreviewSkelton from 'app/components/Skelton/ArtPreviewSkelton';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
-import ProfileLogo from 'Assets/Images/defaultLogo.png';
-import { TrashIcon, ArrowsRightLeftIcon } from '@heroicons/react/24/solid';
+import {useState} from 'react'
+import ART_PREVIEW from 'Assets/Images/artPreview.png'
+import {ArrowLeftIcon} from '@heroicons/react/24/solid'
+import {Link, useNavigate, useParams} from 'react-router-dom'
+import {useEffect} from 'react'
+import {PublicationDocument} from 'graphql/generated/types'
+import {useQuery} from '@apollo/client'
+import getIPFSLink from 'utils/getIPFSLink'
+import {PageRoutes} from 'utils/config'
+import ArtPreviewSkelton from 'app/components/Skelton/ArtPreviewSkelton'
+import {Helmet, HelmetProvider} from 'react-helmet-async'
+import ProfileLogo from 'Assets/Images/defaultLogo.png'
+import {TrashIcon, ArrowsRightLeftIcon} from '@heroicons/react/24/solid'
 
-import Mirror from 'app/components/Mirror';
-import Like from 'app/components/Like';
-import { DeleteModal } from 'app/components/Delete';
-import { SmallButton } from 'app/components/atoms/Buttons';
+import Mirror from 'app/components/Mirror'
+import Like from 'app/components/Like'
+import {DeleteModal} from 'app/components/Delete'
+import {SmallButton} from 'app/components/atoms/Buttons'
+import {useAppStore} from 'store/app'
 
 const ArtPreviewScreen = () => {
-  const { id: publicationId } = useParams();
-  const navigate = useNavigate();
+  const {id: publicationId} = useParams()
+  const navigate = useNavigate()
 
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
-  const {
-    currentProfileState: { currentProfile },
-  }: any = useContext(WalletContext);
+  const currentProfile = useAppStore((state) => state.currentProfile)
 
-  const { data, loading, error } = useQuery(PublicationDocument, {
+  const {data, loading} = useQuery(PublicationDocument, {
     variables: {
-      request: { publicationId },
-      reactionRequest: currentProfile ? { profileId: currentProfile?.id } : null,
+      request: {publicationId},
+      reactionRequest: currentProfile ? {profileId: currentProfile?.id} : null,
       profileId: currentProfile?.id ?? null,
     },
     skip: !publicationId,
-  });
+  })
 
   const searchQuery = (query: string | null | undefined) => {
-    navigate(`/search?q=${query}&type=publications`);
-  };
+    navigate(`/search?q=${query}&type=publications`)
+  }
 
   useEffect(() => {
-    window.scroll(0, 0);
-  }, []);
+    window.scroll(0, 0)
+  }, [])
 
-  const isMirror = data?.publication?.__typename === 'Mirror';
+  const isMirror = data?.publication?.__typename === 'Mirror'
 
   return (
     <>
-      <DeleteModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} publication={data?.publication} />
+      <DeleteModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        publication={data?.publication}
+      />
       <HelmetProvider>
         <Helmet>
           <title>{`${
@@ -61,41 +63,44 @@ const ArtPreviewScreen = () => {
         {loading ? (
           <ArtPreviewSkelton />
         ) : (
-          <div className="main-container md:min-h-screen mt-24 mb-24 md:mb-auto md:mt-24">
-            <div className="pt-2 pb-6  flex items-center gap-x-2 cursor-pointer" onClick={() => navigate(-1)}>
-              <ArrowLeftIcon className="h-6 w-6" />
-              <p className="heading-5">back</p>
+          <div className='main-container md:min-h-screen mt-24 mb-24 md:mb-auto md:mt-24'>
+            <div
+              className='pt-2 pb-6  flex items-center gap-x-2 cursor-pointer'
+              onClick={() => navigate(-1)}
+            >
+              <ArrowLeftIcon className='h-6 w-6' />
+              <p className='heading-5'>back</p>
             </div>
-            <div className="grid grid-cols-6 ">
-              <div className="col-span-6 md:col-span-3 border rounded-l-lg border-r-0">
+            <div className='grid grid-cols-6 '>
+              <div className='col-span-6 md:col-span-3 border rounded-l-lg border-r-0'>
                 {
                   <img
-                    className="object-contain p-4 w-full h-[600px]"
+                    className='object-contain p-4 w-full h-[600px]'
                     src={
                       data?.publication?.metadata.image !== null
                         ? getIPFSLink(data?.publication?.metadata?.image)
                         : ART_PREVIEW
                     }
                     alt={data && data?.publication?.id}
-                    loading="lazy"
+                    loading='lazy'
                   />
                 }
               </div>
-              <div className="col-span-6 md:col-span-3 sm:border border-l-0 rounded-r-lg">
-                <div className="flex flex-col justify-center">
-                  <div className="flex justify-between items-center bg-gray-30 px-6">
+              <div className='col-span-6 md:col-span-3 sm:border border-l-0 rounded-r-lg'>
+                <div className='flex flex-col justify-center'>
+                  <div className='flex justify-between items-center bg-gray-30 px-6'>
                     <Link
                       to={PageRoutes.USER_PROFILE.split(':')[0] + data?.publication?.profile?.id}
-                      className="flex items-center h-20 gap-x-2"
+                      className='flex items-center h-20 gap-x-2'
                     >
                       <img
-                        className="w-8 h-8 rounded-full border border-secondary"
+                        className='w-8 h-8 rounded-full border border-secondary'
                         // @ts-ignore
                         src={data?.publication?.profile?.picture?.original!.url! ?? ProfileLogo}
                         alt={data?.publication?.profile?.name ?? 'F3RN'}
-                        loading="lazy"
+                        loading='lazy'
                       />
-                      <div className="text-primary  border-gray-500 ">
+                      <div className='text-primary  border-gray-500 '>
                         <p>{data && data?.publication?.profile.handle}</p>
                       </div>
                     </Link>
@@ -104,24 +109,27 @@ const ArtPreviewScreen = () => {
                   </div> */}
                     {isMirror && (
                       <Link
-                        className=""
-                        //  @ts-ignore
-                        to={PageRoutes.USER_PROFILE.split(':')[0] + data?.publication?.mirrorOf?.profile?.id}
+                        className=''
+                        to={
+                          PageRoutes.USER_PROFILE.split(':')[0] +
+                          //  @ts-ignore
+                          data?.publication?.mirrorOf?.profile?.id
+                        }
                       >
-                        <SmallButton name="See Artist" variant="outline" />
+                        <SmallButton name='See Artist' variant='outline' />
                       </Link>
                     )}
                   </div>
-                  <div className="px-6 flex flex-col justify-around">
+                  <div className='px-6 flex flex-col justify-around'>
                     <div>
-                      <div className="flex justify-between items-center pt-5 md:pt-8 ">
+                      <div className='flex justify-between items-center pt-5 md:pt-8 '>
                         {isMirror && (
-                          <div className="flex gap-1 items-center">
-                            <ArrowsRightLeftIcon className="w-4 h-4 text-gray-40" />
-                            <p className="text-gray-40">Mirrored Post</p>
+                          <div className='flex gap-1 items-center'>
+                            <ArrowsRightLeftIcon className='w-4 h-4 text-gray-40' />
+                            <p className='text-gray-40'>Mirrored Post</p>
                           </div>
                         )}
-                        <div className="flex items-center text-gray-40 gap-2 ">
+                        <div className='flex items-center text-gray-40 gap-2 '>
                           <p>
                             {data &&
                               new Date(data.publication?.createdAt).toLocaleString('en-in', {
@@ -139,21 +147,23 @@ const ArtPreviewScreen = () => {
                           </p>
                         </div>
                       </div>
-                      <h1 className="heading-4 border-b capitalize">{data?.publication?.metadata.content}</h1>
-                      <p className=" paragraph-1 lg:w-full break-words pt-5 text-gray-500 overflow-auto max-h-96">
+                      <h1 className='heading-4 border-b capitalize'>
+                        {data?.publication?.metadata.content}
+                      </h1>
+                      <p className=' paragraph-1 lg:w-full break-words pt-5 text-gray-500 overflow-auto max-h-96'>
                         {data?.publication?.metadata.description.length > 0
                           ? data?.publication?.metadata.description
                           : 'No description available'}
                       </p>
                     </div>
 
-                    <div className="w-full h-20 mt-72 flex flex-col gap-2  border-t">
-                      <div className="flex gap-2 mt-2 flex-wrap">
+                    <div className='w-full h-20 mt-72 flex flex-col gap-2  border-t'>
+                      <div className='flex gap-2 mt-2 flex-wrap'>
                         {data?.publication?.metadata.attributes
-                          ?.filter(item => item.value !== ('image' || 'text_only'))
-                          .map(item => (
+                          ?.filter((item) => item.value !== ('image' || 'text_only'))
+                          .map((item) => (
                             <p
-                              className="bg-gray-10 px-2 rounded-full cursor-pointer heading-6"
+                              className='bg-gray-10 px-2 rounded-full cursor-pointer heading-6'
                               onClick={() => searchQuery(item.value)}
                               key={item.value}
                             >
@@ -161,8 +171,8 @@ const ArtPreviewScreen = () => {
                             </p>
                           ))}
                       </div>
-                      <div className="flex justify-between">
-                        <div className="flex items-center">
+                      <div className='flex justify-between'>
+                        <div className='flex items-center'>
                           <Like publication={data?.publication} primary />
                           <Mirror
                             publicationId={publicationId}
@@ -177,9 +187,9 @@ const ArtPreviewScreen = () => {
                         {currentProfile?.id === data?.publication?.profile?.id && (
                           <div
                             onClick={() => setIsModalOpen(true)}
-                            className="flex justify-center items-center hover:bg-red-100 w-8 h-8 rounded-full cursor-pointer"
+                            className='flex justify-center items-center hover:bg-red-100 w-8 h-8 rounded-full cursor-pointer'
                           >
-                            <TrashIcon className="w-5 h-5 text-red-500" />
+                            <TrashIcon className='w-5 h-5 text-red-500' />
                           </div>
                         )}
                       </div>
@@ -210,7 +220,7 @@ const ArtPreviewScreen = () => {
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ArtPreviewScreen;
+export default ArtPreviewScreen

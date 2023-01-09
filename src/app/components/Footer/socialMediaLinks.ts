@@ -1,8 +1,8 @@
-import { ISocialMediaLink } from './types';
-import Twitter from './assets/twitter.svg';
-import Facebook from './assets/facebook.svg';
-import Instagram from './assets/instagram.svg';
-import Google from './assets/google.svg';
+import {ISocialMediaLink} from './types'
+import Twitter from './assets/twitter.svg'
+// import Facebook from './assets/facebook.svg'
+// import Instagram from './assets/instagram.svg'
+// import Google from './assets/google.svg'
 const socialMediaLinks: ISocialMediaLink[] = [
   // {
   //   socialIcon: Facebook,
@@ -24,6 +24,6 @@ const socialMediaLinks: ISocialMediaLink[] = [
   //   socialIconName: 'Google',
   //   href: 'https://www.pollinate.co/',
   // },
-];
+]
 
-export default socialMediaLinks;
+export default socialMediaLinks

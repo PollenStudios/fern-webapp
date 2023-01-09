@@ -1,5 +1,5 @@
 export interface IDropdown {
-  list: string[];
-  addItem: (item: string) => void;
-  selectedItems: string[];
+  list: string[]
+  addItem: (item: string) => void
+  selectedItems: string[]
 }

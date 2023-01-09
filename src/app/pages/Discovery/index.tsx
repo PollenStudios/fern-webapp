@@ -1,8 +1,9 @@
-import { PublicationSortCriteria, PublicationTypes } from 'graphql/generated/types';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { getArtCategories } from 'utils/generateNonce';
-import DiscoveryPageView from './DiscoveryPageView';
+import {PublicationSortCriteria, PublicationTypes} from 'graphql/generated/types'
+import {useEffect, useState} from 'react'
+import {useLocation, useNavigate} from 'react-router-dom'
+import {ART_CATEGORY_TITLE} from 'utils/constant'
+import {getArtCategories} from 'utils/generateNonce'
+import DiscoveryPageView from './DiscoveryPageView'
 
 // type FilterProps = {
 //   name: string;
@@ -11,53 +12,59 @@ import DiscoveryPageView from './DiscoveryPageView';
 // };
 
 const DiscoveryPage = () => {
-  let urlQueryForSort = new URLSearchParams(useLocation().search).get('sortBy');
-  let urlQueryForFilter = new URLSearchParams(useLocation().search).get('filteredBy');
-  const navigate = useNavigate();
+  let urlQueryForSort = new URLSearchParams(useLocation().search).get('sortBy')
+  let urlQueryForFilter = new URLSearchParams(useLocation().search).get('filteredBy')
+  const navigate = useNavigate()
 
   //Filter Tags
   const filterTags = [
-    { name: 'Latest', query: 'Latest', criteria: PublicationSortCriteria.Latest, type: PublicationTypes.Post },
+    {
+      name: 'Latest',
+      query: 'Latest',
+      criteria: PublicationSortCriteria.Latest,
+      type: PublicationTypes.Post,
+    },
     {
       name: 'Curated Art',
       query: 'curated-art',
       criteria: PublicationSortCriteria.TopMirrored,
       type: PublicationTypes.Mirror,
     },
-  ];
+  ]
 
   // Variables
-  const [selectedTab, setSelectedTab] = useState<string>(urlQueryForSort || filterTags[0].query);
-  const [selectedArtCategory, setSelectedArtCategory] = useState<string>(urlQueryForFilter || 'Category');
-  // const [selectedArtCategory, setSelectedArtCategory] = useState<string>('Category');
+  const [selectedTab, setSelectedTab] = useState<string>(urlQueryForSort || filterTags[0].query)
+  const [selectedArtCategory, setSelectedArtCategory] = useState<string>(
+    urlQueryForFilter || ART_CATEGORY_TITLE,
+  )
 
-  const [artCategories, setArtCategories] = useState<string[]>([]);
-  const [sortPosts, setSortPosts] = useState<boolean>(true);
+  const [artCategories, setArtCategories] = useState<string[]>([])
+  const [sortPosts, setSortPosts] = useState<boolean>(true)
 
   const fetchArtCategoriesFromBackend = async () => {
-    const data = await getArtCategories();
-    data.unshift('Category');
-    setArtCategories(data);
-  };
+    const data = await getArtCategories()
+    data.unshift(ART_CATEGORY_TITLE)
+    setArtCategories(data)
+  }
 
   useEffect(() => {
-    fetchArtCategoriesFromBackend();
-  }, []);
+    fetchArtCategoriesFromBackend()
+  }, [])
 
   useEffect(() => {
     if (urlQueryForSort !== null) {
-      setSelectedTab(urlQueryForSort ?? 'Latest');
+      setSelectedTab(urlQueryForSort ?? 'Latest')
     }
-  }, [urlQueryForSort]);
+  }, [urlQueryForSort])
 
   useEffect(() => {
-    if (selectedArtCategory === 'Category') {
-      navigate(`/discover?sortBy=${selectedTab}`);
+    if (selectedArtCategory === ART_CATEGORY_TITLE) {
+      navigate(`/discover?sortBy=${selectedTab}`)
     } else {
-      navigate(`/discover?filteredBy=${selectedArtCategory}`);
-      setSortPosts(false);
+      navigate(`/discover?filteredBy=${selectedArtCategory}`)
+      setSortPosts(false)
     }
-  }, [selectedArtCategory, selectedTab]);
+  }, [selectedArtCategory, selectedTab])
 
   return (
     <DiscoveryPageView
@@ -72,7 +79,7 @@ const DiscoveryPage = () => {
       urlQueryForSort={urlQueryForSort}
       urlQueryForFilter={urlQueryForFilter}
     />
-  );
-};
+  )
+}
 
-export default DiscoveryPage;
+export default DiscoveryPage

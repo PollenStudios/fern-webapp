@@ -6,14 +6,14 @@
 const parseJwt = (
   token: string,
 ): {
-  exp: number;
+  exp: number
 } => {
   try {
-    return JSON.parse(atob(token.split('.')[1]));
+    return JSON.parse(atob(token.split('.')[1]))
   } catch (error) {
-    console.error(error);
-    return { exp: 0 };
+    console.error(error)
+    return {exp: 0}
   }
-};
+}
 
-export default parseJwt;
+export default parseJwt

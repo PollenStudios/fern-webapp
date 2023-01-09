@@ -1,26 +1,25 @@
-import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import ProgressBar from 'utils/ProgressBar';
+import React, {useEffect} from 'react'
+import {useLocation} from 'react-router-dom'
+import ProgressBar from 'utils/ProgressBar'
 
 const ScrollTop = () => {
-  const { pathname } = useLocation();
+  const {pathname} = useLocation()
   useEffect(() => {
     // Run on every location change
-    ProgressBar.start();
+    ProgressBar.start()
     window.scrollTo({
       top: 0,
       left: 0,
       behavior: 'smooth',
-    });
-  }, [pathname]);
+    })
+  }, [pathname])
 
   setTimeout(() => {
     // Run on every location change
-    ProgressBar.finish();
-  }, 1000);
+    ProgressBar.finish()
+  }, 1000)
 
-  return <></>;
-};
+  return <></>
+}
 
-export default ScrollTop;
+export default ScrollTop

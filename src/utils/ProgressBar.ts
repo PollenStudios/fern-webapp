@@ -1,4 +1,4 @@
-import TopProgressBar from '@badrap/bar-of-progress';
+import TopProgressBar from '@badrap/bar-of-progress'
 
 const ProgressBar = new TopProgressBar({
   // The size (height) of the progress bar.
@@ -15,5 +15,5 @@ const ProgressBar = new TopProgressBar({
   // How many milliseconds to wait before the progress bar
   // animation starts after calling .start().
   delay: 100,
-});
-export default ProgressBar;
+})
+export default ProgressBar

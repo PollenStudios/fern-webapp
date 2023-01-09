@@ -1,17 +1,18 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react';
-import { ApolloError, useLazyQuery } from '@apollo/client';
-import { RefreshDocument } from 'graphql/generated/types';
-import { WalletContext } from 'store/WalletContextProvider';
+import {useEffect} from 'react'
+import {useLazyQuery} from '@apollo/client'
+import {RefreshDocument} from 'graphql/generated/types'
+import {useAppStore} from 'store/app'
 
 // custom hook for getting recommended profiles
 
 const useGetRecommendedProfiles = () => {
-  const [refreshToken] = useLazyQuery(RefreshDocument);
-  const { dispatchIsLoggedIn }: any = useContext(WalletContext);
+  const [refreshToken] = useLazyQuery(RefreshDocument)
+
+  const setIsLoggedIn = useAppStore((state) => state.setIsLoggedIn)
 
   useEffect(() => {
-    dispatchIsLoggedIn({ type: 'loading', payload: true });
-    (async () => {
+    setIsLoggedIn(true)
+    ;(async () => {
       try {
         const data = await refreshToken({
           variables: {
@@ -19,17 +20,17 @@ const useGetRecommendedProfiles = () => {
               refreshToken: localStorage.getItem('refreshToken'),
             },
           },
-        });
+        })
 
-        localStorage.setItem('accessToken', data.data?.refresh.accessToken);
-        localStorage.setItem('refreshToken', data.data?.refresh.refreshToken);
+        localStorage.setItem('accessToken', data.data?.refresh.accessToken)
+        localStorage.setItem('refreshToken', data.data?.refresh.refreshToken)
       } catch (error) {
         if (process.env.NODE_ENV === 'development') {
-          console.log('err', error);
+          console.log('err', error)
         }
-        dispatchIsLoggedIn({ type: 'error', payload: error });
+        setIsLoggedIn(false)
       }
-    })();
-  }, []);
-};
-export default useGetRecommendedProfiles;
+    })()
+  }, [])
+}
+export default useGetRecommendedProfiles

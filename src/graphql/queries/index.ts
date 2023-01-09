@@ -4,7 +4,7 @@ query Query($request: Jwt!) {
     accessToken: $request
   })
 }
-`;
+`
 
 export const REFRESH_AUTHENTICATION_MUTATION = `
     mutation Refresh($request: RefreshRequest!) {
@@ -13,4 +13,4 @@ export const REFRESH_AUTHENTICATION_MUTATION = `
         refreshToken
       }
     }
-  `;
+  `

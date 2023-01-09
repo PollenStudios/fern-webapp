@@ -1,75 +1,73 @@
-import { useMutation } from '@apollo/client';
-import { CreateSetDispatcherTypedDataDocument, Mutation } from 'graphql/generated/types';
-import { pollUntilIndexed } from 'graphql/utils/hasTransactionIndexed';
-import useBroadcast from 'hooks/useBroadcast';
-import { useContext, useState } from 'react';
-import { toast } from 'react-hot-toast';
-import { WalletContext } from 'store/WalletContextProvider';
-import getSignature from 'utils/getSignature';
-import { useSignTypedData } from 'wagmi';
-import { Button } from '../atoms/Buttons';
-import { Loader } from '../atoms/Loader';
-import OverlayLoader from '../OverlayLoader';
+import React from 'react'
+import {useMutation} from '@apollo/client'
+import {CreateSetDispatcherTypedDataDocument, Mutation} from 'graphql/generated/types'
+import {pollUntilIndexed} from 'graphql/utils/hasTransactionIndexed'
+import useBroadcast from 'hooks/useBroadcast'
+import {useState} from 'react'
+import {toast} from 'react-hot-toast'
+import getSignature from 'utils/getSignature'
+import {useSignTypedData} from 'wagmi'
+import {Loader} from '../atoms/Loader'
+import OverlayLoader from '../OverlayLoader'
 
-import { Switch } from '@headlessui/react';
-import { useNavigate } from 'react-router-dom';
-import { handleSignTypeData } from 'graphql/utils/signMessage';
+import {Switch} from '@headlessui/react'
+import {useNavigate} from 'react-router-dom'
+import {handleSignTypeData} from 'graphql/utils/signMessage'
+import {useAppStore} from 'store/app'
 
 function classNames(...classes: any) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 const EnableDispatcher = () => {
-  const navigate = useNavigate();
-  const {
-    currentProfileState: { currentProfile },
-  }: any = useContext(WalletContext);
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
 
-  const canUseRelay = currentProfile?.dispatcher?.canUseRelay;
+  const currentProfile = useAppStore((state) => state.currentProfile)
+  const [loading, setLoading] = useState(false)
+
+  const canUseRelay = currentProfile?.dispatcher?.canUseRelay
 
   const onCompleted = () => {
-    console.log('completed');
-  };
+    console.log('completed')
+  }
 
-  const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData();
+  const {isLoading: signLoading} = useSignTypedData()
 
-  const { broadcast, data: broadcastData, loading: broadcastLoading } = useBroadcast({ onCompleted });
-  const [createSetProfileMetadataTypedData, { loading: typedDataLoading }] = useMutation<Mutation>(
+  const {broadcast, loading: broadcastLoading} = useBroadcast({onCompleted})
+  const [createSetProfileMetadataTypedData, {loading: typedDataLoading}] = useMutation<Mutation>(
     CreateSetDispatcherTypedDataDocument,
     {
-      onCompleted: async ({ createSetDispatcherTypedData }) => {
+      onCompleted: async ({createSetDispatcherTypedData}) => {
         try {
-          const { id, typedData } = createSetDispatcherTypedData;
+          const {id, typedData} = createSetDispatcherTypedData
           // const signature = await signTypedDataAsync(getSignature(typedData));
-          const signature = await handleSignTypeData(getSignature(typedData));
+          const signature = await handleSignTypeData(getSignature(typedData))
 
           const {
-            data: { broadcast: result },
-          } = await broadcast({ request: { id, signature } });
+            data: {broadcast: result},
+          } = await broadcast({request: {id, signature}})
           if (result) {
-            const res = pollUntilIndexed({ txHash: result.txHash }, setLoading, navigate);
+            const res = pollUntilIndexed({txHash: result.txHash}, setLoading, navigate)
             toast.promise(res, {
               loading: 'Indexing...',
               success: 'Dispatcher is updated',
               error: 'Could not update.',
-            });
-
-            (await res) && window.location.reload();
+            })
+            ;(await res) && window.location.reload()
           }
         } catch (error: any) {
-          toast.error(error.message);
-          console.log(error);
+          toast.error(error.message)
+          console.log(error)
         } finally {
-          setLoading(false);
+          setLoading(false)
         }
       },
       //   onError,
     },
-  );
+  )
 
   const enableDispatcher = async () => {
-    setLoading(true);
+    setLoading(true)
     await createSetProfileMetadataTypedData({
       variables: {
         request: {
@@ -77,16 +75,16 @@ const EnableDispatcher = () => {
           enable: canUseRelay ? false : true,
         },
       },
-    });
-  };
+    })
+  }
 
-  const isLoading = signLoading || broadcastLoading || typedDataLoading;
+  const isLoading = signLoading || broadcastLoading || typedDataLoading
 
   return (
     <div>
       {loading && <OverlayLoader />}
       {loading ? (
-        <div className="border-gray-40 w-[60px] py-2 sm:py-1 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none">
+        <div className='border-gray-40 w-[60px] py-2 sm:py-1 border text-base font-medium rounded-full shadow-sm text-white focus:outline-none'>
           <Loader />
         </div>
       ) : (
@@ -101,7 +99,7 @@ const EnableDispatcher = () => {
             onClick={enableDispatcher}
           >
             <span
-              aria-hidden="true"
+              aria-hidden='true'
               className={classNames(
                 canUseRelay ? 'translate-x-5' : 'translate-x-0',
                 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
@@ -111,7 +109,7 @@ const EnableDispatcher = () => {
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default EnableDispatcher;
+export default EnableDispatcher

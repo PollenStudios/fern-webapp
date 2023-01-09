@@ -1,19 +1,21 @@
-import config from './config';
+import config from './config'
 // /^(?:(ftp|http|https):\/\/)?(?:[\w-]+\.)+[a-z]{2,24}$/;
 
-export const hasMoreMessage = 'No more data left';
+export const hasMoreMessage = 'No more data left'
 
 //Regex
 export const URL_REGEX =
-  /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[\da-z]+([.\-][\da-z]+)*\.[a-z]{2,63}(:\d{1,5})?(\/.*)?$/;
+  // eslint-disable-next-line no-useless-escape
+  /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[\da-z]+([.\-][\da-z]+)*\.[a-z]{2,63}(:\d{1,5})?(\/.*)?$/
 
 export const EMAIL_REGEX =
-  /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-export const HANDLE_REGEX = /^[\da-z]+$/;
+export const HANDLE_REGEX = /^[\da-z]+$/
 
-export const NAME_REGEX = /^[a-zA-Z0-9 ]*$/;
+export const NAME_REGEX = /^[a-zA-Z0-9 ]*$/
 
+export const ART_CATEGORY_TITLE = 'Medium'
 //privacy policy data
 
 export const PRIVACY_POLICY_DATA = {
@@ -64,4 +66,4 @@ export const PRIVACY_POLICY_DATA = {
   contacting_us: 'Contacting us',
   contacting_us_paragraph:
     'If you have any questions about this Privacy Policy, the practices of this site, or your dealings with this site, please contact us at hello@F3RN.tech.',
-};
+}

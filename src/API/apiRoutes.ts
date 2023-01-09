@@ -5,4 +5,4 @@ export const apiRoutes = {
   generateNonce: '/generate-nonce/',
   generateToken: '/generate-token/',
   artCategories: '/art-categories/',
-};
+}

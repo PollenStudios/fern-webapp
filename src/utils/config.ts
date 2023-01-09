@@ -1,22 +1,15 @@
-import { chain } from 'wagmi';
+import {chain} from 'wagmi'
 
 export const POLYGON_MAINNET = {
   ...chain.polygon,
   name: 'Polygon Mainnet',
-  rpcUrls: { default: 'https://polygon-rpc.com' },
-};
+  rpcUrls: {default: 'https://polygon-rpc.com'},
+}
 export const POLYGON_MUMBAI = {
   ...chain.polygonMumbai,
   name: 'Polygon Mumbai',
-  rpcUrls: { default: 'https://rpc-mumbai.maticvigil.com' },
-};
-
-// const networkData = getNetworkDetails(process.env.network)
-
-// getNetworkDetails = () =>{
-
-//   return
-// }
+  rpcUrls: {default: 'https://rpc-mumbai.maticvigil.com'},
+}
 
 const config = {
   lensUri: process.env.REACT_APP_LENS_API_URI ?? 'https://api.lens.dev',
@@ -35,7 +28,9 @@ const config = {
   appNameForLensApi: process.env.REACT_APP_APP_NAME_TO_GET_DATA_FROM_LENS,
   chainId: process.env.REACT_APP_IS_MAINNET === 'true' ? POLYGON_MAINNET.id : POLYGON_MUMBAI.id,
   rpcUrl: 'https://rpc.ankr.com/polygon_mumbai',
-};
+  //This below store variable is for localStorage for zustand
+  f3rnStore: 'F3rn.Store',
+}
 export const PageRoutes = {
   HOMEPAGE: '/',
   DISCOVERY: '/discover',
@@ -51,8 +46,8 @@ export const PageRoutes = {
   ENABLE_DISPATCHER: '/enable-dispatcher',
   ERROR_PAGE: '/something-went-wrong',
   SEARCH: '/search',
-};
+}
 
-export const DEFAULT_CHAIN_IDS = ['0x13881', 80001, '80001'];
+export const DEFAULT_CHAIN_IDS = ['0x13881', 80001, '80001']
 
-export default config;
+export default config

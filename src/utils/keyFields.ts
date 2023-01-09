@@ -8,5 +8,5 @@ export const publicationKeyFields = (publication: any) => {
     id: publication.id,
     collectedBy: publication.collectedBy?.address,
     createdAt: publication.createdAt,
-  })}`;
-};
+  })}`
+}

@@ -1,1 +1,1 @@
-export const backendToken = () => localStorage.getItem('backendToken');
+export const backendToken = () => localStorage.getItem('backendToken')
