@@ -143,13 +143,13 @@ const Main = ({children}: any) => {
     walletProvider?.current?.on('accountsChanged', () => {
       logout()
     })
-  }, [logout, walletProvider.current.selectedAddress])
+  }, [logout, walletProvider?.current?.selectedAddress])
 
   useEffect(() => {
     walletProvider?.current?.on('chainChanged', () => {
       logout()
     })
-  }, [logout, walletProvider.current.chainId])
+  }, [logout, walletProvider?.current?.chainId])
 
   useEffect(() => {
     fetchUserData()
