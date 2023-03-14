@@ -1,0 +1,29 @@
+on: [workflow_dispatch]
+
+jobs:
+  build-cmd:
+    runs-on: ubuntu-latest
+    environment: Prod
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Create Env File
+        run: |
+          echo "${{ secrets.DEV_ENV_VARS }}" > .env
+      - name: Build Dependencies
+        run: yarn build
+
+      - name: Copy to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_EC2_METADATA_DISABLED: true
+        run: aws s3 cp ./build/ s3://fern-prod --recursive
