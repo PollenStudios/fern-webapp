@@ -6,12 +6,12 @@
     "node": "16.17.1"
   },
   "scripts": {
-    "local": "env-cmd -f .env.local react-scripts start",
+    "local": "env-cmd -f .env.dev react-scripts start",
     "dev": "env-cmd -f .env.dev react-scripts start",
     "start": "env-cmd -f .env.prod react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "deploy-prod": "export AWS_PROFILE=pollinate-webapp && env-cmd -f .env.dev npm run build && aws s3 cp build/ s3://fern-prod --recursive",
+    "deploy-prod": "export AWS_PROFILE=pollen && env-cmd -f .env.prod npm run build && aws s3 cp build/ s3://app.f3rn.xyz --recursive",
     "deploy-dev": "export AWS_PROFILE=pollinate-webapp && npm run build && aws s3 cp build/ s3://pollen-web3-dev --recursive",
     "lint": "eslint src/**/*.{js,jsx,ts,tsx,json}",
     "lint:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx,json}'",
