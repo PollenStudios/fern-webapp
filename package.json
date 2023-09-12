@@ -19,9 +19,7 @@
     "eject": "react-scripts eject",
     "prettify": "prettier --write ./src",
     "checkTs": "tsc --noEmit",
-    "eslint": "eslint --ext js,ts,tsx",
-    "lint": "yarn run eslint src",
-    "lint:fix": "yarn run eslint --fix src"
+    "eslint": "eslint --ext js,ts,tsx"
   },
   "dependencies": {
     "@apollo/client": "^3.7.1",
